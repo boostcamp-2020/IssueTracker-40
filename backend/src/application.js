@@ -44,10 +44,10 @@ export class Application {
     async initEnvironment() {
         dotenv.config();
         if (!EnvType.contains(process.env.NODE_ENV)) {
-            throw new Error("잘못된 NODE_ENV 입니다. {prod, dev, local, test} 중 하나를 선택하십시오.");
+            throw new Error("잘못된 NODE_ENV 입니다. {production, development, local, test} 중 하나를 선택하십시오.");
         }
         dotenv.config({
-            path: path.join(`${process.env.PWD}/.env.${process.env.NODE_ENV}`)
+            path: path.join(`${process.cwd()}/.env.${process.env.NODE_ENV}`)
         });
 
         this.databaseEnv = new DatabaseEnv();
