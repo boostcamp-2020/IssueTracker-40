@@ -19,7 +19,12 @@ module.exports = {
     plugins: ["import", "prettier"],
     parser: "@babel/eslint-parser",
     rules: {
-        "prettier/prettier": "error",
+        "prettier/prettier": [
+            "error",
+            {
+                endOfLine: "auto"
+            }
+        ],
         "import/prefer-default-export": "off",
         "class-methods-use-this": "off",
         "no-useless-constructor": "off",
