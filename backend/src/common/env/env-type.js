@@ -1,6 +1,6 @@
 const EnvType = {
-    PRODUCTION: "prod",
-    DEVELOPMENT: "dev",
+    PRODUCTION: "production",
+    DEVELOPMENT: "development",
     LOCAL: "local",
     TEST: "test",
     values: () => Object.values(EnvType).filter((value) => typeof value === "string"),
