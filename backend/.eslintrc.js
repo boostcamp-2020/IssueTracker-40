@@ -29,6 +29,7 @@ module.exports = {
         "class-methods-use-this": "off",
         "no-useless-constructor": "off",
         "no-plusplus": "off",
-        "no-unused-vars": "warn"
+        "no-unused-vars": "warn",
+        "no-cycle": "true"
     }
 };
