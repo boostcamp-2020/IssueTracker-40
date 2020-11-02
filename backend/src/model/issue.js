@@ -1,22 +1,22 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, OneToMany, ManyToOne, DeleteDateColumn } from "typeorm";
+import { IsDate, IsString, IsUrl } from "class-validator";
 import { Comment } from "./comment";
 import { User } from "./user";
 import { UserToIssue } from "./user-to-issue";
 import { Milestone } from "./milestone";
 import { LabelToIssue } from "./label-to-issue";
-import { IsDate, IsString, IsUrl } from "class-validator";
 
 const STATE = {
     OPEN: "open",
     CLOSED: "closed"
-}
+};
 
 @Entity({ name: "issue" })
 class Issue {
     @PrimaryGeneratedColumn("increment", { type: "int" })
     id;
 
-    @Column({ name: "title", type: "varchar", charset:"utf-8" })
+    @Column({ name: "title", type: "varchar", charset: "utf-8" })
     @IsString()
     title;
 
@@ -25,7 +25,7 @@ class Issue {
     @IsUrl()
     content;
 
-    @Column({ name: "state", type: "varchar", default: STATE.OPEN})
+    @Column({ name: "state", type: "varchar", default: STATE.OPEN })
     @IsString()
     state;
 
@@ -41,19 +41,19 @@ class Issue {
     @IsDate()
     deletedAt;
 
-    @OneToMany(() => Comment, comment => comment.id)
+    @OneToMany(() => Comment, (comment) => comment.id)
     comments;
 
-    @OneToMany(() => UserToIssue, userToIssue => userToIssue.issue)
+    @OneToMany(() => UserToIssue, (userToIssue) => userToIssue.issue)
     userToIssues;
 
-    @ManyToOne(() => User, user => user.id)
+    @ManyToOne(() => User, (user) => user.id)
     author;
 
-    @ManyToOne(() => Milestone, milestone => milestone.id)
+    @ManyToOne(() => Milestone, (milestone) => milestone.id)
     milestone;
 
-    @OneToMany(() => LabelToIssue, labelToIssue => labelToIssue.label)
+    @OneToMany(() => LabelToIssue, (labelToIssue) => labelToIssue.label)
     labelToIssues;
 }
 export { Issue };

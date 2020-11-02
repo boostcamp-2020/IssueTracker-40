@@ -5,14 +5,14 @@ import { User } from "./user";
 
 @Entity()
 class UserToIssue {
-    @PrimaryGeneratedColumn({type: "int"})
+    @PrimaryGeneratedColumn({ type: "int" })
     userToIssueId;
 
-    @Column({type: "int" })
+    @Column({ type: "int" })
     @IsInt()
     userId;
 
-    @Column({type: "int" })
+    @Column({ type: "int" })
     @IsInt()
     issueId;
 
@@ -28,11 +28,11 @@ class UserToIssue {
     @IsDate()
     deletedAt;
 
-    @ManyToOne(() => User, user => user.userToIssues)
+    @ManyToOne(() => User, (user) => user.userToIssues)
     user;
 
-    @ManyToOne(() => Issue, issue => issue.userToIssues)
+    @ManyToOne(() => Issue, (issue) => issue.userToIssues)
     issue;
 }
 
-export { UserToIssue }
+export { UserToIssue };

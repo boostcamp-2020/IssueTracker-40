@@ -5,14 +5,14 @@ import { Label } from "./label";
 
 @Entity()
 class LabelToIssue {
-    @PrimaryGeneratedColumn({type: "int"})
+    @PrimaryGeneratedColumn({ type: "int" })
     labelToIssueId;
 
-    @Column({type: "int" })
+    @Column({ type: "int" })
     @IsInt()
     issueId;
 
-    @Column({type: "int" })
+    @Column({ type: "int" })
     @IsInt()
     labelId;
 
@@ -28,10 +28,10 @@ class LabelToIssue {
     @IsDate()
     deletedAt;
 
-    @ManyToOne(() => Label, label => label.labelToIssues)
+    @ManyToOne(() => Label, (label) => label.labelToIssues)
     label;
 
-    @ManyToOne(() => Issue, issue => issue.labelToIssues)
+    @ManyToOne(() => Issue, (issue) => issue.labelToIssues)
     issue;
 }
 

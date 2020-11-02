@@ -25,10 +25,10 @@ class Comment {
     @IsDate()
     deletedAt;
 
-    @ManyToOne(() => Issue, issue => issue.id)
+    @ManyToOne(() => Issue, (issue) => issue.id)
     issue;
-    
-    @ManyToOne(() => User, user => user.id)
+
+    @ManyToOne(() => User, (user) => user.id)
     user;
 }
 

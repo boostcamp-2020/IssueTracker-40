@@ -5,26 +5,26 @@ import { Issue } from "./issue";
 const STATE = {
     OPEN: "open",
     CLOSED: "closed"
-}
+};
 
 @Entity({ name: "milestone" })
 class Milestone {
     @PrimaryGeneratedColumn("increment", { type: "int" })
     id;
 
-    @Column({ name: "title", type: "varchar", unique: true, charset:'utf-8'})
+    @Column({ name: "title", type: "varchar", unique: true, charset: "utf-8" })
     @IsString()
     title;
 
-    @Column({ name: "description", type: "varchar", nullable: true, charset:'utf-8' })
+    @Column({ name: "description", type: "varchar", nullable: true, charset: "utf-8" })
     @IsString()
     description;
 
-    @Column({ name: "state", type: "varchar", default: STATE.OPEN})
+    @Column({ name: "state", type: "varchar", default: STATE.OPEN })
     @IsString()
     state;
 
-    @Column({ name: "due_date", type: "datetime", nullable: true})
+    @Column({ name: "due_date", type: "datetime", nullable: true })
     @IsDate()
     dueDate;
 
@@ -40,7 +40,7 @@ class Milestone {
     @IsDate()
     deletedAt;
 
-    @OneToMany(()=>Issue, issue => issue.id)
+    @OneToMany(() => Issue, (issue) => issue.id)
     issues;
 }
 

@@ -7,7 +7,7 @@ class Label {
     @PrimaryGeneratedColumn("increment", { type: "int" })
     id;
 
-    @Column({ name: "name", type: "varchar", unique: true })
+    @Column({ name: "name", type: "varchar", unique: true, charset: "utf-8" })
     @IsString()
     name;
 
@@ -16,7 +16,7 @@ class Label {
     @IsHexColor()
     color;
 
-    @Column({ name: "description", type: "varchar", nullable: true, charset:true})
+    @Column({ name: "description", type: "varchar", nullable: true, charset: "utf-8" })
     @IsString()
     description;
 
@@ -32,7 +32,7 @@ class Label {
     @IsDate()
     deletedAt;
 
-    @OneToMany(() => LabelToIssue, labelToIssues => labelToIssues.issue)
+    @OneToMany(() => LabelToIssue, (labelToIssues) => labelToIssues.issue)
     labelToIssues;
 }
 

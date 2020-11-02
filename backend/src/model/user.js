@@ -13,14 +13,14 @@ class User {
     @IsEmail()
     email;
 
-    @Column({ name: "name", type: "varchar", unique: true, charset:'utf-8' })
+    @Column({ name: "name", type: "varchar", unique: true, charset: "utf-8" })
     @IsString()
     @Length(4, 20)
-    name; 
+    name;
 
     @CreateDateColumn({ name: "created_at", type: "datetime" })
     @IsDate()
-    createdAt; 
+    createdAt;
 
     @UpdateDateColumn({ name: "updated_at", type: "datetime" })
     @IsDate()
@@ -30,13 +30,13 @@ class User {
     @IsDate()
     deletedAt;
 
-    @OneToMany(() => UserToIssue, UserToIssue => UserToIssue.user)
+    @OneToMany(() => UserToIssue, (UserToIssue) => UserToIssue.user)
     userToIssues;
 
-    @OneToMany(() => Issue, issue => issue.id)
+    @OneToMany(() => Issue, (issue) => issue.id)
     issues;
 
-    @OneToMany(() => Comment, comment => comment.id)
+    @OneToMany(() => Comment, (comment) => comment.id)
     comments;
 }
 
