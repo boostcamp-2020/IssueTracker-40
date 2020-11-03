@@ -1,4 +1,4 @@
-import { IsDate, IsString, IsUrl } from "class-validator";
+import { IsString, IsUrl } from "class-validator";
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, ManyToOne, DeleteDateColumn } from "typeorm";
 import { Issue } from "./issue";
 import { User } from "./user";
@@ -14,21 +14,18 @@ class Comment {
     content;
 
     @CreateDateColumn({ name: "created_at", type: "datetime" })
-    @IsDate()
     createdAt;
 
     @UpdateDateColumn({ name: "updated_at", type: "datetime" })
-    @IsDate()
     updatedAt;
 
     @DeleteDateColumn({ name: "deleted_at", type: "datetime" })
-    @IsDate()
     deletedAt;
 
-    @ManyToOne(() => Issue, (issue) => issue.id)
+    @ManyToOne(() => Issue, (issue) => issue.id, { cascade: true, onDelete: "CASCADE" })
     issue;
 
-    @ManyToOne(() => User, (user) => user.id)
+    @ManyToOne(() => User, (user) => user.id, { cascade: true })
     user;
 }
 

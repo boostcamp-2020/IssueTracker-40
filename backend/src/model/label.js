@@ -1,4 +1,4 @@
-import { IsString, IsHexColor, IsDate } from "class-validator";
+import { IsString, IsHexColor, IsOptional } from "class-validator";
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, DeleteDateColumn, OneToMany } from "typeorm";
 import { LabelToIssue } from "./label-to-issue";
 
@@ -17,19 +17,17 @@ class Label {
     color;
 
     @Column({ name: "description", type: "varchar", nullable: true, charset: "utf-8" })
+    @IsOptional()
     @IsString()
     description;
 
     @CreateDateColumn({ name: "created_at", type: "datetime" })
-    @IsDate()
     createdAt;
 
     @UpdateDateColumn({ name: "updated_at", type: "datetime" })
-    @IsDate()
     updatedAt;
 
     @DeleteDateColumn({ name: "deleted_at", type: "datetime" })
-    @IsDate()
     deletedAt;
 
     @OneToMany(() => LabelToIssue, (labelToIssues) => labelToIssues.issue)

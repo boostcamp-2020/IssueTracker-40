@@ -1,15 +1,11 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, OneToMany, ManyToOne, DeleteDateColumn } from "typeorm";
-import { IsDate, IsString, IsUrl } from "class-validator";
+import { IsString, IsUrl, IsOptional } from "class-validator";
 import { Comment } from "./comment";
 import { User } from "./user";
 import { UserToIssue } from "./user-to-issue";
 import { Milestone } from "./milestone";
 import { LabelToIssue } from "./label-to-issue";
-
-const STATE = {
-    OPEN: "open",
-    CLOSED: "closed"
-};
+import { ISSUESTATE } from "../common/type";
 
 @Entity({ name: "issue" })
 class Issue {
@@ -25,20 +21,18 @@ class Issue {
     @IsUrl()
     content;
 
-    @Column({ name: "state", type: "varchar", default: STATE.OPEN })
+    @Column({ name: "state", type: "varchar", default: ISSUESTATE.OPEN })
+    @IsOptional()
     @IsString()
     state;
 
     @CreateDateColumn({ name: "created_at", type: "datetime" })
-    @IsDate()
     createdAt;
 
     @UpdateDateColumn({ name: "updated_at", type: "datetime" })
-    @IsDate()
     updatedAt;
 
     @DeleteDateColumn({ name: "deleted_at", type: "datetime" })
-    @IsDate()
     deletedAt;
 
     @OneToMany(() => Comment, (comment) => comment.id)
@@ -47,10 +41,10 @@ class Issue {
     @OneToMany(() => UserToIssue, (userToIssue) => userToIssue.issue)
     userToIssues;
 
-    @ManyToOne(() => User, (user) => user.id)
+    @ManyToOne(() => User, (user) => user.id, { eager: true, cascade: true })
     author;
 
-    @ManyToOne(() => Milestone, (milestone) => milestone.id)
+    @ManyToOne(() => Milestone, (milestone) => milestone.id, { eager: true, cascade: true })
     milestone;
 
     @OneToMany(() => LabelToIssue, (labelToIssue) => labelToIssue.label)

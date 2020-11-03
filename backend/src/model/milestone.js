@@ -1,11 +1,7 @@
-import { IsDate, IsString } from "class-validator";
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn, DeleteDateColumn } from "typeorm";
+import { IsDate, IsOptional, IsString } from "class-validator";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn, DeleteDateColumn } from "typeorm";
 import { Issue } from "./issue";
-
-const STATE = {
-    OPEN: "open",
-    CLOSED: "closed"
-};
+import { MILESTONESTATE } from "../common/type";
 
 @Entity({ name: "milestone" })
 class Milestone {
@@ -17,27 +13,27 @@ class Milestone {
     title;
 
     @Column({ name: "description", type: "varchar", nullable: true, charset: "utf-8" })
+    @IsOptional()
     @IsString()
     description;
 
-    @Column({ name: "state", type: "varchar", default: STATE.OPEN })
+    @Column({ name: "state", type: "varchar", default: MILESTONESTATE.OPEN })
+    @IsOptional()
     @IsString()
     state;
 
     @Column({ name: "due_date", type: "datetime", nullable: true })
+    @IsOptional()
     @IsDate()
     dueDate;
 
     @CreateDateColumn({ name: "created_at", type: "datetime" })
-    @IsDate()
     createdAt;
 
     @UpdateDateColumn({ name: "updated_at", type: "datetime" })
-    @IsDate()
     updatedAt;
 
     @DeleteDateColumn({ name: "deleted_at", type: "datetime" })
-    @IsDate()
     deletedAt;
 
     @OneToMany(() => Issue, (issue) => issue.id)

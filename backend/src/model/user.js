@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, DeleteDateColumn, OneToMany } from "typeorm";
-import { IsDate, IsEmail, Length, IsString } from "class-validator";
+import { IsEmail, Length, IsString } from "class-validator";
 import { Issue } from "./issue";
 import { Comment } from "./comment";
 import { UserToIssue } from "./user-to-issue";
@@ -19,18 +19,15 @@ class User {
     name;
 
     @CreateDateColumn({ name: "created_at", type: "datetime" })
-    @IsDate()
     createdAt;
 
     @UpdateDateColumn({ name: "updated_at", type: "datetime" })
-    @IsDate()
     updatedAt;
 
     @DeleteDateColumn({ name: "deleted_at", type: "datetime" })
-    @IsDate()
     deletedAt;
 
-    @OneToMany(() => UserToIssue, (UserToIssue) => UserToIssue.user)
+    @OneToMany(() => UserToIssue, (userToIssue) => userToIssue.user)
     userToIssues;
 
     @OneToMany(() => Issue, (issue) => issue.id)
