@@ -25,6 +25,7 @@ class ConnectionOptionGenerator {
                 connectionOption.extra.connectionLimit = this.databaseEnv.getDatabaseConnectionLimit();
                 break;
             case DatabaseType.SQLITE3:
+            case DatabaseType["BETTER-SQLITE3"]:
                 connectionOption.database = ConnectionOptionGenerator.SQLITE3_DATABASE;
                 break;
             default:
