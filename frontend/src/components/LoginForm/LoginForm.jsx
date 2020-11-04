@@ -21,7 +21,7 @@ const LoginFormLabel = styled.label`
 const LoginFormInput = styled.input`
     width: 70%;
     border-radius: 0.2rem;
-    border: 0.1rem solid #E6E6E6;
+    border: 0.1rem solid #e6e6e6;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     padding-left: 0.5rem;
@@ -38,8 +38,8 @@ const GitHubLoginButton = styled.button`
     padding-bottom: 0.5rem;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    border: 0.1rem solid #E6E6E6;
-    background-color: #A4A4A4;
+    border: 0.1rem solid #e6e6e6;
+    background-color: #a4a4a4;
     color: white;
     font-weight: bold;
     box-sizing: border-box;

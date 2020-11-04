@@ -6,7 +6,7 @@ const Main = styled.main`
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: #F2F2F2;
+    background-color: #f2f2f2;
     justify-content: center;
     place-items: center;
 `;
