@@ -1,24 +1,8 @@
 import express from "express";
-import {authenticator} from "../common/lib"
+import { JwtAuthenticator } from "../common/lib/authenticator";
 
-const passport = authenticator.getPassport();
 const router = express.Router();
 
-router.get("/oauth/github", passport.authenticate("github"));
+router.use("/", JwtAuthenticator.validateAuthorization);
 
-router.get("/oauth/github/login",
-    (req, res, next)=>{
-        console.log('callbackQuery', req.query);
-        next();
-    },
-    (req, res) =>
-        passport.authenticate("github", {
-            sessions: false
-        }, (error, token) => {
-            if (token) res.cookie('token', token);
-            res.redirect('http://localhost:5500');
-        })(req, res)
-);
-
-
-export default router ;
+export default router;
