@@ -1,3 +1,4 @@
+import path from "path";
 import { DatabaseType } from "./database-type";
 
 class ConnectionOptionGenerator {
@@ -10,7 +11,7 @@ class ConnectionOptionGenerator {
     generateConnectionOption() {
         const connectionOption = {
             type: this.databaseEnv.getDatabaseType(),
-            entities: ["src/model/*.js"],
+            entities: [path.resolve(`${__dirname}/../../../model/*.js`)],
             logging: this.databaseEnv.getDatabaseLogging(),
             dropSchema: this.databaseEnv.getDatabaseDropSchema(),
             synchronize: this.databaseEnv.getDatabaseSynchronize(),
