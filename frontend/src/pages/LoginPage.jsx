@@ -11,7 +11,7 @@ const Main = styled.main`
     place-items: center;
 `;
 
-const Title = styled.div`
+const LoginTitle = styled.div`
     font-size: 2rem;
     margin-bottom: 3rem;
     font-weight: bold;
@@ -20,7 +20,7 @@ const Title = styled.div`
 const LoginPage = () => {
     return (
         <Main>
-            <Title>이슈 트래커</Title>
+            <LoginTitle>이슈 트래커</LoginTitle>
             <LoginForm />
         </Main>
     );
