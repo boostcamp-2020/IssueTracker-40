@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, DeleteDateColumn, OneToMany } from "typeorm";
-import { IsEmail, Length, IsString } from "class-validator";
+import { IsEmail, Length, IsString, IsUrl } from "class-validator";
 import { Issue } from "./issue";
 import { Comment } from "./comment";
 import { UserToIssue } from "./user-to-issue";
@@ -17,6 +17,10 @@ class User {
     @IsString()
     @Length(4, 20)
     name;
+
+    @Column({ name: "profile_image", type: "varchar" })
+    @IsUrl()
+    profileImage;
 
     @CreateDateColumn({ name: "created_at", type: "datetime" })
     createdAt;

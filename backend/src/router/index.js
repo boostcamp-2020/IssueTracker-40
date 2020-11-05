@@ -1,9 +1,10 @@
 import express from "express";
+import apiRouter from "./api";
+import oauthRouter from "./oauth";
 
 const router = express.Router();
 
-router.get("/", (req, res, next) => {
-    res.send("index");
-});
+router.use("/api", apiRouter);
+router.use("/oauth", oauthRouter);
 
 export { router };
