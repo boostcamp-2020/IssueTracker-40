@@ -1,22 +1,27 @@
 import { getRepository } from "typeorm";
 import { User } from "../model/user";
 
-const findByUserName = async (userName) => {
-    const userRepository = getRepository(User);
-    const user = await userRepository.find({ name: userName });
-    return user;
-};
-
-const findOrCreate = async (profile) => {
-    const userRepository = getRepository(User);
-    const user = await findByUserName(profile.username);
-
-    if (user.length === 0) {
-        const newUser = new User();
-        newUser.email = `${profile.username}@github.com`;
-        newUser.name = profile.username;
-        await userRepository.save(newUser);
+class UserService {
+    constructor() {
+        this.userRepository = getRepository(User);
     }
-};
 
-export { findOrCreate, findByUserName };
+    async getUserByName(username) {
+        const user = await this.userRepository.findOne({ name: username });
+        return user;
+    }
+
+    async signup(profile) {
+        const user = await this.getUserByName(profile.username);
+
+        if (!user) {
+            const newUser = new User();
+            newUser.email = `${profile.username}@github.com`;
+            newUser.name = profile.username;
+            newUser.profileImage = profile.photos[0].value;
+            await this.userRepository.save(newUser);
+        }
+    }
+}
+
+export { UserService };
