@@ -12,7 +12,7 @@ const Main = styled.main`
 `;
 
 const waitAuthorizationApi = async () => {
-    const userInfo = await axios.get(Config.API.GET_AUTH);
+    const userInfo = await axios.get(Config.API.GET_AUTH, { withCredentials: true });
     return userInfo;
 };
 

@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
 import { debounce } from "lodash";
+import config from "@config";
 
 const LoginFormContainer = styled.div`
     display: flex;
@@ -54,6 +55,10 @@ const WarningMessage = styled.div`
     margin-bottom: 0.5rem;
 `;
 
+const handlingClick = () => {
+    window.location.href = config.API.GET_GITHUB_LOGIN;
+};
+
 const LoginForm = () => {
     const idWarning = useRef();
     const passwordWarning = useRef();
@@ -78,7 +83,7 @@ const LoginForm = () => {
             <LoginFormLabel htmlFor="user-input"> 비밀번호 </LoginFormLabel>
             <LoginFormInput type="password" name="username" id="password-input" onChange={debouncedInputOnChange} />
             <WarningMessage ref={passwordWarning}>비밀번호는 6~12자 사이로 입력해주세요.</WarningMessage>
-            <GitHubLoginButton>Sign in with GitHub</GitHubLoginButton>
+            <GitHubLoginButton onClick={handlingClick}>Sign in with GitHub</GitHubLoginButton>
         </LoginFormContainer>
     );
 };
