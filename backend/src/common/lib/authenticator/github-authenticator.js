@@ -2,7 +2,7 @@ import * as rs from "randomstring";
 import * as qs from "querystring";
 import { Strategy as GitHubStrategy } from "passport-github";
 import { generateJWTToken } from "../token-generator";
-import { userService } from "../../../service";
+import { UserService } from "../../../service";
 import { ForbiddenError } from "../../error/forbidden-error";
 import passport from "./passport";
 
@@ -15,7 +15,8 @@ const setStrategy = () => {
                 callbackURL: process.env.GITHUB_CLIENT_CALLBACK_URL
             },
             async (accessToken, refreshToken, profile, cb) => {
-                await userService.findOrCreate(profile);
+                const userService = new UserService();
+                await userService.signup(profile);
 
                 const token = generateJWTToken({
                     username: profile.username,
@@ -45,7 +46,7 @@ const redirectToGithub = (req, res, next) => {
 
 const validateState = (req, res, next) => {
     if (req.query.state !== req.session.state) {
-        throw new ForbiddenError();
+        next(new ForbiddenError());
     }
     req.session.destroy();
     next();
@@ -58,7 +59,8 @@ const sendTokenToClient = (req, res, next) => {
             sessions: false
         },
         (error, token) => {
-            if (token) res.cookie("token", token);
+            const EXPIRED_DATE = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+            if (token) res.cookie("token", token, { expires: EXPIRED_DATE, httpOnly: true });
             res.redirect(process.env.ISSUE_TRACKER_CLIENT_URL);
         }
     )(req, res, next);

@@ -1,11 +1,10 @@
 import { Strategy as JwtStrategy } from "passport-jwt";
 import passport from "./passport";
-import { userService } from "../../../service";
+import { UserService } from "../../../service";
 import { UnauthorizedError } from "../../error/unauthorized-error";
 
 const cookieExtractor = (req) => {
     let token = null;
-
     if (req && req.cookies) {
         token = req.cookies.token;
     }
@@ -21,7 +20,8 @@ const setStrategy = () => {
             },
             async (jwtPayload, done) => {
                 try {
-                    const user = await userService.find(jwtPayload.username);
+                    const userService = new UserService();
+                    const user = await userService.getUserByName(jwtPayload.username);
 
                     if (user) {
                         return done(null, user);
@@ -43,7 +43,7 @@ const validateAuthorization = (req, res, next) => {
         },
         (error, user) => {
             if (!user) {
-                throw new UnauthorizedError();
+                next(new UnauthorizedError());
             }
             req.user = user;
             next();
