@@ -3,14 +3,24 @@ import { LoginForm } from "@components";
 import styled from "styled-components";
 
 const Main = styled.main`
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    background-color: moccasin;
+    background-color: #f2f2f2;
+    justify-content: center;
+    place-items: center;
+`;
+
+const LoginTitle = styled.div`
+    font-size: 2rem;
+    margin-bottom: 3rem;
+    font-weight: bold;
 `;
 
 const LoginPage = () => {
     return (
         <Main>
-            <h1>로그인페이지입니다!!</h1>
+            <LoginTitle>이슈 트래커</LoginTitle>
             <LoginForm />
         </Main>
     );
