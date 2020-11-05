@@ -51,6 +51,7 @@ const WarningMessage = styled.div`
     font-size: 0.3rem;
     margin-right: auto;
     margin-left: 15%;
+    margin-bottom: 0.5rem;
 `;
 
 const LoginForm = () => {
@@ -72,11 +73,11 @@ const LoginForm = () => {
     return (
         <LoginFormContainer>
             <LoginFormLabel htmlFor="user-input"> 아이디 </LoginFormLabel>
-            <WarningMessage ref={idWarning}>아이디는 6~16자 사이로 입력해주세요.</WarningMessage>
             <LoginFormInput type="text" name="username" id="user-input" onChange={debouncedInputOnChange} />
+            <WarningMessage ref={idWarning}>아이디는 6~16자 사이로 입력해주세요.</WarningMessage>
             <LoginFormLabel htmlFor="user-input"> 비밀번호 </LoginFormLabel>
-            <WarningMessage ref={passwordWarning}>비밀번호는 6~12자 사이로 입력해주세요.</WarningMessage>
             <LoginFormInput type="password" name="username" id="password-input" onChange={debouncedInputOnChange} />
+            <WarningMessage ref={passwordWarning}>비밀번호는 6~12자 사이로 입력해주세요.</WarningMessage>
             <GitHubLoginButton>Sign in with GitHub</GitHubLoginButton>
         </LoginFormContainer>
     );
