@@ -1,7 +1,6 @@
 const DatabaseType = {
     MYSQL: "mysql",
     SQLITE3: "sqlite",
-    "BETTER-SQLITE3": "better-sqlite3",
     valueOf: (typeString) => {
         return Object.keys(DatabaseType)
             .filter((value) => DatabaseType[value] === typeString)
