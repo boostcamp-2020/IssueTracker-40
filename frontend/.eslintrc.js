@@ -22,6 +22,7 @@ module.exports = {
             }
         ],
         "import/no-unresolved": "off",
-        "no-param-reassign": "off"
+        "no-param-reassign": "off",
+        "import/prefer-default-export": "off"
     }
 };
