@@ -33,7 +33,9 @@ module.exports = (env) => {
                 "@pages": path.resolve(__dirname, "src/pages"),
                 "@style": path.resolve(__dirname, "src/common/style"),
                 "@utils": path.resolve(__dirname, "src/common/utils"),
-                "@imgs": path.resolve(__dirname, "public/imgs")
+                "@imgs": path.resolve(__dirname, "public/imgs"),
+                "@hook": path.resolve(__dirname, "src/common/hook"),
+                "@context": path.resolve(__dirname, "src/common/context")
             }
         },
         entry: {
@@ -57,7 +59,8 @@ module.exports = (env) => {
                                 }
                             ],
                             ["@babel/preset-react"]
-                        ]
+                        ],
+                        plugins: ["@babel/plugin-transform-runtime"]
                     }
                 },
                 {
