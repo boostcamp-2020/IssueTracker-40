@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { color } from "@style/color";
 import HeaderTitle from "./HeaderTitle/HeaderTitle";
 import HeaderDropmenu from "./HeaderDropmenu/HeaderDropmenu";
 
@@ -8,8 +9,7 @@ const StyledHeader = styled.header`
     justify-content: center;
     width: 100%;
     padding: 15px 30px;
-    color: #ffffff;
-    background-color: #24292e;
+    background-color: ${color.header_bg};
     box-sizing: border-box;
 `;
 

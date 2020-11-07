@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import styled, { css } from "styled-components";
 import { UserProfile, Caret } from "@components";
+import { color } from "@style/color";
 import HeaderContext from "../../HeaderContext/HeaderContext";
 
 const DropmenuContainer = styled.div`
@@ -29,7 +30,7 @@ const DropmenuModalBackground = styled.div`
     right: 0;
     width: 100%;
     height: 100%;
-    background-color: transparent;
+    background-color: ${color.header_dropmenu_modal_bg};
     z-index: 1000;
 `;
 
@@ -38,9 +39,9 @@ const DropmenuList = styled.ul`
     position: absolute;
     top: 100%;
     right: 15px;
-    color: #1b1f23;
-    background-color: #ffffff;
-    border: 1px solid #e1e4e8;
+    color: ${color.header_dropmenu_text};
+    background-color: ${color.header_dropmenu_bg};
+    border: 1px solid ${color.header_dropmenu_boader};
     border-radius: 6px;
     white-space: nowrap;
     z-index: 2000;
@@ -53,13 +54,13 @@ const DropmenuList = styled.ul`
         right: 10px;
         left: auto;
         border: 7px solid transparent;
-        border-bottom: 7px solid #ffffff;
+        border-bottom: 7px solid ${color.header_dropmenu_bg};
     }
 `;
 
 const DropmenuMainArea = styled.li`
     padding: 8px 0px;
-    border-bottom: 1px solid #e1e4e8;
+    border-bottom: 1px solid ${color.header_dropmenu_boader};
     &:last-of-type {
         border-bottom: none;
     }
@@ -71,8 +72,8 @@ const DropmenuSubArea = styled.ul`
         font-size: 13px;
         cursor: pointer;
         &:hover {
-            color: #ffffff;
-            background-color: #0366d6;
+            color: ${color.header_dropmenu_hover_text};
+            background-color: ${color.header_dropmenu_hover_bg};
         }
     }
     ${(props) =>
@@ -80,8 +81,8 @@ const DropmenuSubArea = styled.ul`
         css`
             & > li {
                 &:hover {
-                    color: #1b1f23;
-                    background-color: #ffffff;
+                    color: ${color.header_dropmenu_text};
+                    background-color: ${color.header_dropmenu_bg};
                 }
             }
         `}

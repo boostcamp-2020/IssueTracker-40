@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { color } from "@style/color";
 
 const StyledLink = styled(Link)`
     display: flex;
@@ -16,7 +17,7 @@ const StyledImg = styled.img`
 `;
 
 const StyledSpan = styled.span`
-    color: #ffffff;
+    color: ${color.header_title_text};
 `;
 
 const HeaderTitle = () => {
