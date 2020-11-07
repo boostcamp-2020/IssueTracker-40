@@ -40,7 +40,7 @@ const StyledSideBarMenuBody = styled.div`
 const SideBarMenu = ({ children, ...rest }) => {
     return (
         <StyledSideBarMenu>
-            <StyledSideBarMenuHeader>
+            <StyledSideBarMenuHeader onClick={rest.HeaderClick}>
                 <div>{rest.title}</div>
                 <div>
                     <img src={settingIcon} alt="setting" width="16" height="16" />
