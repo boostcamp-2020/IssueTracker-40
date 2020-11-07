@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import { color } from "@style/color";
 import settingIcon from "../../../public/images/setting-icon.png";
 
 const StyledSideBarMenu = styled.div`
     display: flex;
     flex-direction: column;
-    border-bottom: 0.1px solid grey;
+    border-bottom: 0.1px solid ${color.sidemenu_default};
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     margin-top: 0.5rem;
@@ -22,11 +23,12 @@ const StyledSideBarMenuHeader = styled.div`
     line-height: 1.5;
     font-weight: bold;
     font-size: 12px;
+    color: ${color.sidemenu_default};
     &:hover {
         cursor: pointer;
         text-decoration: none;
-        webkit-filter: opacity(0.5) drop-shadow(0 0 0 #2e9afe);
-        filter: opacity(0.5) drop-shadow(0 0 0 #2e9afe);
+        webkit-filter: opacity(0.5) drop-shadow(0 0 0 ${color.sidemenu_hover});
+        filter: opacity(0.5) drop-shadow(0 0 0 ${color.sidemenu_hover});
     }
 `;
 

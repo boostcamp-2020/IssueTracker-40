@@ -6,7 +6,9 @@ const color = {
     btn_primary_hover_bg: "#2c974b",
     btn_primary_border: "rgba(27, 31, 35, 0.15)",
     btn_primary_shadow: "rgba(27, 31, 35, 0.04)",
-    btn_primary_text: "#ffffff"
+    btn_primary_text: "#ffffff",
+    sidemenu_hover: "#2e9afe",
+    sidemenu_default: "#6e6e6e"
 };
 
 export { color };
