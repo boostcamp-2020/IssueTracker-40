@@ -1,4 +1,14 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, OneToMany, ManyToOne, DeleteDateColumn } from "typeorm";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+    OneToMany,
+    ManyToOne,
+    DeleteDateColumn,
+    JoinColumn
+} from "typeorm";
 import { IsString, IsUrl, IsOptional } from "class-validator";
 import { Comment } from "./comment";
 import { User } from "./user";
@@ -35,19 +45,21 @@ class Issue {
     @DeleteDateColumn({ name: "deleted_at", type: "datetime" })
     deletedAt;
 
-    @OneToMany(() => Comment, (comment) => comment.id)
+    @OneToMany(() => Comment, (comment) => comment.issue, { lazy: true })
     comments;
 
-    @OneToMany(() => UserToIssue, (userToIssue) => userToIssue.issue)
+    @OneToMany(() => UserToIssue, (userToIssue) => userToIssue.issue, { lazy: true })
     userToIssues;
 
-    @ManyToOne(() => User, (user) => user.id, { eager: true, cascade: true })
+    @ManyToOne(() => User, (user) => user.id, { eager: true })
+    @JoinColumn({ name: "author_id" })
     author;
 
-    @ManyToOne(() => Milestone, (milestone) => milestone.id, { eager: true, cascade: true })
+    @ManyToOne(() => Milestone, (milestone) => milestone.id, { eager: true })
+    @JoinColumn({ name: "milestone_id" })
     milestone;
 
-    @OneToMany(() => LabelToIssue, (labelToIssue) => labelToIssue.label)
+    @OneToMany(() => LabelToIssue, (labelToIssue) => labelToIssue.issue, { lazy: true })
     labelToIssues;
 }
 export { Issue };
