@@ -22,6 +22,12 @@ const StyledSideBarMenuHeader = styled.div`
     line-height: 1.5;
     font-weight: bold;
     font-size: 12px;
+    &:hover {
+        cursor: pointer;
+        text-decoration: none;
+        webkit-filter: opacity(0.5) drop-shadow(0 0 0 #2e9afe);
+        filter: opacity(0.5) drop-shadow(0 0 0 #2e9afe);
+    }
 `;
 
 const StyledSideBarMenuBody = styled.div`
