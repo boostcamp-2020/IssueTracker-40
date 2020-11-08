@@ -5,23 +5,14 @@ import { crypto } from "../common/lib";
 class UserService {
     constructor() {
         this.userRepository = getRepository(User);
+        this.defaultProfileImage = "https://pbs.twimg.com/profile_images/977835673511084032/xXA979th.jpg";
     }
 
-    createUser({ email, name, password }) {
-        const tempProfileImage = "https://pbs.twimg.com/profile_images/977835673511084032/xXA979th.jpg";
+    createUser({ email, name, password, profileImage = this.defaultProfileImage }) {
         const newUser = new User();
         newUser.email = email;
         newUser.name = name;
         newUser.password = password;
-        newUser.profileImage = tempProfileImage;
-
-        return newUser;
-    }
-
-    createUserWithoutPassword({ email, name, profileImage }) {
-        const newUser = new User();
-        newUser.email = email;
-        newUser.name = name;
         newUser.profileImage = profileImage;
 
         return newUser;
@@ -50,7 +41,6 @@ class UserService {
     async signup(newUser) {
         const { password } = newUser;
         newUser.password = crypto.encrypt(password);
-
         await this.userRepository.save(newUser);
     }
 
@@ -58,10 +48,8 @@ class UserService {
         const user = await this.getUserByName(profile.username);
 
         if (!user) {
-            const newUser = new User();
-            newUser.email = `${profile.username}@github.com`;
-            newUser.name = profile.username;
-            newUser.profileImage = profile.photos[0].value;
+            const { username, photos } = profile;
+            const newUser = this.createUser({ email: `${username}@github.com`, name: username, profileImage: photos[0].value });
             await this.userRepository.save(newUser);
         }
     }
