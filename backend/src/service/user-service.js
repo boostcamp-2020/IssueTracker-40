@@ -1,5 +1,6 @@
 import { getRepository } from "typeorm";
 import { User } from "../model/user";
+import { crypto } from "../common/lib";
 
 class UserService {
     constructor() {
@@ -47,6 +48,9 @@ class UserService {
     }
 
     async signup(newUser) {
+        const { password } = newUser;
+        newUser.password = crypto.encrypt(password);
+
         await this.userRepository.save(newUser);
     }
 
