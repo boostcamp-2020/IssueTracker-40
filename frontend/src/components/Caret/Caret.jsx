@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { color } from "@style/color";
 
 const Caret = styled.span`
     display: inline-block;
@@ -11,7 +12,7 @@ const Caret = styled.span`
     border-right: 4px solid transparent;
     border-bottom: 0 solid transparent;
     border-left: 4px solid transparent;
-    color: #ffffff;
+    color: ${color.caret_text};
 `;
 
 export default Caret;

@@ -14,7 +14,8 @@ const color = {
     header_dropmenu_text: "#1b1f23",
     header_dropmenu_hover_text: "#ffffff",
     header_dropmenu_boader: "#e1e4e8",
-    header_dropmenu_modal_bg: "transparent"
+    header_dropmenu_modal_bg: "transparent",
+    caret_text: "#ffffff"
 };
 
 export { color };
