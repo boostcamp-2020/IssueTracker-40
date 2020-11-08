@@ -4,7 +4,7 @@ import { color } from "@style/color";
 import HeaderTitle from "./HeaderTitle/HeaderTitle";
 import HeaderDropmenu from "./HeaderDropmenu/HeaderDropmenu";
 
-const StyledHeader = styled.header`
+const HeaderArea = styled.header`
     display: flex;
     justify-content: center;
     width: 100%;
@@ -13,7 +13,7 @@ const StyledHeader = styled.header`
     box-sizing: border-box;
 `;
 
-const HeaderArea = styled.div`
+const HeaderContent = styled.div`
     display: flex;
     justify-content: center;
     position: relative;
@@ -22,12 +22,12 @@ const HeaderArea = styled.div`
 
 const HeaderPresenter = () => {
     return (
-        <StyledHeader>
-            <HeaderArea>
+        <HeaderArea>
+            <HeaderContent>
                 <HeaderTitle />
                 <HeaderDropmenu />
-            </HeaderArea>
-        </StyledHeader>
+            </HeaderContent>
+        </HeaderArea>
     );
 };
 
