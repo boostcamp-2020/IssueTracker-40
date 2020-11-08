@@ -69,11 +69,14 @@ module.exports = (env) => {
                 },
                 {
                     test: /\.(png|jpe?g|gif)$/i,
-                    use: [
-                        {
-                            loader: "file-loader"
+                    use: {
+                        loader: "url-loader",
+                        options: {
+                            publicPath: "/",
+                            name: "[name].[ext]?[hash]",
+                            limit: 10000
                         }
-                    ]
+                    }
                 }
             ]
         },
