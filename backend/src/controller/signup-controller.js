@@ -31,6 +31,7 @@ const checkUserSignedUp = async (req, res, next) => {
 const signup = async (req, res, next) => {
     const userService = new UserService();
     await userService.signup(req.newUser);
+    res.status(200).send("");
 };
 
 export { validateSignupParam, checkUserSignedUp, signup };
