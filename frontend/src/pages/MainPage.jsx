@@ -5,6 +5,7 @@ import { usePromise } from "@hook";
 import axios from "axios";
 import { UserContext } from "@context";
 import Config from "@config";
+import { Header } from "@components";
 
 const Main = styled.main`
     height: 100%;
@@ -25,6 +26,7 @@ const MainPage = () => {
 
     return (
         <UserContext.Provider value={resolved.data}>
+            <Header />
             <Main>
                 <h1>메인페이지입니다</h1>
             </Main>
