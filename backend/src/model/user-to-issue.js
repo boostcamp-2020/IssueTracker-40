@@ -16,11 +16,11 @@ class UserToIssue {
     @DeleteDateColumn({ name: "deleted_at", type: "datetime" })
     deletedAt;
 
-    @ManyToOne(() => User, (user) => user.userToIssues, { eager: true })
+    @ManyToOne(() => User, (user) => user.userToIssues)
     @JoinColumn({ name: "user_id" })
     user;
 
-    @ManyToOne(() => Issue, (issue) => issue.userToIssues, { eager: true })
+    @ManyToOne(() => Issue, (issue) => issue.userToIssues)
     @JoinColumn({ name: "issue_id" })
     issue;
 }

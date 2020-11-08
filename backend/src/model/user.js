@@ -31,13 +31,13 @@ class User {
     @DeleteDateColumn({ name: "deleted_at", type: "datetime" })
     deletedAt;
 
-    @OneToMany(() => UserToIssue, (userToIssue) => userToIssue.user, { lazy: true })
+    @OneToMany(() => UserToIssue, (userToIssue) => userToIssue.user)
     userToIssues;
 
-    @OneToMany(() => Issue, (issue) => issue.author, { lazy: true })
+    @OneToMany(() => Issue, (issue) => issue.author)
     issues;
 
-    @OneToMany(() => Comment, (comment) => comment.user, { lazy: true })
+    @OneToMany(() => Comment, (comment) => comment.user)
     comments;
 }
 

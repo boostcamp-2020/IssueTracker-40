@@ -1,5 +1,16 @@
 import { IsString, IsUrl } from "class-validator";
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, ManyToOne, DeleteDateColumn, JoinColumn } from "typeorm";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+    ManyToOne,
+    DeleteDateColumn,
+    JoinColumn,
+    OneToOne
+} from "typeorm";
+import { CommentContent } from "./comment-content";
 import { Issue } from "./issue";
 import { User } from "./user";
 
@@ -7,11 +18,6 @@ import { User } from "./user";
 class Comment {
     @PrimaryGeneratedColumn("increment", { type: "int" })
     id;
-
-    @Column({ name: "content", type: "varchar" })
-    @IsString()
-    @IsUrl()
-    content;
 
     @CreateDateColumn({ name: "created_at", type: "datetime" })
     createdAt;
@@ -29,6 +35,10 @@ class Comment {
     @ManyToOne(() => User, (user) => user.comments)
     @JoinColumn({ name: "user_id" })
     user;
+
+    @OneToOne(() => CommentContent, (content) => content.comment)
+    @JoinColumn({ name: "content_id" })
+    content;
 }
 
 export { Comment };

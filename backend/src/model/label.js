@@ -30,7 +30,7 @@ class Label {
     @DeleteDateColumn({ name: "deleted_at", type: "datetime" })
     deletedAt;
 
-    @OneToMany(() => LabelToIssue, (labelToIssues) => labelToIssues.label, { lazy: true })
+    @OneToMany(() => LabelToIssue, (labelToIssues) => labelToIssues.label)
     labelToIssues;
 }
 
