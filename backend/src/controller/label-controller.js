@@ -26,4 +26,14 @@ const addLabel = async (req, res, next) => {
     }
 };
 
-export { validateAddLabelParam, addLabel };
+const getLabels = async (req, res, next) => {
+    try {
+        const labelService = LabelService.getInstance();
+        const labels = await labelService.getLabels();
+        res.status(200).json({lables: labels});
+    } catch (error) {
+        next(error);
+    }
+}
+
+export { validateAddLabelParam, addLabel, getLabels };
