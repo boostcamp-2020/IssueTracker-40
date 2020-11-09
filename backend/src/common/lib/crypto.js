@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
 
 const SALT_ROUNDS = 10;
 const PIPE = (f, g) => (x, y) => g(y, f(x));
