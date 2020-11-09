@@ -10,6 +10,10 @@ const color = {
     textarea_bg: "#fafbfc",
     textarea_border: "#e1e4e8",
     textarea_focus_border: "#0366d6",
+    tab_border: "#e1e4e8",
+    tab_bg: "#f6f8fa",
+    tab_selected_bg: "#ffffff",
+    tab_container_gb: "#ffffff"
 };
 
 export { color };
