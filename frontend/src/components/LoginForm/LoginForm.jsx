@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import styled from "styled-components";
 import { debounce } from "lodash";
 import config from "@config";
+import { color } from "@style/color";
 
 const LoginFormContainer = styled.div`
     display: flex;
@@ -65,7 +66,7 @@ const RegisterButtonContainer = styled.div`
 const RegisterButton = styled.button`
     border: none;
     background-color: none;
-    color: #2e9afe;
+    color: ${color.register_btn};
     font-weight: bold;
     margin-left: auto;
     margin-right: auto;
