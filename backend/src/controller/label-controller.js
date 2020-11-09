@@ -36,4 +36,15 @@ const getLabels = async (req, res, next) => {
     }
 }
 
-export { validateLabelParam, addLabel, getLabels };
+const changeLabel = async (req, res, next) => {
+    try {
+        const labelId = req.params.labelId;
+        const labelService = LabelService.getInstance();
+        await labelService.changeLabel(labelId, req.newLabel);
+        res.status(200).send("update success");
+    } catch (error) {
+        next(error);
+    }
+}
+
+export { validateLabelParam, addLabel, getLabels, changeLabel };
