@@ -71,6 +71,12 @@ class LabelService {
         targetLabel.description = description;
         await this.labelRepository.save(targetLabel);
     }
+
+    @Transactional()
+    async removeLabel(labelid) {
+        const targetLabel = await this.getLabelById(labelid);
+        await this.labelRepository.remove(targetLabel);
+    }
 }
 
 export { LabelService };
