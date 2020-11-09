@@ -34,10 +34,10 @@ class User {
     @OneToMany(() => UserToIssue, (userToIssue) => userToIssue.user)
     userToIssues;
 
-    @OneToMany(() => Issue, (issue) => issue.id)
+    @OneToMany(() => Issue, (issue) => issue.author)
     issues;
 
-    @OneToMany(() => Comment, (comment) => comment.id)
+    @OneToMany(() => Comment, (comment) => comment.user)
     comments;
 }
 
