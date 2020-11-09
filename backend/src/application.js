@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import { validateOrReject } from "class-validator";
 import { createConnection } from "typeorm";
+import { initializeTransactionalContext, patchTypeORMRepositoryWithBaseRepository } from "typeorm-transactional-cls-hooked";
 import { errorHandler } from "./common/middleware/error-handler";
 import { router } from "./router";
 import { EnvType } from "./common/env/env-type";
@@ -57,6 +58,8 @@ export class Application {
     }
 
     async initDatabase() {
+        initializeTransactionalContext();
+        patchTypeORMRepositoryWithBaseRepository();
         await createConnection(this.connectionOptionGenerator.generateConnectionOption());
     }
 
