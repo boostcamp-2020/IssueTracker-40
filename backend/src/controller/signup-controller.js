@@ -5,7 +5,7 @@ import { EntityAlreadyExist } from "../common/error/entity-already-exist";
 
 const validateSignupParam = async (req, res, next) => {
     const { email, name, password } = req.body;
-    const userService = new UserService();
+    const userService = UserService.getInstance();
     const newUser = userService.createUser({ email, name, password });
 
     const error = await validate(newUser);
@@ -19,7 +19,7 @@ const validateSignupParam = async (req, res, next) => {
 
 const checkUserSignedUp = async (req, res, next) => {
     const { email, name } = req.newUser;
-    const userService = new UserService();
+    const userService = UserService.getInstance();
 
     if (!(await userService.isUserExistByEmail({ email })) || !(await userService.isUserExistByName({ name }))) {
         next(new EntityAlreadyExist());
@@ -29,9 +29,9 @@ const checkUserSignedUp = async (req, res, next) => {
 };
 
 const signup = async (req, res, next) => {
-    const userService = new UserService();
+    const userService = UserService.getInstance();
     await userService.signup(req.newUser);
-    res.status(200).send("");
+    res.status(200).send("ok");
 };
 
 export { validateSignupParam, checkUserSignedUp, signup };

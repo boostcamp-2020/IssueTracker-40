@@ -15,7 +15,7 @@ const setStrategy = () => {
                 callbackURL: process.env.GITHUB_CLIENT_CALLBACK_URL
             },
             async (accessToken, refreshToken, profile, cb) => {
-                const userService = new UserService();
+                const userService = UserService.getInstance();
                 await userService.signupWithGitHub(profile);
 
                 const token = generateJWTToken({

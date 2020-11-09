@@ -8,6 +8,15 @@ class UserService {
         this.defaultProfileImage = "https://pbs.twimg.com/profile_images/977835673511084032/xXA979th.jpg";
     }
 
+    static instance = null;
+
+    static getInstance() {
+        if (UserService.instance === null) {
+            UserService.instance = new UserService();
+        }
+        return UserService.instance;
+    }
+
     createUser({ email, name, password, profileImage = this.defaultProfileImage }) {
         const newUser = new User();
         newUser.email = email;
