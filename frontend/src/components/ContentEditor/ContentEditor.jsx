@@ -1,82 +1,84 @@
-import React, { useRef } from "react";
-import styled from "styled-components";
+import React, { useReducer, useState } from "react";
+import styled, { css } from "styled-components";
 import { color } from "@style/color";
+import { debounce } from "lodash";
+import Writer from "./Writer/Writer";
+import Preview from "./Preview/Preview";
 
-const ContentEditorContainer = styled.div`
-    margin: 10px;
-    padding: 0px;
-    width: 500px;
-    border-radius: 10px;
-    font-size: 13px;
-    font-color: #586069;
-    background-color: ${color.textarea_bg};
-    border: 1px solid ${color.textarea_border};
-
-    &:focus {
-        background-color: white;
-        border: 1px solid red;
-    }
+const TabMenuContainer = styled.div`
+    padding-bottom: 5px;
+    width: 525px;
+    background-color: ${color.tab_container_gb};
 `;
 
-const ContentEditorTextarea = styled.textarea`
-    padding: 10px;
-    width: 480px;
-    height: 90px;
-    min-height: 90px;
-    max-height: 300px;
-    font-size: 13px;
-    background-color: ${color.textarea_bg};
+const TabMenuHeader = styled.div`
+    display: flex;
+    height: 35px;
+    padding-top: 10px;
+    padding-left: 10px;
+    background-color: ${color.tab_bg};
+    border-bottom: 1px solid ${color.tab_border};
+`;
+
+const Tab = styled.div`
+    margin-right: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 70px;
     border-radius: 10px 10px 0px 0px;
-    border: none;
-    border-bottom: 1px dashed ${color.textarea_border};
-    outline: none;
-    resize: vertical;
-    &:focus {
-        background-color: white;
-        border-bottom: 1px dashed ${color.textarea_focus_border};
+    ${(props) =>
+        props.selected &&
+        css`
+            background-color: ${color.tab_selected_bg};
+            border-top: 1px solid ${color.tab_border};
+            border-left: 1px solid ${color.tab_border};
+            border-right: 1px solid ${color.tab_border};
+        `}
+`;
+
+const reducer = (state, action) => {
+    switch (action.type) {
+        case "write_mode":
+            return { isTab: true };
+        case "preview_mode":
+            return { isTab: false };
+        default:
+            throw new Error();
     }
-`;
-
-const ContentEditorDropAndDropZone = styled.div`
-    padding: 10px;
-    width: 460px;
-    height: 20px;
-    border-radius: 0px 0px 10px 10px;
-    cursor: pointer;
-`;
-
-const HiddenFileInput = styled.input`
-    display: none;
-`;
+};
 
 const ContentEditor = () => {
-    const HiddenFileInputEl = useRef(null);
-    const ContentEditorContainerEl = useRef(null);
+    const initialState = { isTab: true };
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const [text, setText] = useState("");
 
-    const handlingClickDropZone = () => {
-        HiddenFileInputEl.current.click();
+    const handlingOnClick = (e) => {
+        const { innerText } = e.target;
+        if (state.isTab && innerText === "Preview") dispatch({ type: "preview_mode" });
+        else if (!state.isTab && innerText === "Write") dispatch({ type: "write_mode" });
     };
 
-    const onFocus = () => {
-        const containerStyle = ContentEditorContainerEl.current.style;
-        containerStyle.boxShadow = "inset 0 1px 2px rgba(27,31,35,0.075), 0 0 0 3px rgba(3,102,214,0.3)";
-        containerStyle.border = `1px solid ${color.textarea_focus_border}`;
+    const handlingChange = (e) => {
+        setText(e.target.value);
     };
 
-    const onBlur = () => {
-        const containerStyle = ContentEditorContainerEl.current.style;
-        containerStyle.boxShadow = "none";
-        containerStyle.border = `1px solid ${color.textarea_border}`;
-    };
+    const debouncedhandlingChange = debounce(handlingChange, 500);
 
     return (
-        <ContentEditorContainer ref={ContentEditorContainerEl}>
-            <ContentEditorTextarea onFocus={onFocus} onBlur={onBlur} placeholder="Leave a comment" />
-            <ContentEditorDropAndDropZone onClick={handlingClickDropZone}>
-                <p> Attach files by dragging & dropping, selecting or pasting them. </p>
-            </ContentEditorDropAndDropZone>
-            <HiddenFileInput ref={HiddenFileInputEl} type="file" multiple />
-        </ContentEditorContainer>
+        <TabMenuContainer>
+            <TabMenuHeader>
+                <Tab onClick={handlingOnClick} selected={state.isTab}>
+                    Write
+                </Tab>
+                <Tab onClick={handlingOnClick} selected={!state.isTab}>
+                    Preview
+                </Tab>
+            </TabMenuHeader>
+            <Writer setText={debouncedhandlingChange} selected={!state.isTab} />
+            <Preview text={text} selected={state.isTab} />
+        </TabMenuContainer>
     );
 };
 
