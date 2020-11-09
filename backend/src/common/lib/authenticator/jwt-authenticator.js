@@ -20,7 +20,7 @@ const setStrategy = () => {
             },
             async (jwtPayload, done) => {
                 try {
-                    const userService = new UserService();
+                    const userService = UserService.getInstance();
                     const user = await userService.getUserByName(jwtPayload.username);
 
                     if (user) {
