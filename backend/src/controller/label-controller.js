@@ -36,4 +36,4 @@ const getLabels = async (req, res, next) => {
     }
 }
 
-export { validateAddLabelParam, addLabel, getLabels };
+export { validateLabelParam, addLabel, getLabels };

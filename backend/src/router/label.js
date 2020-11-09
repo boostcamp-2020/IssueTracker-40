@@ -3,7 +3,7 @@ import { labelController } from "../controller";
 
 const router = express.Router();
 
-router.post("/", labelController.validateAddLabelParam, labelController.addLabel);
+router.post("/", labelController.validateLabelParam, labelController.addLabel);
 router.get("/", labelController.getLabels);
 
 export default router;
