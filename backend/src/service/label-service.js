@@ -50,7 +50,6 @@ class LabelService {
         }
 
         const result = await this.labelRepository.save(newLabel);
-        console.log(result);
     }
 }
 
