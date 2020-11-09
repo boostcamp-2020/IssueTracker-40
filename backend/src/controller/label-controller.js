@@ -47,4 +47,15 @@ const changeLabel = async (req, res, next) => {
     }
 }
 
-export { validateLabelParam, addLabel, getLabels, changeLabel };
+const removeLabel = async (req, res, next) => {
+    try {
+        const labelId = req.params.labelId;
+        const labelService = LabelService.getInstance();
+        await labelService.removeLabel(labelId, req.newLabel);
+        res.status(200).send("remove success");
+    } catch (error) {
+        next(error);
+    }
+}
+
+export { validateLabelParam, addLabel, getLabels, changeLabel, removeLabel };
