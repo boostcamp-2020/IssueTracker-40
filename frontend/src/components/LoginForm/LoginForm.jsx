@@ -55,6 +55,22 @@ const WarningMessage = styled.div`
     margin-bottom: 0.5rem;
 `;
 
+const RegisterButtonContainer = styled.div`
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+`;
+
+const RegisterButton = styled.button`
+    border: none;
+    background-color: none;
+    color: #2e9afe;
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+`;
+
 const handlingClick = () => {
     window.location.href = config.API.GET_GITHUB_LOGIN;
 };
@@ -83,6 +99,10 @@ const LoginForm = () => {
             <LoginFormLabel htmlFor="user-input"> 비밀번호 </LoginFormLabel>
             <LoginFormInput type="password" name="username" id="password-input" onChange={debouncedInputOnChange} />
             <WarningMessage ref={passwordWarning}>비밀번호는 6~12자 사이로 입력해주세요.</WarningMessage>
+            <RegisterButtonContainer>
+                <RegisterButton>로그인</RegisterButton>
+                <RegisterButton>회원가입</RegisterButton>
+            </RegisterButtonContainer>
             <GitHubLoginButton onClick={handlingClick}>Sign in with GitHub</GitHubLoginButton>
         </LoginFormContainer>
     );
