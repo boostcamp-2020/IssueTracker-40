@@ -36,6 +36,11 @@ class LabelService {
         return label;
     }
 
+    async getLabelById(labelid) {
+        const label = await this.labelRepository.findOne({ id: labelid });
+        return label;
+    }
+
     async getLabels() {
         const label = await this.labelRepository.find();
         return label;
@@ -50,6 +55,21 @@ class LabelService {
         }
 
         const result = await this.labelRepository.save(newLabel);
+    }
+
+    @Transactional()
+    async changeLabel(labelid, newLabel) {
+        const { name, color, description }= newLabel;
+        const targetLabel = await this.getLabelById(labelid);
+
+        if (!(await this.isLabelExistByName({ name }))) {
+            throw new EntityAlreadyExist();
+        }
+
+        targetLabel.name = name;
+        targetLabel.color = color;
+        targetLabel.description = description;
+        await this.labelRepository.save(targetLabel);
     }
 }
 
