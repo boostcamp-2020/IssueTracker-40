@@ -2,7 +2,7 @@ import { validate } from "class-validator";
 import { BadRequestError } from "../common/error/bad-request-error";
 import { LabelService } from "../service";
 
-const validateAddLabelParam = async (req, res, next) => {
+const validateLabelParam = async (req, res, next) => {
     const { name, color, description } = req.body;
     const labelService = LabelService.getInstance();
     const newLabel = labelService.createLabel({ name, color, description });
