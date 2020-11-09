@@ -1,6 +1,8 @@
 import { getRepository } from "typeorm";
+import { Transactional } from "typeorm-transactional-cls-hooked";
 import { User } from "../model/user";
 import { crypto } from "../common/lib";
+import { EntityAlreadyExist } from "../common/error/entity-already-exist";
 
 class UserService {
     constructor() {
@@ -47,8 +49,14 @@ class UserService {
         return user;
     }
 
+    @Transactional()
     async signup(newUser) {
-        const { password } = newUser;
+        const { email, name, password } = newUser;
+
+        if (!(await this.isUserExistByEmail({ email })) || !(await this.isUserExistByName({ name }))) {
+            throw new EntityAlreadyExist();
+        }
+
         newUser.password = crypto.encrypt(password);
         await this.userRepository.save(newUser);
     }
