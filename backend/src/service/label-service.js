@@ -36,6 +36,11 @@ class LabelService {
         return label;
     }
 
+    async getLabels() {
+        const label = await this.labelRepository.find();
+        return label;
+    }
+
     @Transactional()
     async addLabel(newLabel) {
         const { name } = newLabel;
