@@ -3,6 +3,6 @@ import { signupController } from "../controller";
 
 const router = express.Router();
 
-router.post("/", signupController.validateSignupParam, signupController.checkUserSignedUp, signupController.signup);
+router.post("/", signupController.validateSignupParam, signupController.signup);
 
 export default router;
