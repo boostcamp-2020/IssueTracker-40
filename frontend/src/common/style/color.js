@@ -7,6 +7,7 @@ const color = {
     btn_primary_border: "rgba(27, 31, 35, 0.15)",
     btn_primary_shadow: "rgba(27, 31, 35, 0.04)",
     btn_primary_text: "#ffffff",
+    loading_dots: "#d8d8d8",
     sidemenu_hover: "#2e9afe",
     sidemenu_default: "#6e6e6e",
     header_bg: "#24292e",
