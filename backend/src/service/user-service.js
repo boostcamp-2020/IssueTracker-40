@@ -57,8 +57,9 @@ class UserService {
             throw new EntityAlreadyExist();
         }
 
-        newUser.password = crypto.encrypt(password);
-        await this.userRepository.save(newUser);
+        newUser.password = await crypto.encrypt(password);
+        const result = await this.userRepository.save(newUser);
+        console.log(result);
     }
 
     async signupWithGitHub(profile) {

@@ -1,16 +1,15 @@
 import bcrypt from "bcrypt";
 
 const SALT_ROUNDS = 10;
-const PIPE = (f, g) => (x, y) => g(y, f(x));
 
-const encrypt = (data) => {
-    const genSalt = (rounds) => bcrypt.genSaltSync(rounds);
-    const hash = (data, salt) => bcrypt.hashSync(data, salt);
+const encrypt = async (data) => {
+    const genSalt = async (rounds) => await bcrypt.genSalt(rounds);
+    const hash = async (data, salt) => await bcrypt.hash(data, salt);
 
-    return PIPE(genSalt, hash)(SALT_ROUNDS, data);
+    return await hash(data, await genSalt(SALT_ROUNDS));
 };
 
-const compare = (data, hash) => bcrypt.compareSync(data, hash);
+const compare = async (data, hash) => await bcrypt.compare(data, hash);
 
 module.exports = {
     encrypt,
