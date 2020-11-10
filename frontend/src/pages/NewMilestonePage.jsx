@@ -1,15 +1,9 @@
 import React from "react";
-import styled from "styled-components";
 import { Redirect } from "react-router-dom";
 import { usePromise } from "@hook";
 import { UserContext } from "@context";
-import { Header } from "@components";
+import { Header, Main } from "@components";
 import { waitAuthorizationApi } from "@utils";
-
-const Main = styled.main`
-    height: 100%;
-    background-color: beige;
-`;
 
 const NewMilestonePage = () => {
     const [loading, resolved, error] = usePromise(waitAuthorizationApi, []);
