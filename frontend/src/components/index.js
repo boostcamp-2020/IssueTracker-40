@@ -6,3 +6,7 @@ export { default as Header } from "./Header/HeaderContainer/HeaderContainer";
 export { default as UserProfile } from "./UserProfile/UserProfile";
 export { default as Caret } from "./Caret/Caret";
 export * as ListGroup from "./ListGroup";
+export { default as Checkbox } from "./Checkbox/Checkbox";
+export { default as IssueIcon } from "./IssueIcon/IssueIcon";
+export { default as IssueItem } from "./IssueItem/IssueItem";
+export { default as IssueFilterMenu } from "./IssueFilterMenu/IssueFilterMenuContainer/IssueFilterMenuContainer";
