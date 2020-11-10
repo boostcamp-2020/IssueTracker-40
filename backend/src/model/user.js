@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, DeleteDateColumn, OneToMany } from "typeorm";
-import { IsEmail, Length, IsString, IsUrl } from "class-validator";
+import { IsEmail, Length, IsString, IsUrl, IsOptional } from "class-validator";
 import { Issue } from "./issue";
 import { Comment } from "./comment";
 import { UserToIssue } from "./user-to-issue";
@@ -18,6 +18,11 @@ class User {
     @Length(4, 20)
     name;
 
+    @Column({ name: "password", type: "varchar", nullable: true })
+    @IsOptional()
+    @IsString()
+    password;
+
     @Column({ name: "profile_image", type: "varchar" })
     @IsUrl()
     profileImage;
@@ -34,10 +39,10 @@ class User {
     @OneToMany(() => UserToIssue, (userToIssue) => userToIssue.user)
     userToIssues;
 
-    @OneToMany(() => Issue, (issue) => issue.id)
+    @OneToMany(() => Issue, (issue) => issue.author)
     issues;
 
-    @OneToMany(() => Comment, (comment) => comment.id)
+    @OneToMany(() => Comment, (comment) => comment.user)
     comments;
 }
 
