@@ -7,3 +7,4 @@ export { default as Header } from "./Header/HeaderContainer/HeaderContainer";
 export { default as UserProfile } from "./UserProfile/UserProfile";
 export { default as Caret } from "./Caret/Caret";
 export { default as Main } from "./Main/Main";
+export { default as ProgressBar } from "./ProgressBar/ProgressBar";
