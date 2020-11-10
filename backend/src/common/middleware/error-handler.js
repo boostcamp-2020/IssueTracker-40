@@ -17,6 +17,8 @@ const errorHandler = (err, req, res, next) => {
                 message: ErrorCode.VALIDATION_ERROR.message
             }
         });
+    } else {
+        throw err;
     }
 };
 
