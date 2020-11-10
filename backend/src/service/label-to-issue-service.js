@@ -21,27 +21,39 @@ class LabelToIssueService {
         return LabelToIssueService.instance;
     }
 
-    async getLabelById(labelid) {
-        const label = await this.labelRepository.findOne({ id: labelid });
+    async getLabelById(id) {
+        const label = await this.labelRepository.findOne(id);
         return label;
     }
 
-    async getIssueById(issueid) {
-        const issue = await this.issueRepository.findOne({ id: issueid });
+    async getIssueById(id) {
+        const issue = await this.issueRepository.findOne(id);
         return issue;
     }
 
     @Transactional()
-    async addLabelToIssue(labelid, issueid) {
-        const targetLabel = await this.getLabelById(labelid);
-        const targetIssue = await this.getIssueById(issueid);
-
+    async addLabelToIssue(labelId, issueId) {
+        const targetLabel = await this.getLabelById(labelId);
+        const targetIssue = await this.getIssueById(issueId);
         if (targetLabel === undefined || targetIssue === undefined) {
             throw new EntityNotFoundError();
         }
 
         const newLabelToIssue = this.labelToIssueRepository.create({ label: targetLabel, issue: targetIssue });
-        await this.labelToIssueRepositorylabelTo.save(newLabelToIssue);
+        await this.labelToIssueRepository.save(newLabelToIssue);
+
+        return newLabelToIssue;
+    }
+
+    @Transactional()
+    async removeLabelToIssue(labelId, issueId) {
+        const targetLabel = await this.getLabelById(labelId);
+        const targetIssue = await this.getIssueById(issueId);
+        const targetIssueLabel = await this.labelToIssueRepository.findOne({ label: targetLabel, issue: targetIssue });
+        if (targetIssueLabel === undefined) {
+            throw new EntityNotFoundError();
+        }
+        await this.labelToIssueRepository.remove(targetIssueLabel);
     }
 }
 
