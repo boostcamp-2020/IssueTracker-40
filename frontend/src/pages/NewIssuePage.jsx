@@ -5,7 +5,7 @@ import { UserContext } from "@context";
 import { Header, Main } from "@components";
 import { waitAuthorizationApi } from "@utils";
 
-const MainPage = () => {
+const NewIssuePage = () => {
     const [loading, resolved, error] = usePromise(waitAuthorizationApi, []);
 
     if (loading) return <div>로딩중..!</div>;
@@ -16,10 +16,10 @@ const MainPage = () => {
         <UserContext.Provider value={resolved.data}>
             <Header />
             <Main>
-                <p>메인페이지입니다</p>
+                <p>이슈 생성페이지입니다</p>
             </Main>
         </UserContext.Provider>
     );
 };
 
-export default MainPage;
+export default NewIssuePage;
