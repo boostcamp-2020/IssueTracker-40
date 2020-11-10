@@ -15,7 +15,7 @@ const addIssue = async (req, res, next) => {
 };
 
 const addAssignee = async (req, res, next) => {
-    const { assigneeId, issueId } = req.body;
+    const { assigneeId, issueId } = req.params;
     try {
         const issueService = IssueService.getInstance();
         await issueService.addAssignee(assigneeId, issueId);
@@ -26,7 +26,7 @@ const addAssignee = async (req, res, next) => {
 };
 
 const removeAssignee = async (req, res, next) => {
-    const { assigneeId, issueId } = req.body;
+    const { assigneeId, issueId } = req.params;
     try {
         const issueService = IssueService.getInstance();
         await issueService.removeAssignee(assigneeId, issueId);
