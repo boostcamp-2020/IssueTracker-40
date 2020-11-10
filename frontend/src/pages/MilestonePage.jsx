@@ -11,7 +11,7 @@ const Main = styled.main`
     background-color: beige;
 `;
 
-const MainPage = () => {
+const MilestonePage = () => {
     const [loading, resolved, error] = usePromise(waitAuthorizationApi, []);
 
     if (loading) return <div>로딩중..!</div>;
@@ -22,10 +22,10 @@ const MainPage = () => {
         <UserContext.Provider value={resolved.data}>
             <Header />
             <Main>
-                <p>메인페이지입니다</p>
+                <p>마일스톤 페이지입니다</p>
             </Main>
         </UserContext.Provider>
     );
 };
 
-export default MainPage;
+export default MilestonePage;

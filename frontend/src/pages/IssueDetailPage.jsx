@@ -11,9 +11,9 @@ const Main = styled.main`
     background-color: beige;
 `;
 
-const MainPage = () => {
+const IssueDetailPage = ({ match }) => {
     const [loading, resolved, error] = usePromise(waitAuthorizationApi, []);
-
+    const { params } = match;
     if (loading) return <div>로딩중..!</div>;
     if (error) return <Redirect to="/login" />;
     if (!resolved) return null;
@@ -22,10 +22,11 @@ const MainPage = () => {
         <UserContext.Provider value={resolved.data}>
             <Header />
             <Main>
-                <p>메인페이지입니다</p>
+                <p>이슈 상세페이지입니다</p>
+                {params.id}
             </Main>
         </UserContext.Provider>
     );
 };
 
-export default MainPage;
+export default IssueDetailPage;
