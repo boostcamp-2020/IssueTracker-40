@@ -1,4 +1,4 @@
-import { IsArray, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsArray, IsNumber, IsNumberString, IsOptional, IsString } from "class-validator";
 
 class AddIssueRequestBody {
     @IsString()
@@ -20,4 +20,12 @@ class AddIssueRequestBody {
     milestone;
 }
 
-export { AddIssueRequestBody };
+class UserToIssueRequestParams {
+    @IsNumberString()
+    issueId;
+
+    @IsNumberString()
+    assigneeId;
+}
+
+export { AddIssueRequestBody, UserToIssueRequestParams };

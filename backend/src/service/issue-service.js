@@ -77,6 +77,42 @@ class IssueService {
 
         return issue;
     }
+
+    async getUserById(id) {
+        const user = await this.userRepository.findOne(id);
+        return user;
+    }
+
+    async getIssueById(id) {
+        const issue = await this.issueRepository.findOne(id);
+        return issue;
+    }
+
+    @Transactional()
+    async addAssignee(assigneeId, issueId) {
+        const targetUser = await this.getUserById(assigneeId);
+        const targetIssue = await this.getIssueById(issueId);
+        if (targetUser === undefined || targetIssue === undefined) {
+            throw new EntityNotFoundError();
+        }
+
+        const newAssignee = this.userToIssueRepository.create({ user: targetUser, issue: targetIssue });
+        await this.userToIssueRepository.save(newAssignee);
+        return newAssignee;
+    }
+
+    @Transactional()
+    async removeAssignee(assigneeId, issueId) {
+        const targetUser = await this.getUserById(assigneeId);
+        const targetIssue = await this.getIssueById(issueId);
+        if (targetUser === undefined || targetIssue === undefined) {
+            throw new EntityNotFoundError();
+        }
+
+        const targetAssignee = await this.userToIssueRepository.findOne({ user: targetUser, issue: targetIssue });
+        const removedAssignee = await this.userToIssueRepository.remove(targetAssignee);
+        return removedAssignee;
+    }
 }
 
 export { IssueService };
