@@ -12,7 +12,7 @@ const Caret = styled.span`
     border-right: 4px solid transparent;
     border-bottom: 0 solid transparent;
     border-left: 4px solid transparent;
-    color: ${color.caret_text};
+    color: ${(props) => (props.primary ? color.caret_text : "#586069")};
 `;
 
 export default Caret;
