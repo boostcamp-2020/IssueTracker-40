@@ -15,7 +15,7 @@ const color = {
     tab_bg: "#f6f8fa",
     tab_selected_bg: "#ffffff",
     tab_container_gb: "#ffffff",
-    border_primary: "#e1e4e8"
+    border_primary: "#e1e4e8",
     register_btn: "#2e9afe",
     loading_dots: "#d8d8d8",
     sidemenu_hover: "#2e9afe",
