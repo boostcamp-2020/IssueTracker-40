@@ -6,9 +6,13 @@ const ListGroupItemLi = styled.li`
     border-left: 1px solid #eaecef;
     border-right: 1px solid #eaecef;
     border-bottom: 1px solid #eaecef;
+    background-color: #ffffff;
     &:last-of-type {
         border-bottom-left-radius: 6px;
         border-bottom-right-radius: 6px;
+    }
+    &:hover {
+        background-color: #f6f8fa;
     }
 `;
 
