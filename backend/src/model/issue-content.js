@@ -8,8 +8,8 @@ class IssueContent {
     @PrimaryGeneratedColumn("increment", { type: "int" })
     id;
 
-    @Column({ name: "content", type: process.env.DATABASE_TYPE === DatabaseType.MYSQL ? "mediumtext" : "varchar", charset: "utf-8" })
-    @IsString
+    @Column({ name: "content", type: process.env.DATABASE_TYPE === DatabaseType.MYSQL ? "mediumtext" : "varchar" })
+    @IsString()
     content;
 
     @CreateDateColumn({ name: "created_at", type: "datetime" })
