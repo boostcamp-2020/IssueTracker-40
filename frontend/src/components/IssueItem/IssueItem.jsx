@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { color } from "@style/color";
 import { Checkbox, IssueIcon, Label, UserProfile } from "@components";
 import milestoneIcon from "@imgs/milestone-gray-icon.png";
 
@@ -34,12 +35,12 @@ const IssueTitle = styled.span`
     font-weight: 600;
     cursor: pointer;
     &:hover {
-        color: #0366d6;
+        color: ${color.issue_item_title};
     }
 `;
 
 const IssueDetailInfo = styled.span`
-    color: #6a737d;
+    color: ${color.issue_item_detail_info_text};
 `;
 
 const IssueMilestoneTagArea = styled.div`
@@ -54,7 +55,7 @@ const IssueMilestoneImg = styled.img`
 `;
 
 const IssueMilestoneTitle = styled.span`
-    color: #6a737d;
+    color: ${color.issue_item_milestone_title};
 `;
 
 const IssueMilestoneTag = ({ children }) => {

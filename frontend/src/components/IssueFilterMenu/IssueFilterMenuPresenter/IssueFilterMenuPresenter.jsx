@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
+import { color } from "@style/color";
 import { Checkbox, Caret } from "@components";
 import IssueFilterMenuContext from "../IssueFilterMenuContext/IssueFilterMenuContext";
 import IssueFilterDropmenu from "../IssueFilterDropmenu/IssueFilterDropmenu";
@@ -25,10 +26,10 @@ const IssueDropButton = styled.button`
     position: relative;
     & > span {
         margin-right: 5px;
-        color: #6a737d;
+        color: ${color.issue_drop_btn};
     }
     &:hover > span {
-        color: #444d56;
+        color: ${color.issue_drop_hover_btn};
     }
 `;
 
@@ -48,7 +49,7 @@ const FilterDropmenuModalBackground = styled.div`
     right: 0;
     width: 100%;
     height: 100%;
-    background-color: transparent;
+    background-color: ${color.issue_drop_modal_bg};
     z-index: 1000;
 `;
 

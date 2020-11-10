@@ -18,7 +18,17 @@ const color = {
     header_dropmenu_hover_text: "#ffffff",
     header_dropmenu_boader: "#e1e4e8",
     header_dropmenu_modal_bg: "transparent",
-    caret_text: "#ffffff"
+    caret_text: "#ffffff",
+    issue_drop_btn: "#6a737d",
+    issue_drop_hover_btn: "#444d56",
+    issue_drop_modal_bg: "transparent",
+    issue_item_title: "#0366d6",
+    issue_item_detail_info_text: "#6a737d",
+    issue_item_milestone_title: "#6a737d",
+    list_group_header_bg: "#f6f8fa",
+    list_group_item_bg: "#ffffff",
+    list_group_item_hover_bg: "#f6f8fa",
+    list_group_border: "#eaecef"
 };
 
 export { color };
