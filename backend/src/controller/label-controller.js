@@ -2,7 +2,7 @@ import { validate } from "class-validator";
 import { BadRequestError } from "../common/error/bad-request-error";
 import { LabelService } from "../service";
 
-const validateAddLabelParam = async (req, res, next) => {
+const validateLabelParam = async (req, res, next) => {
     const { name, color, description } = req.body;
     const labelService = LabelService.getInstance();
     const newLabel = labelService.createLabel({ name, color, description });
@@ -36,4 +36,26 @@ const getLabels = async (req, res, next) => {
     }
 }
 
-export { validateAddLabelParam, addLabel, getLabels };
+const changeLabel = async (req, res, next) => {
+    try {
+        const labelId = req.params.labelId;
+        const labelService = LabelService.getInstance();
+        await labelService.changeLabel(labelId, req.newLabel);
+        res.status(200).send("update success");
+    } catch (error) {
+        next(error);
+    }
+}
+
+const removeLabel = async (req, res, next) => {
+    try {
+        const labelId = req.params.labelId;
+        const labelService = LabelService.getInstance();
+        await labelService.removeLabel(labelId, req.newLabel);
+        res.status(200).send("remove success");
+    } catch (error) {
+        next(error);
+    }
+}
+
+export { validateLabelParam, addLabel, getLabels, changeLabel, removeLabel };
