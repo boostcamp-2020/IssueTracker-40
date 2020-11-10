@@ -2,10 +2,10 @@ import { Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDate
 import { Issue } from "./issue";
 import { User } from "./user";
 
-@Entity()
+@Entity({ name: "user_to_issue" })
 class UserToIssue {
     @PrimaryGeneratedColumn("increment", { type: "int" })
-    userToIssueId;
+    id;
 
     @CreateDateColumn({ name: "created_at", type: "datetime" })
     createdAt;

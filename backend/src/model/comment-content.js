@@ -9,7 +9,7 @@ class CommentContent {
     id;
 
     @Column({ name: "content", type: process.env.DATABASE_TYPE === DatabaseType.MYSQL ? "mediumtext" : "varchar", charset: "utf-8" })
-    @IsString
+    @IsString()
     content;
 
     @CreateDateColumn({ name: "created_at", type: "datetime" })
