@@ -16,9 +16,10 @@ const setStrategy = () => {
             },
             async (accessToken, refreshToken, profile, cb) => {
                 const userService = UserService.getInstance();
-                await userService.signupWithGitHub(profile);
+                const user = await userService.signupWithGitHub(profile);
 
                 const token = generateJWTToken({
+                    userId: user.id,
                     username: profile.username,
                     email: `${profile.username}@github.com`,
                     photos: profile.photos[0].value

@@ -5,7 +5,7 @@ import { Label } from "./label";
 @Entity()
 class LabelToIssue {
     @PrimaryGeneratedColumn("increment", { type: "int" })
-    labelToIssueId;
+    id;
 
     @CreateDateColumn({ name: "created_at", type: "datetime" })
     createdAt;
