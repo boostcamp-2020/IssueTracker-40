@@ -5,16 +5,9 @@ span,
 applet,
 object,
 iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
 p,
 blockquote,
 pre,
-a,
 abbr,
 acronym,
 address,
@@ -32,21 +25,14 @@ s,
 samp,
 small,
 strike,
-strong,
 sub,
 sup,
 tt,
 var,
-b,
-u,
-i,
 center,
 dl,
 dt,
 dd,
-ol,
-ul,
-li,
 fieldset,
 form,
 label,
@@ -114,11 +100,6 @@ button {
     font-family: Dotum, '돋움', Helvetica, "Apple SD Gothic Neo", sans-serif;
 }
 
-ol,
-ul {
-    list-style: none;
-}
-
 blockquote,
 q {
     quotes: none;
@@ -166,4 +147,8 @@ img {
 #root {
     width: 100%;
     height: 100%;
+}
+
+h2, h3, h4, h5, h6 {
+    margin-left: 2px;
 }
