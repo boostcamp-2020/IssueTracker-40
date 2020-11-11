@@ -1,15 +1,17 @@
 import { QueryParser } from "../../../src/common/lib";
 
 describe("QueryParser Test", () => {
+    const queryParser = new QueryParser();
+
     test("is:open 파싱", () => {
         // given
         const queryString = "is:open";
 
         // when
-        const queryMap = QueryParser.parse(queryString);
+        const queryMap = queryParser.parse(queryString);
 
         // then
-        expect(queryMap.get("is")).toEqual("open");
+        expect(queryMap.get("is")).toEqual(["open"]);
         expect(queryMap.size).toEqual(1);
     });
 
@@ -18,10 +20,10 @@ describe("QueryParser Test", () => {
         const queryString = "is:open label:frontend label:backend";
 
         // when
-        const queryMap = QueryParser.parse(queryString);
+        const queryMap = queryParser.parse(queryString);
 
         // then
-        expect(queryMap.get("is")).toEqual("open");
+        expect(queryMap.get("is")).toEqual(["open"]);
         expect(queryMap.get("label")).toEqual(["frontend", "backend"]);
         expect(queryMap.size).toEqual(2);
     });
@@ -31,7 +33,7 @@ describe("QueryParser Test", () => {
         const queryString = 127381;
 
         // when
-        const queryMap = QueryParser.parse(queryString);
+        const queryMap = queryParser.parse(queryString);
 
         // then
         expect(queryMap).toEqual(null);
@@ -42,7 +44,29 @@ describe("QueryParser Test", () => {
         const queryString = {};
 
         // when
-        const queryMap = QueryParser.parse(queryString);
+        const queryMap = queryParser.parse(queryString);
+
+        // then
+        expect(queryMap).toEqual(null);
+    });
+
+    test("undefined 파싱했을 때 null 반환", () => {
+        // given
+        const queryString = undefined;
+
+        // when
+        const queryMap = queryParser.parse(queryString);
+
+        // then
+        expect(queryMap).toEqual(null);
+    });
+
+    test("null 파싱했을 때 null 반환", () => {
+        // given
+        const queryString = null;
+
+        // when
+        const queryMap = queryParser.parse(queryString);
 
         // then
         expect(queryMap).toEqual(null);
@@ -53,7 +77,7 @@ describe("QueryParser Test", () => {
         const queryString = "sdjfksl";
 
         // when
-        const queryMap = QueryParser.parse(queryString);
+        const queryMap = queryParser.parse(queryString);
 
         // then
         expect(queryMap.size).toEqual(0);

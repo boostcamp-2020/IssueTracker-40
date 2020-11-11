@@ -147,43 +147,55 @@ class IssueService {
 
         const query = this.issueRepository
             .createQueryBuilder("issue")
-            .innerJoinAndSelect("issue.author", "a", "a.deleted_at IS NULL")
-            .leftJoinAndSelect("issue.labelToIssues", "b", "b.deleted_at IS NULL")
-            .leftJoinAndSelect("issue.milestone", "c", "c.deleted_at IS NULL")
-            .leftJoinAndSelect("issue.userToIssues", "d", "d.deleted_at IS NULL")
             .orderBy("issue.id", "DESC")
-            .skip(page * 25)
-            .take(25);
+            .offset(page * 25)
+            .limit(25);
 
         if (issueState === ISSUESTATE.OPEN || issueState === ISSUESTATE.CLOSED) {
             query.andWhere("issue.state = :issueState", { issueState });
         }
 
         if (authorName !== undefined && author !== undefined) {
+            query.innerJoinAndSelect("issue.author", "a", "a.deleted_at IS NULL");
             query.andWhere("issue.author_id = :authorId", { authorId: author.id });
         } else if (authorName !== undefined && author === undefined) {
             return [];
         }
 
         if (labelNames?.length > 0 && labels.length !== 0) {
+            query.innerJoinAndSelect("issue.labelToIssues", "b", "b.deleted_at IS NULL");
             query.andWhere("b.label_id IN (:...labelIds)", { labelIds: labels.map((label) => label.id) });
         } else if (labelNames?.length > 0 && labels.length === 0) {
             return [];
         }
 
         if (milestoneTitle !== undefined && milestone !== undefined) {
+            query.innerJoinAndSelect("issue.milestone", "c", "c.deleted_at IS NULL");
             query.andWhere("issue.milestone_id = :milestoneId", { milestoneId: milestone.id });
         } else if (milestoneTitle !== undefined && milestone === undefined) {
             return [];
         }
 
         if (assigneeName !== undefined && assignee !== undefined) {
+            query.innerJoinAndSelect("issue.userToIssues", "d", "d.deleted_at IS NULL");
             query.andWhere("d.user_id = :assigneeId", { assigneeId: assignee.id });
         } else if (assigneeName !== undefined && assignee === undefined) {
             return [];
         }
 
-        const issues = await query.getMany();
+        const issueIds = (await query.getMany()).map((issue) => issue.id);
+
+        const issues = await this.issueRepository
+            .createQueryBuilder("issue")
+            .leftJoinAndSelect("issue.author", "a")
+            .leftJoinAndSelect("issue.labelToIssues", "b", "b.deleted_at IS NULL")
+            .leftJoinAndSelect("b.label", "e")
+            .leftJoinAndSelect("issue.milestone", "c")
+            .leftJoinAndSelect("issue.userToIssues", "d", "d.deleted_at IS NULL")
+            .leftJoinAndSelect("d.user", "f")
+            .where("issue.id IN (:...issueIds)", { issueIds })
+            .orderBy("issue.id", "DESC")
+            .getMany();
 
         return issues;
     }
