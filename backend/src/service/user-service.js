@@ -52,17 +52,23 @@ class UserService {
     }
 
     @Transactional()
-    async signup(newUser) {
-        const { email, name, password } = newUser;
+    async signup({ email, name, password }) {
+        const promises = [];
+        promises.push(this.isUserExistByEmail({ email }));
+        promises.push(this.isUserExistByName({ name }));
 
-        if (!(await this.isUserExistByEmail({ email })) || !(await this.isUserExistByName({ name }))) {
+        const [isEmailExist, isNameExist] = await Promise.all(promises);
+        if (!isEmailExist || !isNameExist) {
             throw new EntityAlreadyExist();
         }
 
-        newUser.password = await crypto.encrypt(password);
+        const encryptedPassword = await crypto.encrypt(password);
+        const newUser = this.userRepository.create({ email, name, password: encryptedPassword, profileImage: this.defaultProfileImage });
+
         await this.userRepository.save(newUser);
     }
 
+    @Transactional()
     async signupWithGitHub(profile) {
         const user = await this.getUserByName(profile.username);
 
