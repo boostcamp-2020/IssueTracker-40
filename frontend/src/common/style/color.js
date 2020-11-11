@@ -29,7 +29,10 @@ const color = {
     header_dropmenu_boader: "#e1e4e8",
     header_dropmenu_modal_bg: "transparent",
     caret_text: "#ffffff",
-    main_bg: "#ffffff"
+    main_bg: "#ffffff",
+    signup_box_border: "#e6e6e6",
+    signup_submit_disabled: "rgb(164, 164, 164, 0.5)",
+    signup_submit: "rgb(164, 164, 164)"
 };
 
 export { color };
