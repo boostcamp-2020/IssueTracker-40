@@ -25,4 +25,29 @@ const getComments = async (req, res, next) => {
     }
 };
 
-export { addComment, getComments };
+const changeComment = async (req, res, next) => {
+    const { content } = req.body;
+    const { commentId } = req.params;
+
+    try {
+        const commentService = CommentService.getInstance();
+        await commentService.changeComment(commentId, content);
+        res.status(200).end();
+    } catch (error) {
+        next(error);
+    }
+};
+
+const removeComment = async (req, res, next) => {
+    const { commentId } = req.params;
+
+    try {
+        const commentService = CommentService.getInstance();
+        await commentService.removeComment(commentId);
+        res.status(204).end();
+    } catch (error) {
+        next(error);
+    }
+};
+
+export { addComment, getComments, changeComment, removeComment };

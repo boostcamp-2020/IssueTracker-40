@@ -4,11 +4,13 @@ import { CommentService } from "../../src/service";
 import { TransactionWrapper } from "../TransactionWrapper";
 import { User } from "../../src/model/user";
 import { Issue } from "../../src/model/issue";
+import { Comment } from "../../src/model/comment";
+import { CommentContent } from "../../src/model/comment-content";
 import { EntityNotFoundError } from "../../src/common/error/entity-not-found-error";
 
 const mockUser = { email: "Do-ho@github.com", name: "Do-ho", profileImage: "profile image" };
 const mockIssue = { title: "issue title" };
-const mockComment = { content: "comment Content" };
+const mockCommentContent = { content: "Comment content" };
 
 describe("CommentService Test", () => {
     const app = new Application();
@@ -33,7 +35,7 @@ describe("CommentService Test", () => {
             await entityManager.save(Issue, issue);
 
             // when
-            const comment = await commentService.addComment(user.id, issue.id, mockComment.content);
+            const comment = await commentService.addComment(user.id, issue.id, mockCommentContent.content);
 
             // then
             const findedIssue = await commentService.issueRepository.findOne({ id: issue.id, relations: ["comments"] });
@@ -63,7 +65,7 @@ describe("CommentService Test", () => {
             await entityManager.save(Issue, issue);
 
             // when
-            const comment = await commentService.addComment(user.id, issue.id, mockComment.content);
+            const comment = await commentService.addComment(user.id, issue.id, mockCommentContent.content);
 
             // then
             const findedComment = await commentService.commentContentRepository.findOne({ id: comment.content.id, relations: ["comment"] });
@@ -89,7 +91,7 @@ describe("CommentService Test", () => {
 
             // when
             try {
-                await commentService.addComment(user.id, mockIssueId, mockComment.content);
+                await commentService.addComment(user.id, mockIssueId, mockCommentContent.content);
             } catch (error) {
                 // then
                 expect(error instanceof EntityNotFoundError);
@@ -113,7 +115,7 @@ describe("CommentService Test", () => {
             const issue = entityManager.create(Issue, { ...mockIssue, author: user });
             await entityManager.save(Issue, issue);
 
-            const comment = await commentService.addComment(user.id, issue.id, mockComment.content);
+            const comment = await commentService.addComment(user.id, issue.id, mockCommentContent.content);
 
             // when
             const comments = await commentService.getComments(issue.id);
@@ -124,6 +126,74 @@ describe("CommentService Test", () => {
             }, []);
 
             expect(commentsIds).toContain(comment.id);
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("만들어진 이슈에 대한 comment 수정이 가능한가?", async () => {
+        const commentService = CommentService.getInstance();
+
+        await TransactionWrapper.transaction(async () => {
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            // given
+            const user = entityManager.create(User, mockUser);
+            await entityManager.save(User, user);
+
+            const issue = entityManager.create(Issue, { ...mockIssue, author: user });
+            await entityManager.save(Issue, issue);
+
+            const commentContent = entityManager.create(CommentContent, mockCommentContent);
+            await entityManager.save(CommentContent, commentContent);
+
+            const comment = entityManager.create(Comment, { user, issue, content: commentContent });
+            await entityManager.save(Comment, comment);
+
+            // when
+            await commentService.changeComment(comment.id, "Changed comment");
+
+            // then
+            const changedComment = await commentService.commentRepository.findOne({ id: comment.id, relations: ["content"] });
+
+            expect(changedComment.content.content).toEqual("Changed comment");
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("만들어진 이슈에 대한 comment 삭제가 가능한가?", async () => {
+        const commentService = CommentService.getInstance();
+
+        await TransactionWrapper.transaction(async () => {
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            // given
+            const user = entityManager.create(User, mockUser);
+            await entityManager.save(User, user);
+
+            const issue = entityManager.create(Issue, { ...mockIssue, author: user });
+            await entityManager.save(Issue, issue);
+
+            const commentContent = entityManager.create(CommentContent, mockCommentContent);
+            await entityManager.save(CommentContent, commentContent);
+
+            const comment = entityManager.create(Comment, { user, issue, content: commentContent });
+            await entityManager.save(Comment, comment);
+
+            // when
+            await commentService.removeComment(comment.id);
+
+            // then
+            const findedComment = await commentService.issueRepository.findOne({ id: issue.id, relations: ["comments"] });
+
+            const commentsIds = findedComment.comments.reduce((acc, cur) => {
+                return [...acc, cur.id];
+            }, []);
+
+            expect(commentsIds).not.toContainEqual(comment.id);
 
             await entityManager.query("ROLLBACK TO STARTPOINT");
         });
