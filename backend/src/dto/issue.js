@@ -28,4 +28,14 @@ class UserToIssueRequestParams {
     assigneeId;
 }
 
-export { AddIssueRequestBody, UserToIssueRequestParams };
+class CommentRequestParams {
+    @IsNumberString()
+    issueId;
+}
+
+class AddCommentRequestBody {
+    @IsString()
+    content;
+}
+
+export { AddIssueRequestBody, UserToIssueRequestParams, CommentRequestParams, AddCommentRequestBody };
