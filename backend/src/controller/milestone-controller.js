@@ -79,4 +79,15 @@ const changeMilestone = async (req, res, next) => {
     }
 };
 
-export { addMilestone, getMilestones, getMilestone, changeMilestone };
+const removeMilestone = async (req, res, next) => {
+    try {
+        const { milestoneId } = req.params;
+        const milestoneService = MilestoneService.getInstance();
+        await milestoneService.removeMilestone({ milestoneId });
+        res.status(204).end();
+    } catch (error) {
+        next(error);
+    }
+};
+
+export { addMilestone, getMilestones, getMilestone, changeMilestone, removeMilestone };
