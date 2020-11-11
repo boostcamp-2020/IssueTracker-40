@@ -46,4 +46,19 @@ class AddCommentRequestBody {
     content;
 }
 
-export { AddIssueRequestBody, UserToIssueRequestParams, CreateReadCommentRequestParams, AddCommentRequestBody, UpdateDeleteCommentRequestParams };
+class IssueMilestoneRequestParams {
+    @IsNumberString()
+    issueId;
+
+    @IsNumberString()
+    milestoneId;
+}
+
+export {
+    AddIssueRequestBody,
+    UserToIssueRequestParams,
+    CreateReadCommentRequestParams,
+    AddCommentRequestBody,
+    UpdateDeleteCommentRequestParams,
+    IssueMilestoneRequestParams
+};
