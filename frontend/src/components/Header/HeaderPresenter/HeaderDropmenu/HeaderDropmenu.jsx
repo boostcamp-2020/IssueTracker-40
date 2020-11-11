@@ -20,7 +20,6 @@ const DropmenuButton = styled.button`
     position: relative;
     width: 50px;
     cursor: pointer;
-    z-index: 2000;
 `;
 
 const DropmenuModalBackground = styled.div`
@@ -100,14 +99,14 @@ const HeaderDropmenu = () => {
     const { headerState, eventListeners } = useContext(HeaderContext);
 
     const getTotalMenus = () => {
-        const getMenuItems = (menus) => menus.reduce((acc, cur, idx) => acc.concat(<DropmenuSubItem key={idx}>{cur}</DropmenuSubItem>), []);
+        const getMenuItems = (menus) => menus.reduce((acc, cur) => acc.concat(<DropmenuSubItem key={cur.id}>{cur.title}</DropmenuSubItem>), []);
 
         const getMenuItemAreas = ({ userStatusMenus, navigationMenus, serviceMenus }) =>
             [userStatusMenus, navigationMenus, serviceMenus].reduce(
                 (acc, cur, idx) =>
                     acc.concat(
-                        <DropmenuMainArea>
-                            <DropmenuSubArea statusMenu={idx === 0}>{getMenuItems(cur)}</DropmenuSubArea>
+                        <DropmenuMainArea key={cur.id}>
+                            <DropmenuSubArea statusMenu={idx === 0}>{getMenuItems(cur.menus)}</DropmenuSubArea>
                         </DropmenuMainArea>
                     ),
                 []
@@ -120,7 +119,7 @@ const HeaderDropmenu = () => {
         <DropmenuContainer>
             <DropmenuButton type="button" onClick={eventListeners.onDropmenuClickListner}>
                 <UserProfile imageUrl={headerState.userProfileImage} />
-                <Caret />
+                <Caret primary />
             </DropmenuButton>
             <DropmenuModalBackground isHidden={headerState.isHiddenDropmenu} onClick={eventListeners.onModalBackgrondClickListener} />
             <DropmenuList isHidden={headerState.isHiddenDropmenu}>{getTotalMenus()}</DropmenuList>

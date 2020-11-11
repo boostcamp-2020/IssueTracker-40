@@ -36,7 +36,19 @@ const color = {
     signup_container: "white",
     form_warning_msg: "red",
     signup_page_bg: "#f2f2f2",
-    signup_submit_text: "white"
+    signup_submit_text: "white",
+    issue_drop_btn: "#6a737d",
+    issue_drop_hover_btn: "#444d56",
+    issue_drop_modal_bg: "transparent",
+    issue_item_title: "#0366d6",
+    issue_item_detail_info_text: "#6a737d",
+    issue_item_milestone_title: "#6a737d",
+    list_group_header_border: "#eaecef",
+    list_group_header_bg: "#f6f8fa",
+    list_group_item_bg: "#ffffff",
+    list_group_item_hover_bg: "#f6f8fa",
+    list_group_border: "#eaecef",
+    main_bg: "#ffffff"
 };
 
 export { color };

@@ -14,4 +14,26 @@ const addIssue = async (req, res, next) => {
     res.status(201).end();
 };
 
-export { addIssue };
+const addAssignee = async (req, res, next) => {
+    const { assigneeId, issueId } = req.params;
+    try {
+        const issueService = IssueService.getInstance();
+        await issueService.addAssignee(assigneeId, issueId);
+        res.status(201).end();
+    } catch (error) {
+        next(error);
+    }
+};
+
+const removeAssignee = async (req, res, next) => {
+    const { assigneeId, issueId } = req.params;
+    try {
+        const issueService = IssueService.getInstance();
+        await issueService.removeAssignee(assigneeId, issueId);
+        res.status(204).end();
+    } catch (error) {
+        next(error);
+    }
+};
+
+export { addIssue, addAssignee, removeAssignee };

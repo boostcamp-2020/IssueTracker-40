@@ -23,9 +23,30 @@ const HeaderContainer = () => {
     const { photoImage, name, email } = useContext(UserContext);
     const initialState = {
         userProfileImage: photoImage,
-        userStatusMenus: [`Signed in as ${name}`, `${email}`],
-        navigationMenus: ["Your profile", "Your repository", "Your enterprises", "Your projects", "Your stars", "Your gists"],
-        serviceMenus: ["Help", "Sign out"],
+        userStatusMenus: {
+            id: 1,
+            menus: [
+                { id: 1, title: `Signed in as ${name}` },
+                { id: 2, title: `${email}` }
+            ]
+        },
+        navigationMenus: {
+            id: 2,
+            menus: [
+                { id: 1, title: "Your profile" },
+                { id: 2, title: "Your repository" },
+                { id: 3, title: "Your enterprises" },
+                { id: 4, title: "Your stars" },
+                { id: 5, title: "Your gists" }
+            ]
+        },
+        serviceMenus: {
+            id: 3,
+            menus: [
+                { id: 1, title: "Help" },
+                { id: 2, title: "Sign out" }
+            ]
+        },
         isHiddenDropmenu: true
     };
     const [headerState, dispatch] = useReducer(reducer, initialState);
