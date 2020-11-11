@@ -1,4 +1,4 @@
-import { IsString, IsEmail } from "class-validator";
+import { IsString, IsEmail, Length } from "class-validator";
 
 class LoginRequestBody {
     @IsString()
@@ -15,6 +15,7 @@ class SignupRequestBody {
     email;
 
     @IsString()
+    @Length(4, 20)
     name;
 
     @IsString()
