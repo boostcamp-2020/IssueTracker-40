@@ -66,6 +66,13 @@ class MilestoneService {
         });
         await this.milestoneRepository.save(milestone);
     }
+
+    @Transactional()
+    async removeMilestone({ milestoneId }) {
+        const milestone = await this.milestoneRepository.findOne({ id: milestoneId });
+        if (!milestone) throw new EntityNotFoundError();
+        await this.milestoneRepository.remove(milestone);
+    }
 }
 
 export { MilestoneService };
