@@ -6,7 +6,7 @@ const signup = async (req, res, next) => {
         const { email, name, password } = req.body;
         const userService = UserService.getInstance();
         await userService.signup({ email, name, password });
-        res.send("ok");
+        res.status(200).send("ok");
     } catch (error) {
         next(error);
     }
@@ -27,7 +27,7 @@ const login = async (req, res, next) => {
 
         const EXPIRED_DATE = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
         res.cookie("token", token, { expires: EXPIRED_DATE, httpOnly: true });
-        res.send("ok");
+        res.status(200).send("ok");
     } catch (e) {
         next(e);
     }
