@@ -16,6 +16,7 @@ const RegisterButton = styled.button`
     border: none;
     background-color: none;
     color: ${color.register_btn};
+    color: ${(props) => (props.disabled ? color.register_btn_disabled : color.register_btn)};
     font-weight: bold;
     margin-left: auto;
     margin-right: auto;
