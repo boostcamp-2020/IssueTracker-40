@@ -4,5 +4,6 @@ import * as labelController from "./label-controller";
 import * as issueController from "./issue-controller";
 import * as labelToIssueController from "./label-to-issue-controller";
 import * as commentController from "./comment-controller";
+import * as milestoneController from "./milestone-controller";
 
-export { userController, signupController, labelController, issueController, labelToIssueController, commentController };
+export { userController, signupController, labelController, issueController, labelToIssueController, commentController, milestoneController };
