@@ -41,7 +41,7 @@ class MilestoneService {
 
     @Transactional()
     async getMilestones() {
-        const milestones = await this.milestoneRepository.find();
+        const milestones = await this.milestoneRepository.find({ relations: ["issues"] });
 
         return milestones;
     }
