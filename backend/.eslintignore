@@ -4,3 +4,4 @@ coverage
 !.babelrc.js
 !.eslintrc.js
 !.prettierrc.js
+!*.test.js

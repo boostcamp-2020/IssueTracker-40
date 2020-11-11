@@ -1,6 +1,6 @@
 class BusinessError extends Error {
-    constructor(errorCode) {
-        super(errorCode.message);
+    constructor(errorCode, message) {
+        super(message || errorCode.message);
         this.errorCode = errorCode;
     }
 }

@@ -1,13 +1,21 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
-import { MainPage, LoginPage } from "@pages";
+import { Redirect, Route, Switch } from "react-router-dom";
+import { MainPage, LoginPage, IssueDetailPage, LabelPage, MilestonePage, NewIssuePage, NewMilestonePage } from "@pages";
 
 const App = () => {
     return (
-        <Switch>
-            <Route path="/login" component={LoginPage} />
-            <Route path="/" component={MainPage} />
-        </Switch>
+        <>
+            <Route exact path="/" component={MainPage} />
+            <Switch>
+                <Route path="/login" component={LoginPage} />
+                <Route path="/new" component={NewIssuePage} />
+                <Route path="/issue/:issueId" component={IssueDetailPage} />
+                <Route path="/milestones" component={MilestonePage} />
+                <Route path="/milestones/new" component={NewMilestonePage} />
+                <Route path="/labels" component={LabelPage} />
+                <Redirect from="*" to="/" />
+            </Switch>
+        </>
     );
 };
 

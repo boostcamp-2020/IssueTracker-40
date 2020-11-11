@@ -34,6 +34,7 @@ export class Application {
     async initialize() {
         try {
             await this.initEnvironment();
+            this.registerMiddleware();
             await this.initDatabase();
             authenticator.initializeAuthenticator(this.httpServer);
         } catch (error) {
@@ -54,7 +55,6 @@ export class Application {
         this.databaseEnv = new DatabaseEnv();
         await validateOrReject(this.databaseEnv);
         this.connectionOptionGenerator = new ConnectionOptionGenerator(this.databaseEnv);
-        this.registerMiddleware();
     }
 
     async initDatabase() {

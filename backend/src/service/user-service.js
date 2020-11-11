@@ -59,17 +59,20 @@ class UserService {
 
         newUser.password = await crypto.encrypt(password);
         const result = await this.userRepository.save(newUser);
-        console.log(result);
     }
 
     async signupWithGitHub(profile) {
         const user = await this.getUserByName(profile.username);
 
-        if (!user) {
-            const { username, photos } = profile;
-            const newUser = this.createUser({ email: `${username}@github.com`, name: username, profileImage: photos[0].value });
-            await this.userRepository.save(newUser);
+        if (user !== undefined) {
+            return user;
         }
+
+        const { username, photos } = profile;
+        const newUser = this.userRepository.create({ email: `${username}@github.com`, name: username, profileImage: photos[0].value });
+        await this.userRepository.save(newUser);
+
+        return newUser;
     }
 }
 

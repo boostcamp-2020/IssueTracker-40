@@ -13,12 +13,15 @@ const StyledLabel = styled.button`
     background-color: ${(props) => props.color};
     color: ${(props) => defineTextColor(props.color)};
     border-radius: 1rem;
-    font-size: 14px;
+    font-size: 10px;
+    line-height: 2;
     font-weight: bold;
     cursor: pointer;
-    line-height: 20px;
-    padding: 5px 16px;
     border: none;
+    margin-left: 2.5px;
+    margin-right: 2.5px;
+    padding-left: 10px;
+    padding-right: 10px;
     &:hover {
         text-decoration: underline;
     }

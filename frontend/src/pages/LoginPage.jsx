@@ -1,6 +1,6 @@
 import React from "react";
-import { LoginForm } from "@components";
 import styled from "styled-components";
+import { LoginForm } from "@components";
 
 const Main = styled.main`
     display: flex;

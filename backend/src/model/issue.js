@@ -45,21 +45,21 @@ class Issue {
     @OneToMany(() => Comment, (comment) => comment.issue)
     comments;
 
-    @OneToMany(() => UserToIssue, (userToIssue) => userToIssue.issue)
+    @OneToMany(() => UserToIssue, (userToIssue) => userToIssue.issue, { cascade: ["insert"] })
     userToIssues;
 
-    @ManyToOne(() => User, (user) => user.id)
+    @ManyToOne(() => User, (user) => user.id, { cascade: ["insert"] })
     @JoinColumn({ name: "author_id" })
     author;
 
-    @ManyToOne(() => Milestone, (milestone) => milestone.id)
+    @ManyToOne(() => Milestone, (milestone) => milestone.id, { cascade: ["insert"] })
     @JoinColumn({ name: "milestone_id" })
     milestone;
 
-    @OneToMany(() => LabelToIssue, (labelToIssue) => labelToIssue.issue)
+    @OneToMany(() => LabelToIssue, (labelToIssue) => labelToIssue.issue, { cascade: ["insert"] })
     labelToIssues;
 
-    @OneToOne(() => IssueContent, (content) => content.issue)
+    @OneToOne(() => IssueContent, (content) => content.issue, { cascade: ["insert"] })
     @JoinColumn({ name: "content_id" })
     content;
 }

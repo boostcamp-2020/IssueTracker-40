@@ -1,12 +1,11 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import styled from "styled-components";
 import { usePromise } from "@hook";
-import axios from "axios";
 import { UserContext } from "@context";
 import Config from "@config";
-import { Header, ListGroup, IssueItem, IssueFilterMenu } from "@components";
-
+import { Header, Main ListGroup, IssueItem, IssueFilterMenu } from "@components";
+import { waitAuthorizationApi } from "@utils";
+        
 const Main = styled.main`
     height: 100%;
 `;

@@ -7,6 +7,16 @@ const color = {
     btn_primary_border: "rgba(27, 31, 35, 0.15)",
     btn_primary_shadow: "rgba(27, 31, 35, 0.04)",
     btn_primary_text: "#ffffff",
+    textarea_bg: "#fafbfc",
+    textarea_border: "#e1e4e8",
+    textarea_focus_border: "#0366d6",
+    textarea_text: "#586069",
+    tab_border: "#e1e4e8",
+    tab_bg: "#f6f8fa",
+    tab_selected_bg: "#ffffff",
+    tab_container_gb: "#ffffff",
+    border_primary: "#e1e4e8",
+    register_btn: "#2e9afe",
     loading_dots: "#d8d8d8",
     sidemenu_hover: "#2e9afe",
     sidemenu_default: "#6e6e6e",
@@ -30,6 +40,7 @@ const color = {
     list_group_item_bg: "#ffffff",
     list_group_item_hover_bg: "#f6f8fa",
     list_group_border: "#eaecef"
+    main_bg: "#ffffff"
 };
 
 export { color };
