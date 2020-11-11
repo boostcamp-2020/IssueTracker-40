@@ -57,7 +57,7 @@ class CommentService {
 
     @Transactional()
     async getComments(issueId) {
-        const comments = this.commentRepository.find({ issue: issueId, relations: ["user", "content"] });
+        const comments = await this.commentRepository.find({ issue: issueId, relations: ["user", "content"] });
         return comments;
     }
 
