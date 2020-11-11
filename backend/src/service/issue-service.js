@@ -113,6 +113,33 @@ class IssueService {
         const removedAssignee = await this.userToIssueRepository.remove(targetAssignee);
         return removedAssignee;
     }
+
+    @Transactional()
+    async addMilestone(isssueId, milestoneId) {
+        const targetIssue = await this.issueRepository.findOne(isssueId);
+        const targetMilestone = await this.milestoneRepository.findOne(milestoneId);
+        if (targetIssue === undefined || targetMilestone === undefined) {
+            throw new EntityNotFoundError();
+        }
+
+        targetIssue.milestone = targetMilestone.id;
+        await this.issueRepository.save(targetIssue);
+        return targetIssue;
+    }
+
+    @Transactional()
+    async removeMilestone(isssueId, milestoneId) {
+        const targetIssue = await this.issueRepository.findOne(isssueId);
+        const targetMilestone = await this.milestoneRepository.findOne(milestoneId);
+        if (targetIssue === undefined || targetMilestone === undefined) {
+            throw new EntityNotFoundError();
+        }
+
+        targetIssue.milestone = null;
+        await this.issueRepository.save(targetIssue);
+
+        return targetIssue;
+    }
 }
 
 export { IssueService };
