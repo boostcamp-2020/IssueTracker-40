@@ -1,6 +1,7 @@
 import { getRepository } from "typeorm";
 import { Transactional } from "typeorm-transactional-cls-hooked";
 import { EntityNotFoundError } from "../common/error/entity-not-found-error";
+import { ISSUESTATE } from "../common/type";
 import { Issue } from "../model/issue";
 import { IssueContent } from "../model/issue-content";
 import { Label } from "../model/label";
@@ -112,6 +113,79 @@ class IssueService {
         const targetAssignee = await this.userToIssueRepository.findOne({ user: targetUser, issue: targetIssue });
         const removedAssignee = await this.userToIssueRepository.remove(targetAssignee);
         return removedAssignee;
+    }
+
+    @Transactional()
+    async getIssues({ issueState, authorName, labelNames, milestoneTitle, assigneeName, page }) {
+        const promises = [];
+
+        if (authorName !== undefined) {
+            promises.push(this.userRepository.findOne({ name: authorName }));
+        } else {
+            promises.push(undefined);
+        }
+
+        if (labelNames?.length > 0) {
+            promises.push(this.labelRepository.createQueryBuilder("label").where("label.name IN (:...labelNames)", { labelNames }).getMany());
+        } else {
+            promises.push([]);
+        }
+
+        if (milestoneTitle !== undefined) {
+            promises.push(this.milestoneRepository.findOne({ title: milestoneTitle }));
+        } else {
+            promises.push(undefined);
+        }
+
+        if (assigneeName !== undefined) {
+            promises.push(this.userRepository.findOne({ name: assigneeName }));
+        } else {
+            promises.push(undefined);
+        }
+
+        const [author, labels, milestone, assignee] = await Promise.all(promises);
+
+        const query = this.issueRepository
+            .createQueryBuilder("issue")
+            .innerJoinAndSelect("issue.author", "a", "a.deleted_at IS NULL")
+            .leftJoinAndSelect("issue.labelToIssues", "b", "b.deleted_at IS NULL")
+            .leftJoinAndSelect("issue.milestone", "c", "c.deleted_at IS NULL")
+            .leftJoinAndSelect("issue.userToIssues", "d", "d.deleted_at IS NULL")
+            .orderBy("issue.id", "DESC")
+            .skip(page * 25)
+            .take(25);
+
+        if (issueState === ISSUESTATE.OPEN || issueState === ISSUESTATE.CLOSED) {
+            query.andWhere("issue.state = :issueState", { issueState });
+        }
+
+        if (authorName !== undefined && author !== undefined) {
+            query.andWhere("issue.author_id = :authorId", { authorId: author.id });
+        } else if (authorName !== undefined && author === undefined) {
+            return [];
+        }
+
+        if (labelNames?.length > 0 && labels.length !== 0) {
+            query.andWhere("b.label_id IN (:...labelIds)", { labelIds: labels.map((label) => label.id) });
+        } else if (labelNames?.length > 0 && labels.length === 0) {
+            return [];
+        }
+
+        if (milestoneTitle !== undefined && milestone !== undefined) {
+            query.andWhere("issue.milestone_id = :milestoneId", { milestoneId: milestone.id });
+        } else if (milestoneTitle !== undefined && milestone === undefined) {
+            return [];
+        }
+
+        if (assigneeName !== undefined && assignee !== undefined) {
+            query.andWhere("d.user_id = :assigneeId", { assigneeId: assignee.id });
+        } else if (assigneeName !== undefined && assignee === undefined) {
+            return [];
+        }
+
+        const issues = await query.getMany();
+
+        return issues;
     }
 }
 

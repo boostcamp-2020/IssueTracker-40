@@ -1,4 +1,4 @@
-import { IsBoolean, IsIn, IsNotEmpty, IsNumber, IsString, ValidateIf } from "class-validator";
+import { IsArray, IsBoolean, IsIn, IsNotEmpty, IsNumber, IsString, ValidateIf } from "class-validator";
 import { DatabaseType } from "../config/database/database-type";
 
 class DatabaseEnv {
@@ -23,8 +23,6 @@ class DatabaseEnv {
     @IsNumber()
     databaseConnectionLimit;
 
-    @IsNotEmpty()
-    @IsString()
     databaseLogging;
 
     constructor() {
@@ -34,7 +32,15 @@ class DatabaseEnv {
         this.databaseDropSchema = process.env.DATABASE_DROP_SCHEMA === undefined ? false : JSON.parse(process.env.DATABASE_DROP_SCHEMA.toLowerCase());
         this.databaseSynchronize =
             process.env.DATABASE_SYNCHRONIZE === undefined ? false : JSON.parse(process.env.DATABASE_SYNCHRONIZE.toLowerCase());
-        this.databaseLogging = process.env.DATABASE_LOGGING === undefined ? "error" : process.env.DATABASE_LOGGING;
+        this.databaseLogging = process.env.DATABASE_LOGGING === undefined ? ["error"] : this.splitDatabaseLogging();
+    }
+
+    splitDatabaseLogging() {
+        if (process.env.DATABASE_LOGGING === "all") {
+            return "all";
+        }
+
+        return process.env.DATABASE_LOGGING.split(",");
     }
 
     getDatabaseType() {

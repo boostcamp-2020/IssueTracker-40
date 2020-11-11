@@ -48,11 +48,11 @@ class Issue {
     @OneToMany(() => UserToIssue, (userToIssue) => userToIssue.issue, { cascade: ["insert"] })
     userToIssues;
 
-    @ManyToOne(() => User, (user) => user.id, { cascade: ["insert"] })
+    @ManyToOne(() => User, (user) => user.id)
     @JoinColumn({ name: "author_id" })
     author;
 
-    @ManyToOne(() => Milestone, (milestone) => milestone.id, { cascade: ["insert"] })
+    @ManyToOne(() => Milestone, (milestone) => milestone.id)
     @JoinColumn({ name: "milestone_id" })
     milestone;
 
