@@ -111,4 +111,207 @@ describe("Milestone Router Test", () => {
             await entityManager.query("ROLLBACK TO STARTPOINT");
         });
     });
+
+    test("마일스톤 제목, 내용, 마감기한을 변경할 수 있다", async () => {
+        await TransactionWrapper.transaction(async () => {
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            // given
+            const user = entityManager.create(User, mockUser);
+            await entityManager.save(User, user);
+
+            const token = generateJWTToken({
+                userId: user.id,
+                username: user.name,
+                email: user.email,
+                photos: user.profileImage
+            });
+
+            await agent(app.httpServer)
+                .post(`/api/milestone`)
+                .set("Cookie", [`token=${token}`])
+                .send(mockMilestone);
+
+            // when
+            const mockUpdateMilestone = { title: "title2", description: "description2", dueDate: new Date() };
+            const response = await agent(app.httpServer)
+                .patch(`/api/milestone/1`)
+                .set("Cookie", [`token=${token}`])
+                .send({
+                    title: mockUpdateMilestone.title,
+                    description: mockUpdateMilestone.description,
+                    dueDate: mockUpdateMilestone.dueDate
+                });
+
+            // then
+            const getMilestoneReseponse = await agent(app.httpServer)
+                .get(`/api/milestone/1`)
+                .set("Cookie", [`token=${token}`])
+                .send();
+            const updatedMilestone = getMilestoneReseponse.body;
+
+            expect(response.status).toEqual(201);
+            expect(mockUpdateMilestone.title).toBe(updatedMilestone.title);
+            expect(mockUpdateMilestone.description).toBe(updatedMilestone.description);
+            expect(mockUpdateMilestone.dueDate.toISOString()).toBe(updatedMilestone.dueDate);
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("마일스톤 상태(open/close)를 변경할 수 있다", async () => {
+        await TransactionWrapper.transaction(async () => {
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            // given
+            const user = entityManager.create(User, mockUser);
+            await entityManager.save(User, user);
+
+            const token = generateJWTToken({
+                userId: user.id,
+                username: user.name,
+                email: user.email,
+                photos: user.profileImage
+            });
+
+            await agent(app.httpServer)
+                .post(`/api/milestone`)
+                .set("Cookie", [`token=${token}`])
+                .send(mockMilestone);
+
+            // when
+            const response = await agent(app.httpServer)
+                .patch(`/api/milestone/1`)
+                .set("Cookie", [`token=${token}`])
+                .send({
+                    state: "close"
+                });
+
+            // then
+            const getMilestoneReseponse = await agent(app.httpServer)
+                .get(`/api/milestone/1`)
+                .set("Cookie", [`token=${token}`])
+                .send();
+            const updatedMilestone = getMilestoneReseponse.body;
+
+            expect(response.status).toEqual(201);
+            expect("close").toBe(updatedMilestone.state);
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("존재하지 않는 마일스톤의 제목, 내용, 마감기한을 변경할 수 없다", async () => {
+        await TransactionWrapper.transaction(async () => {
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            // given
+            const user = entityManager.create(User, mockUser);
+            await entityManager.save(User, user);
+
+            const token = generateJWTToken({
+                userId: user.id,
+                username: user.name,
+                email: user.email,
+                photos: user.profileImage
+            });
+
+            // when
+            const mockUpdateMilestone = { title: "title2", description: "description2", dueDate: new Date() };
+            const response = await agent(app.httpServer)
+                .patch(`/api/milestone/1`)
+                .set("Cookie", [`token=${token}`])
+                .send({
+                    title: mockUpdateMilestone.title,
+                    description: mockUpdateMilestone.description,
+                    dueDate: mockUpdateMilestone.dueDate
+                });
+
+            // then
+            expect(response.status).toEqual(404);
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("마일스톤의 제목, 내용, 마감기한과 상태(open/close)정보를 동시에 변경할 수 없다", async () => {
+        await TransactionWrapper.transaction(async () => {
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            // given
+            const user = entityManager.create(User, mockUser);
+            await entityManager.save(User, user);
+
+            const token = generateJWTToken({
+                userId: user.id,
+                username: user.name,
+                email: user.email,
+                photos: user.profileImage
+            });
+
+            await agent(app.httpServer)
+                .post(`/api/milestone`)
+                .set("Cookie", [`token=${token}`])
+                .send(mockMilestone);
+
+            // when
+            const mockUpdateMilestone = { title: "title2", description: "description2", dueDate: new Date(), state: "close" };
+            const response = await agent(app.httpServer)
+                .patch(`/api/milestone/1`)
+                .set("Cookie", [`token=${token}`])
+                .send({
+                    title: mockUpdateMilestone.title,
+                    description: mockUpdateMilestone.description,
+                    dueDate: mockUpdateMilestone.dueDate,
+                    state: mockUpdateMilestone.state
+                });
+
+            // then
+            expect(response.status).toEqual(400);
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("마일스톤 수정 요청시 제목 또는 상태정보(open/close)는 반드시 포함되어야한다", async () => {
+        await TransactionWrapper.transaction(async () => {
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            // given
+            const user = entityManager.create(User, mockUser);
+            await entityManager.save(User, user);
+
+            const token = generateJWTToken({
+                userId: user.id,
+                username: user.name,
+                email: user.email,
+                photos: user.profileImage
+            });
+
+            await agent(app.httpServer)
+                .post(`/api/milestone`)
+                .set("Cookie", [`token=${token}`])
+                .send(mockMilestone);
+
+            // when
+            const mockUpdateMilestone = { description: "description2", dueDate: new Date() };
+            const response = await agent(app.httpServer)
+                .patch(`/api/milestone/1`)
+                .set("Cookie", [`token=${token}`])
+                .send({
+                    description: mockUpdateMilestone.description,
+                    dueDate: mockUpdateMilestone.dueDate
+                });
+
+            // then
+            expect(response.status).toEqual(400);
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
 });
