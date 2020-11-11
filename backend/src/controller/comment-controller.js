@@ -18,8 +18,18 @@ const getComments = async (req, res, next) => {
 
     try {
         const commentService = CommentService.getInstance();
-        await commentService.getComments(issueId);
-        res.status(200).end();
+        const issueComments = await commentService.getComments(issueId);
+        const comments = issueComments.map(({ id, user, content, createdAt }) => {
+            return {
+                id,
+                author: user.name,
+                profileImage: user.profileImage,
+                content: content.content,
+                createdAt
+            };
+        });
+
+        res.status(200).send(comments);
     } catch (error) {
         next(error);
     }
