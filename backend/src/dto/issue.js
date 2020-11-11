@@ -28,9 +28,17 @@ class UserToIssueRequestParams {
     assigneeId;
 }
 
-class CommentRequestParams {
+class CreateReadCommentRequestParams {
     @IsNumberString()
     issueId;
+}
+
+class UpdateDeleteCommentRequestParams {
+    @IsNumberString()
+    issueId;
+
+    @IsNumberString()
+    commentId;
 }
 
 class AddCommentRequestBody {
@@ -38,4 +46,4 @@ class AddCommentRequestBody {
     content;
 }
 
-export { AddIssueRequestBody, UserToIssueRequestParams, CommentRequestParams, AddCommentRequestBody };
+export { AddIssueRequestBody, UserToIssueRequestParams, CreateReadCommentRequestParams, AddCommentRequestBody, UpdateDeleteCommentRequestParams };
