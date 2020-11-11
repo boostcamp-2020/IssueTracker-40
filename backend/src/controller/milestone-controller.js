@@ -55,7 +55,7 @@ const getMilestone = async (req, res, next) => {
     try {
         const milestoneService = MilestoneService.getInstance();
         const milestone = await milestoneService.getMilestone(milestoneId);
-        res.status(200).send(milestone);
+        res.status(200).send({ milestone });
     } catch (error) {
         next(error);
     }
