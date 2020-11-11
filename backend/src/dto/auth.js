@@ -9,4 +9,16 @@ class LoginRequestBody {
     password;
 }
 
-export { LoginRequestBody };
+class SignupRequestBody {
+    @IsString()
+    @IsEmail()
+    email;
+
+    @IsString()
+    name;
+
+    @IsString()
+    password;
+}
+
+export { LoginRequestBody, SignupRequestBody };
