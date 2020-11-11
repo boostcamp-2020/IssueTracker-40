@@ -145,11 +145,11 @@ describe("Milestone Router Test", () => {
                 });
 
             // then
-            const getMilestoneReseponse = await agent(app.httpServer)
+            const responseToGet = await agent(app.httpServer)
                 .get(`/api/milestone/1`)
                 .set("Cookie", [`token=${token}`])
                 .send();
-            const updatedMilestone = getMilestoneReseponse.body;
+            const updatedMilestone = responseToGet.body;
 
             expect(response.status).toEqual(201);
             expect(mockUpdateMilestone.title).toBe(updatedMilestone.title);
@@ -190,11 +190,11 @@ describe("Milestone Router Test", () => {
                 });
 
             // then
-            const getMilestoneReseponse = await agent(app.httpServer)
+            const responseToGet = await agent(app.httpServer)
                 .get(`/api/milestone/1`)
                 .set("Cookie", [`token=${token}`])
                 .send();
-            const updatedMilestone = getMilestoneReseponse.body;
+            const updatedMilestone = responseToGet.body;
 
             expect(response.status).toEqual(201);
             expect("close").toBe(updatedMilestone.state);
@@ -310,6 +310,109 @@ describe("Milestone Router Test", () => {
 
             // then
             expect(response.status).toEqual(400);
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("로그인한 사용자가 마일스톤을 삭제할 수 있다", async () => {
+        await TransactionWrapper.transaction(async () => {
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            // given
+            const user = entityManager.create(User, mockUser);
+            await entityManager.save(User, user);
+
+            const token = generateJWTToken({
+                userId: user.id,
+                username: user.name,
+                email: user.email,
+                photos: user.profileImage
+            });
+
+            await agent(app.httpServer)
+                .post(`/api/milestone`)
+                .set("Cookie", [`token=${token}`])
+                .send(mockMilestone);
+
+            // when
+            const response = await agent(app.httpServer)
+                .delete(`/api/milestone/1`)
+                .set("Cookie", [`token=${token}`])
+                .send();
+
+            // then
+            const reseponseToGet = await agent(app.httpServer)
+                .get(`/api/milestone/1`)
+                .set("Cookie", [`token=${token}`])
+                .send();
+
+            expect(response.status).toEqual(204);
+            expect(reseponseToGet.status).toEqual(404);
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("존재하지 않는 마일스톤을 삭제할 수 없다", async () => {
+        await TransactionWrapper.transaction(async () => {
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            // given
+            const user = entityManager.create(User, mockUser);
+            await entityManager.save(User, user);
+
+            const token = generateJWTToken({
+                userId: user.id,
+                username: user.name,
+                email: user.email,
+                photos: user.profileImage
+            });
+
+            await agent(app.httpServer)
+                .post(`/api/milestone`)
+                .set("Cookie", [`token=${token}`])
+                .send(mockMilestone);
+
+            // when
+            const response = await agent(app.httpServer)
+                .delete(`/api/milestone/1`)
+                .set("Cookie", [`token=${token}`])
+                .send();
+
+            // then
+            expect(response.status).toEqual(404);
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("이슈에 배정된 마일스톤을 삭제할 수 있다", async () => {
+        await TransactionWrapper.transaction(async () => {
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            // given
+            const user = entityManager.create(User, mockUser);
+            await entityManager.save(User, user);
+
+            const token = generateJWTToken({
+                userId: user.id,
+                username: user.name,
+                email: user.email,
+                photos: user.profileImage
+            });
+
+            // when
+            const response = await agent(app.httpServer)
+                .delete(`/api/milestone/1`)
+                .set("Cookie", [`token=${token}`])
+                .send();
+
+            // then
+            expect(response.status).toEqual(404);
 
             await entityManager.query("ROLLBACK TO STARTPOINT");
         });
