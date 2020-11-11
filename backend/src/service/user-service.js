@@ -3,6 +3,8 @@ import { Transactional } from "typeorm-transactional-cls-hooked";
 import { User } from "../model/user";
 import { crypto } from "../common/lib";
 import { EntityAlreadyExist } from "../common/error/entity-already-exist";
+import { EntityNotFoundError } from "../common/error/entity-not-found-error";
+import { BadRequestError } from "../common/error/bad-request-error";
 
 class UserService {
     constructor() {
@@ -50,17 +52,23 @@ class UserService {
     }
 
     @Transactional()
-    async signup(newUser) {
-        const { email, name, password } = newUser;
+    async signup({ email, name, password }) {
+        const promises = [];
+        promises.push(this.isUserExistByEmail({ email }));
+        promises.push(this.isUserExistByName({ name }));
 
-        if (!(await this.isUserExistByEmail({ email })) || !(await this.isUserExistByName({ name }))) {
+        const [isEmailExist, isNameExist] = await Promise.all(promises);
+        if (!isEmailExist || !isNameExist) {
             throw new EntityAlreadyExist();
         }
 
-        newUser.password = await crypto.encrypt(password);
-        const result = await this.userRepository.save(newUser);
+        const encryptedPassword = await crypto.encrypt(password);
+        const newUser = this.userRepository.create({ email, name, password: encryptedPassword, profileImage: this.defaultProfileImage });
+
+        await this.userRepository.save(newUser);
     }
 
+    @Transactional()
     async signupWithGitHub(profile) {
         const user = await this.getUserByName(profile.username);
 
@@ -73,6 +81,15 @@ class UserService {
         await this.userRepository.save(newUser);
 
         return newUser;
+    }
+
+    async authenticate({ email, password }) {
+        const user = await this.userRepository.findOne({ email });
+
+        if (!user) throw new EntityNotFoundError();
+        if (!(await crypto.compare(password, user.password))) throw new BadRequestError();
+
+        return user;
     }
 }
 
