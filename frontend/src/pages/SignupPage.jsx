@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { SignupForm } from "@components";
+import { color } from "@style/color";
 
 const Main = styled.main`
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: #f2f2f2;
+    background-color: ${color.signup_page_bg};
     justify-content: center;
     place-items: center;
 `;

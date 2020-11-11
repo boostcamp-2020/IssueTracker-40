@@ -32,7 +32,11 @@ const color = {
     main_bg: "#ffffff",
     signup_box_border: "#e6e6e6",
     signup_submit_disabled: "rgb(164, 164, 164, 0.5)",
-    signup_submit: "rgb(164, 164, 164)"
+    signup_submit: "rgb(164, 164, 164)",
+    signup_container: "white",
+    form_warning_msg: "red",
+    signup_page_bg: "#f2f2f2",
+    signup_submit_text: "white"
 };
 
 export { color };

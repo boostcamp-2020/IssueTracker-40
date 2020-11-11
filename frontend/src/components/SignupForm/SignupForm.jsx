@@ -8,7 +8,7 @@ const SignupFormContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     place-items: center;
-    background-color: white;
+    background-color: ${color.signup_container};
     width: 30%;
     height: 40%;
     border-radius: 0.2rem;
@@ -40,7 +40,7 @@ const SignupSubmitButton = styled.button`
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     border: 0.1rem solid ${color.signup_box_border};
-    color: white;
+    color: ${color.signup_submit_text};
     font-weight: bold;
     box-sizing: border-box;
     background-color: ${(props) => (props.disabled ? color.signup_submit_disabled : color.signup_submit)};
@@ -48,7 +48,7 @@ const SignupSubmitButton = styled.button`
 
 const WarningMessage = styled.div`
     display: none;
-    color: red;
+    color: ${color.form_warning_msg};
     font-size: 0.3rem;
     margin-right: auto;
     margin-left: 15%;
