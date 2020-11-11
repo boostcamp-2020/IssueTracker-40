@@ -25,6 +25,7 @@ const color = {
     issue_item_title: "#0366d6",
     issue_item_detail_info_text: "#6a737d",
     issue_item_milestone_title: "#6a737d",
+    list_group_header_border: "#eaecef",
     list_group_header_bg: "#f6f8fa",
     list_group_item_bg: "#ffffff",
     list_group_item_hover_bg: "#f6f8fa",
