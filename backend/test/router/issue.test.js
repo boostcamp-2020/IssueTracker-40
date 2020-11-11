@@ -4,10 +4,12 @@ import { ApplicationFactory } from "../../src/application-factory";
 import { ErrorCode } from "../../src/common/error/error-code";
 import { generateJWTToken } from "../../src/common/lib/token-generator";
 import { ISSUESTATE } from "../../src/common/type";
+import { Comment } from "../../src/model/comment";
 import { Issue } from "../../src/model/issue";
 import { Label } from "../../src/model/label";
 import { Milestone } from "../../src/model/milestone";
 import { User } from "../../src/model/user";
+import { CommentService } from "../../src/service";
 import { IssueService } from "../../src/service/issue-service";
 import { TransactionWrapper } from "../TransactionWrapper";
 

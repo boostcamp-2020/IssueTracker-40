@@ -11,7 +11,8 @@ import {
     CreateReadCommentRequestParams,
     AddCommentRequestBody,
     UpdateDeleteCommentRequestParams,
-    GetIssuesRequestQuery
+    GetIssuesRequestQuery,
+    GetIssueByIdParams
 } from "../dto/issue";
 
 const router = express.Router();
@@ -25,6 +26,8 @@ router.get(
     queryMapper(new QueryParser(" ", ":")),
     issueController.getIssues
 );
+
+router.get("/:issueId", transformer([RequestType.PARAMS], [GetIssueByIdParams]), validator([RequestType.PARAMS]), issueController.getIssueById);
 
 router.post(
     "/:issueId/assignee/:assigneeId",

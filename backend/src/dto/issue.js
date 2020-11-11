@@ -31,6 +31,12 @@ class GetIssuesRequestQuery {
     page;
 }
 
+class GetIssueByIdParams {
+    @Transform((value) => parseInt(value, 10))
+    @IsNumber()
+    issueId;
+}
+
 class UserToIssueRequestParams {
     @IsNumberString()
     issueId;
@@ -63,5 +69,6 @@ export {
     CreateReadCommentRequestParams,
     AddCommentRequestBody,
     UpdateDeleteCommentRequestParams,
-    GetIssuesRequestQuery
+    GetIssuesRequestQuery,
+    GetIssueByIdParams
 };

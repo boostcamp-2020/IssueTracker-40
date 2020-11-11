@@ -72,8 +72,7 @@ class IssueService {
         );
         const issueContent = this.issueContentRepository.create({ content });
         const labelToIssues = this.labelToIssueRepository.create(labels.map((label) => ({ label })));
-
-        const issue = this.issueRepository.create({ title, author, milestone, userToIssues, labelToIssues, issueContent });
+        const issue = this.issueRepository.create({ title, author, milestone, userToIssues, labelToIssues, content: issueContent });
         await this.issueRepository.save(issue);
 
         return issue;
@@ -163,7 +162,7 @@ class IssueService {
         }
 
         if (labelNames?.length > 0 && labels.length !== 0) {
-            query.innerJoinAndSelect("issue.labelToIssues", "b", "b.deleted_at IS NULL");
+            query.innerJoinAndSelect("issue.labelToIssues", "b");
             query.andWhere("b.label_id IN (:...labelIds)", { labelIds: labels.map((label) => label.id) });
         } else if (labelNames?.length > 0 && labels.length === 0) {
             return [];
@@ -177,7 +176,7 @@ class IssueService {
         }
 
         if (assigneeName !== undefined && assignee !== undefined) {
-            query.innerJoinAndSelect("issue.userToIssues", "d", "d.deleted_at IS NULL");
+            query.innerJoinAndSelect("issue.userToIssues", "d");
             query.andWhere("d.user_id = :assigneeId", { assigneeId: assignee.id });
         } else if (assigneeName !== undefined && assignee === undefined) {
             return [];
@@ -188,16 +187,36 @@ class IssueService {
         const issues = await this.issueRepository
             .createQueryBuilder("issue")
             .leftJoinAndSelect("issue.author", "a")
-            .leftJoinAndSelect("issue.labelToIssues", "b", "b.deleted_at IS NULL")
-            .leftJoinAndSelect("b.label", "e")
+            .leftJoinAndSelect("issue.labelToIssues", "b")
+            .leftJoinAndSelect("b.label", "b_0")
             .leftJoinAndSelect("issue.milestone", "c")
-            .leftJoinAndSelect("issue.userToIssues", "d", "d.deleted_at IS NULL")
-            .leftJoinAndSelect("d.user", "f")
+            .leftJoinAndSelect("issue.userToIssues", "d")
+            .leftJoinAndSelect("d.user", "d_0")
             .where("issue.id IN (:...issueIds)", { issueIds })
             .orderBy("issue.id", "DESC")
             .getMany();
 
         return issues;
+    }
+
+    @Transactional()
+    async getIssueByIdWithRelation(issueId) {
+        const issue = await this.issueRepository
+            .createQueryBuilder("issue")
+            .leftJoinAndSelect("issue.author", "a")
+            .leftJoinAndSelect("issue.labelToIssues", "b")
+            .leftJoinAndSelect("b.label", "b_0")
+            .leftJoinAndSelect("issue.milestone", "c")
+            .leftJoinAndSelect("issue.userToIssues", "d")
+            .leftJoinAndSelect("d.user", "d_0")
+            .leftJoinAndSelect("issue.comments", "e", "e.deleted_at IS NULL")
+            .leftJoinAndSelect("e.user", "e_0")
+            .leftJoinAndSelect("e.content", "e_1")
+            .leftJoinAndSelect("issue.content", "f")
+            .where("issue.id = :issueId", { issueId })
+            .getOne();
+
+        return issue;
     }
 }
 
