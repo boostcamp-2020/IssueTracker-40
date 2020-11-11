@@ -36,4 +36,26 @@ const removeAssignee = async (req, res, next) => {
     }
 };
 
-export { addIssue, addAssignee, removeAssignee };
+const addMilestone = async (req, res, next) => {
+    const { milestoneId, issueId } = req.params;
+    try {
+        const issueService = IssueService.getInstance();
+        await issueService.addMilestone(milestoneId, issueId);
+        res.status(201).end();
+    } catch (error) {
+        next(error);
+    }
+};
+
+const removeMilestone = async (req, res, next) => {
+    const { milestoneId, issueId } = req.params;
+    try {
+        const issueService = IssueService.getInstance();
+        await issueService.removeMilestone(milestoneId, issueId);
+        res.status(204).end();
+    } catch (error) {
+        next(error);
+    }
+};
+
+export { addIssue, addAssignee, removeAssignee, addMilestone, removeMilestone };
