@@ -86,11 +86,11 @@ const IssueFilterDropmenu = ({ filterType, title }) => {
     const { issueFilterMenuState } = useContext(IssueFilterMenuContext);
 
     const getDropmenuItems = () => {
-        const { athors, labels, milestones, assignees } = issueFilterMenuState;
+        const { authors, labels, milestones, assignees } = issueFilterMenuState;
 
         switch (filterType) {
             case FILTER_TYPE.AUTHOR:
-                return athors.reduce((acc, cur) => acc.concat(<ProfileItem key={cur.id} name={cur.name} profileImage={cur.profileImage} />), []);
+                return authors.reduce((acc, cur) => acc.concat(<ProfileItem key={cur.id} name={cur.name} profileImage={cur.profileImage} />), []);
             case FILTER_TYPE.LABEL:
                 return labels.reduce(
                     (acc, cur) => acc.concat(<LabelItem key={cur.id} name={cur.name} description={cur.description} color={cur.color} />),

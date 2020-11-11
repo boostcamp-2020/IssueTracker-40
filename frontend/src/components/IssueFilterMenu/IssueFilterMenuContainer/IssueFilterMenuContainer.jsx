@@ -35,7 +35,7 @@ const IssueFilterMenuContainer = () => {
             { id: 3, title: "Milestones", isHiddenDropmenu: true },
             { id: 4, title: "Assignee", isHiddenDropmenu: true }
         ],
-        athors: [
+        authors: [
             {
                 id: 1,
                 name: "woojini",
