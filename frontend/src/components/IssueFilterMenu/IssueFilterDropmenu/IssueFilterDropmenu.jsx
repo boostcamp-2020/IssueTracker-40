@@ -35,7 +35,7 @@ const ProfileItem = ({ id, name, profileImage }) => {
     return (
         <IssueFilterDropmenuItem>
             <ProfileItemArea>
-                <UserProfile imageUrl={profileImage} />
+                <UserProfile imageUrl={profileImage} width="20px" height="20px" />
                 <span>{name}</span>
             </ProfileItemArea>
         </IssueFilterDropmenuItem>
