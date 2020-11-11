@@ -105,8 +105,8 @@ const HeaderDropmenu = () => {
             [userStatusMenus, navigationMenus, serviceMenus].reduce(
                 (acc, cur, idx) =>
                     acc.concat(
-                        <DropmenuMainArea key={idx}>
-                            <DropmenuSubArea statusMenu={idx === 0}>{getMenuItems(cur)}</DropmenuSubArea>
+                        <DropmenuMainArea key={cur.id}>
+                            <DropmenuSubArea statusMenu={idx === 0}>{getMenuItems(cur.menus)}</DropmenuSubArea>
                         </DropmenuMainArea>
                     ),
                 []
