@@ -41,6 +41,11 @@ class UserService {
         return user === undefined;
     }
 
+    async getUsers() {
+        const users = await this.userRepository.find();
+        return users;
+    }
+
     async getUserByEmail(useremail) {
         const user = await this.userRepository.findOne({ email: useremail });
         return user;

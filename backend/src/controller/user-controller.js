@@ -1,3 +1,5 @@
+import { UserService } from "../service";
+
 const sendUserInfo = (req, res, next) => {
     const { user } = req;
     res.status(200).send({
@@ -7,4 +9,15 @@ const sendUserInfo = (req, res, next) => {
     });
 };
 
-export { sendUserInfo };
+const sendUsers = async (req, res, next) => {
+    try {
+        const userService = UserService.getInstance();
+        const users = await userService.getUsers();
+
+        res.status(200).json(users);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export { sendUserInfo, sendUsers };
