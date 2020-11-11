@@ -55,6 +55,29 @@ class CommentService {
         const comments = this.commentRepository.find({ issue: issueId });
         return comments;
     }
+
+    @Transactional()
+    async changeComment(commentId, content) {
+        const targetComment = await this.commentRepository.findOne({ id: commentId, relations: ["content"] });
+        const targetCommentContent = await this.commentContentRepository.findOne(targetComment.id);
+
+        if (targetComment === undefined || targetCommentContent === undefined) {
+            throw new EntityNotFoundError();
+        }
+
+        targetCommentContent.content = content;
+
+        await this.commentContentRepository.save(targetCommentContent);
+    }
+
+    @Transactional()
+    async removeComment(commentId) {
+        const targetComment = await this.commentRepository.findOne({ id: commentId, relations: ["content"] });
+        if (targetComment === undefined) {
+            throw new EntityNotFoundError();
+        }
+        await this.commentRepository.remove(targetComment);
+    }
 }
 
 export { CommentService };
