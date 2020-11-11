@@ -23,10 +23,7 @@ const SignupFormInput = styled.input`
     width: 70%;
     border-radius: 0.2rem;
     border: 0.1rem solid ${color.signup_box_border};
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding: 0.5rem;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     box-sizing: border-box;
