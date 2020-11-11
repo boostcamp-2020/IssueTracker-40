@@ -8,7 +8,8 @@ import {
     UserToIssueRequestParams,
     CreateReadCommentRequestParams,
     AddCommentRequestBody,
-    UpdateDeleteCommentRequestParams
+    UpdateDeleteCommentRequestParams,
+    IssueMilestoneRequestParams
 } from "../dto/issue";
 
 const router = express.Router();
@@ -55,6 +56,20 @@ router.delete(
     transformer([RequestType.PARAMS], [UpdateDeleteCommentRequestParams]),
     validator([RequestType.PARAMS]),
     commentController.removeComment
+);
+
+router.post(
+    "/:issueId/milestone/:milestoneId",
+    transformer([RequestType.PARAMS], [IssueMilestoneRequestParams]),
+    validator([RequestType.PARAMS]),
+    issueController.addMilestone
+);
+
+router.delete(
+    "/:issueId/milestone/:milestoneId",
+    transformer([RequestType.PARAMS], [IssueMilestoneRequestParams]),
+    validator([RequestType.PARAMS]),
+    issueController.removeMilestone
 );
 
 export default router;
