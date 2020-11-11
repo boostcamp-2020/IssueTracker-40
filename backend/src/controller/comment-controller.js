@@ -29,7 +29,7 @@ const getComments = async (req, res, next) => {
             };
         });
 
-        res.status(200).send(comments);
+        res.status(200).send({ comments });
     } catch (error) {
         next(error);
     }
