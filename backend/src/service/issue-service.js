@@ -122,7 +122,7 @@ class IssueService {
             throw new EntityNotFoundError();
         }
 
-        targetIssue.milestone = targetMilestone.id;
+        targetIssue.milestone = targetMilestone;
         await this.issueRepository.save(targetIssue);
         return targetIssue;
     }
