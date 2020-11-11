@@ -16,7 +16,8 @@ const color = {
     tab_selected_bg: "#ffffff",
     tab_container_gb: "#ffffff",
     border_primary: "#e1e4e8",
-    register_btn: "#2e9afe",
+    register_btn: "rgb(46, 154, 254)",
+    register_btn_disabled: "rgba(46, 154, 254, 0.5)",
     loading_dots: "#d8d8d8",
     sidemenu_hover: "#2e9afe",
     sidemenu_default: "#6e6e6e",
@@ -51,7 +52,8 @@ const color = {
     container_border: "#e1e4e8",
     title_input_bg: "#fafbfc",
     title_input_border: "#e1e4e8",
-    title_input_focus_border: "#0366d6"
+    title_input_focus_border: "#0366d6",
+    list_group_border: "#eaecef"
 };
 
 export { color };
