@@ -3,6 +3,8 @@ import { Transactional } from "typeorm-transactional-cls-hooked";
 import { User } from "../model/user";
 import { crypto } from "../common/lib";
 import { EntityAlreadyExist } from "../common/error/entity-already-exist";
+import { EntityNotFoundError } from "../common/error/entity-not-found-error";
+import { BadRequestError } from "../common/error/bad-request-error";
 
 class UserService {
     constructor() {
@@ -58,7 +60,7 @@ class UserService {
         }
 
         newUser.password = await crypto.encrypt(password);
-        const result = await this.userRepository.save(newUser);
+        await this.userRepository.save(newUser);
     }
 
     async signupWithGitHub(profile) {
@@ -73,6 +75,15 @@ class UserService {
         await this.userRepository.save(newUser);
 
         return newUser;
+    }
+
+    async authenticate({ email, password }) {
+        const user = await this.userRepository.findOne({ email });
+
+        if (!user) throw new EntityNotFoundError();
+        if (!(await crypto.compare(password, user.password))) throw new BadRequestError();
+
+        return user;
     }
 }
 
