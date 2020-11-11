@@ -42,4 +42,10 @@ class ChangeMilestoneRequestBody {
     dueDate;
 }
 
-export { AddMilestoneRequestBody, GetMilestoneRequestParams, ChangeMilestoneRequestBody, ChangeMilestoneRequestParams };
+class RemoveMilestoneRequestParams {
+    @Transform((value) => parseInt(value, 10))
+    @IsNumber()
+    milestoneId;
+}
+
+export { AddMilestoneRequestBody, GetMilestoneRequestParams, ChangeMilestoneRequestBody, ChangeMilestoneRequestParams, RemoveMilestoneRequestParams };
