@@ -1,6 +1,17 @@
 import { UserService } from "../service";
 import { tokenGenerator } from "../common/lib";
 
+const signup = async (req, res, next) => {
+    try {
+        const { email, name, password } = req.body;
+        const userService = UserService.getInstance();
+        await userService.signup({ email, name, password });
+        res.send("ok");
+    } catch (error) {
+        next(error);
+    }
+};
+
 const login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
@@ -26,4 +37,4 @@ const logout = (req, res) => {
     res.clearCookie("token").send("ok");
 };
 
-export { login, logout };
+export { signup, login, logout };
