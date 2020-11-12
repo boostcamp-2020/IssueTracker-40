@@ -6,6 +6,7 @@ import { generateJWTToken } from "../../src/common/lib/token-generator";
 import { ISSUESTATE } from "../../src/common/type";
 import { Comment } from "../../src/model/comment";
 import { Issue } from "../../src/model/issue";
+import { IssueContent } from "../../src/model/issue-content";
 import { Label } from "../../src/model/label";
 import { Milestone } from "../../src/model/milestone";
 import { User } from "../../src/model/user";
@@ -319,6 +320,206 @@ describe("Issue Router Test", () => {
             expect(responses[0].body.issues).toHaveLength(1);
             expect(responses[1].body.issues).toHaveLength(2);
             expect(responses[2].body.issues).toHaveLength(3);
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("PATCH /api/issue/:issueId 이슈 제목 수정, HTTP 상태 코드 204", async () => {
+        await TransactionWrapper.transaction(async () => {
+            // given
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            const user1 = entityManager.create(User, { email: "youngxpepp1@gmail.com", name: "youngxpepp1", profileImage: "profile image" });
+            await entityManager.save(User, [user1]);
+            const token = generateJWTToken({
+                userId: user1.id,
+                username: user1.name,
+                email: user1.email,
+                photos: user1.profileImage
+            });
+
+            const content = entityManager.create(IssueContent, { content: "issue content" });
+            const issue = entityManager.create(Issue, { title: "issue title", content, author: user1 });
+            await entityManager.save(Issue, issue);
+
+            // when
+            const response = await agent(app.httpServer)
+                .patch(`/api/issue/${issue.id}`)
+                .set("Cookie", [`token=${token}`])
+                .send({
+                    title: "modified title"
+                });
+
+            // then
+            expect(response.status).toEqual(204);
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("PATCH /api/issue/:issueId 이슈 내용 수정, HTTP 상태 코드 204", async () => {
+        await TransactionWrapper.transaction(async () => {
+            // given
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            const user1 = entityManager.create(User, { email: "youngxpepp1@gmail.com", name: "youngxpepp1", profileImage: "profile image" });
+            await entityManager.save(User, [user1]);
+            const token = generateJWTToken({
+                userId: user1.id,
+                username: user1.name,
+                email: user1.email,
+                photos: user1.profileImage
+            });
+
+            const content = entityManager.create(IssueContent, { content: "issue content" });
+            const issue = entityManager.create(Issue, { title: "issue title", content, author: user1 });
+            await entityManager.save(Issue, issue);
+
+            // when
+            const response = await agent(app.httpServer)
+                .patch(`/api/issue/${issue.id}`)
+                .set("Cookie", [`token=${token}`])
+                .send({
+                    content: "modified issue content"
+                });
+
+            // then
+            expect(response.status).toEqual(204);
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("PATCH /api/issue/:issueId 이슈 닫기, HTTP 상태 코드 204", async () => {
+        await TransactionWrapper.transaction(async () => {
+            // given
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            const user1 = entityManager.create(User, { email: "youngxpepp1@gmail.com", name: "youngxpepp1", profileImage: "profile image" });
+            await entityManager.save(User, [user1]);
+            const token = generateJWTToken({
+                userId: user1.id,
+                username: user1.name,
+                email: user1.email,
+                photos: user1.profileImage
+            });
+
+            const content = entityManager.create(IssueContent, { content: "issue content" });
+            const issue = entityManager.create(Issue, { title: "issue title", content, author: user1 });
+            await entityManager.save(Issue, issue);
+
+            // when
+            const response = await agent(app.httpServer)
+                .patch(`/api/issue/${issue.id}`)
+                .set("Cookie", [`token=${token}`])
+                .send({
+                    state: ISSUESTATE.CLOSED
+                });
+
+            // then
+            expect(response.status).toEqual(204);
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("PATCH /api/issue/:issueId 이슈 상태 수정, 잘못된 상태값 전달, HTTP 상태 코드 400, 에러코드 1005", async () => {
+        await TransactionWrapper.transaction(async () => {
+            // given
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            const user1 = entityManager.create(User, { email: "youngxpepp1@gmail.com", name: "youngxpepp1", profileImage: "profile image" });
+            await entityManager.save(User, [user1]);
+            const token = generateJWTToken({
+                userId: user1.id,
+                username: user1.name,
+                email: user1.email,
+                photos: user1.profileImage
+            });
+
+            const content = entityManager.create(IssueContent, { content: "issue content" });
+            const issue = entityManager.create(Issue, { title: "issue title", content, author: user1 });
+            await entityManager.save(Issue, issue);
+
+            // when
+            const response = await agent(app.httpServer)
+                .patch(`/api/issue/${issue.id}`)
+                .set("Cookie", [`token=${token}`])
+                .send({
+                    state: "wrong state"
+                });
+
+            // then
+            expect(response.status).toEqual(400);
+            expect(response.body?.error?.code).toEqual(1005);
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("PATCH /api/issue/:issueId 이슈 상태 수정, 없는 이슈, HTTP 상태 코드 404, 에러코드 1000", async () => {
+        await TransactionWrapper.transaction(async () => {
+            // given
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            const user1 = entityManager.create(User, { email: "youngxpepp1@gmail.com", name: "youngxpepp1", profileImage: "profile image" });
+            await entityManager.save(User, [user1]);
+            const token = generateJWTToken({
+                userId: user1.id,
+                username: user1.name,
+                email: user1.email,
+                photos: user1.profileImage
+            });
+
+            // when
+            const response = await agent(app.httpServer)
+                .patch(`/api/issue/1`)
+                .set("Cookie", [`token=${token}`])
+                .send({
+                    state: ISSUESTATE.CLOSED
+                });
+
+            // then
+            expect(response.status).toEqual(404);
+            expect(response.body?.error?.code).toEqual(1000);
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("DELETE /api/issue/:issueId 호출, HTTP 상태 코드 204", async () => {
+        await TransactionWrapper.transaction(async () => {
+            // given
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            const user1 = entityManager.create(User, { email: "youngxpepp1@gmail.com", name: "youngxpepp1", profileImage: "profile image" });
+            await entityManager.save(User, [user1]);
+            const token = generateJWTToken({
+                userId: user1.id,
+                username: user1.name,
+                email: user1.email,
+                photos: user1.profileImage
+            });
+
+            const content = entityManager.create(IssueContent, { content: "issue content" });
+            const issue = entityManager.create(Issue, { title: "issue title", content, author: user1 });
+            await entityManager.save(Issue, issue);
+
+            // when
+            const response = await agent(app.httpServer)
+                .patch(`/api/issue/${issue.id}`)
+                .set("Cookie", [`token=${token}`])
+                .send();
+
+            // then
+            expect(response.status).toEqual(204);
 
             await entityManager.query("ROLLBACK TO STARTPOINT");
         });

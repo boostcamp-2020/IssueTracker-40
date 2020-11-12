@@ -59,7 +59,7 @@ class Issue {
     @OneToMany(() => LabelToIssue, (labelToIssue) => labelToIssue.issue, { cascade: ["insert"] })
     labelToIssues;
 
-    @OneToOne(() => IssueContent, (content) => content.issue, { cascade: ["insert"] })
+    @OneToOne(() => IssueContent, (content) => content.issue, { cascade: ["insert", "update"] })
     @JoinColumn({ name: "content_id" })
     content;
 }

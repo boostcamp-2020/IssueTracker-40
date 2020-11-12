@@ -244,6 +244,44 @@ class IssueService {
 
         return issue;
     }
+
+    @Transactional()
+    async modifyIssueById(issueId, title, content, state) {
+        const issue = await this.issueRepository.findOne(issueId, { relations: ["content"] });
+
+        if (issue === undefined) {
+            throw new EntityNotFoundError();
+        }
+
+        if (title !== undefined && title !== issue.title) {
+            issue.title = title;
+        }
+
+        if (content !== undefined) {
+            issue.content.content = content;
+        }
+
+        if (state !== undefined) {
+            issue.state = state;
+        }
+
+        await this.issueRepository.save(issue);
+
+        return issue;
+    }
+
+    @Transactional()
+    async removeIssueById(issueId) {
+        const issue = await this.issueRepository.findOne(issueId);
+
+        if (issue === undefined) {
+            throw new EntityNotFoundError();
+        }
+
+        await this.issueRepository.softRemove(issue);
+
+        return issue;
+    }
 }
 
 export { IssueService };

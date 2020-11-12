@@ -1,7 +1,11 @@
+import { getRepository } from "typeorm";
 import { getEntityManagerOrTransactionManager } from "typeorm-transactional-cls-hooked";
 import { Application } from "../../src/application";
+import { EntityNotFoundError } from "../../src/common/error/entity-not-found-error";
 import { ISSUESTATE } from "../../src/common/type";
+import { Comment } from "../../src/model/comment";
 import { Issue } from "../../src/model/issue";
+import { IssueContent } from "../../src/model/issue-content";
 import { Label } from "../../src/model/label";
 import { Milestone } from "../../src/model/milestone";
 import { User } from "../../src/model/user";
@@ -84,7 +88,7 @@ describe("IssueService Test", () => {
         });
     });
 
-    test("정상적인 사용자가 필터 조건 없이 issue 목록 조회", async () => {
+    test("필터 조건 없이 issue 목록 조회", async () => {
         const issueService = IssueService.getInstance();
 
         await TransactionWrapper.transaction(async () => {
@@ -125,7 +129,7 @@ describe("IssueService Test", () => {
         });
     });
 
-    test("정상적인 사용자가 open issue, closed issue 목록 조회", async () => {
+    test("open issue, closed issue 목록 조회", async () => {
         const issueService = IssueService.getInstance();
 
         await TransactionWrapper.transaction(async () => {
@@ -173,7 +177,7 @@ describe("IssueService Test", () => {
         });
     });
 
-    test("정상적인 사용자가 authorName으로 issue 목록 조회", async () => {
+    test("authorName으로 issue 목록 조회", async () => {
         const issueService = IssueService.getInstance();
 
         await TransactionWrapper.transaction(async () => {
@@ -231,7 +235,7 @@ describe("IssueService Test", () => {
         });
     });
 
-    test("정상적인 사용자가 labelName으로 issue 목록 조회", async () => {
+    test("labelName으로 issue 목록 조회", async () => {
         const issueService = IssueService.getInstance();
 
         await TransactionWrapper.transaction(async () => {
@@ -255,8 +259,7 @@ describe("IssueService Test", () => {
                         title: "issue title",
                         content: "issue content",
                         assigneeIds: [],
-                        labelIds: [label1.id],
-                        milestoneIds: []
+                        labelIds: [label1.id]
                     })
                 );
             }
@@ -267,8 +270,7 @@ describe("IssueService Test", () => {
                         title: "issue title",
                         content: "issue content",
                         assigneeIds: [],
-                        labelIds: [label2.id],
-                        milestoneIds: []
+                        labelIds: [label2.id]
                     })
                 );
             }
@@ -279,8 +281,7 @@ describe("IssueService Test", () => {
                         title: "issue title",
                         content: "issue content",
                         assigneeIds: [],
-                        labelIds: [label3.id],
-                        milestoneIds: []
+                        labelIds: [label3.id]
                     })
                 );
             }
@@ -304,7 +305,7 @@ describe("IssueService Test", () => {
         });
     });
 
-    test("정상적인 사용자가 milestoneTitle으로 issue 목록 조회", async () => {
+    test("milestoneTitle으로 issue 목록 조회", async () => {
         const issueService = IssueService.getInstance();
 
         await TransactionWrapper.transaction(async () => {
@@ -382,7 +383,7 @@ describe("IssueService Test", () => {
         });
     });
 
-    test("정상적인 사용자가 assigneeName으로 issue 목록 조회", async () => {
+    test("assigneeName으로 issue 목록 조회", async () => {
         const issueService = IssueService.getInstance();
 
         await TransactionWrapper.transaction(async () => {
@@ -442,6 +443,142 @@ describe("IssueService Test", () => {
             expect(pagedIssues1).toHaveLength(12);
             expect(pagedIssues2).toHaveLength(8);
             expect(pagedIssues3).toHaveLength(4);
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("이슈 타이틀 수정", async () => {
+        const issueService = IssueService.getInstance();
+
+        await TransactionWrapper.transaction(async () => {
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            // given
+            const user1 = entityManager.create(User, { email: "youngxpepp1@gmail.com", name: "youngxpepp1", profileImage: "profile image" });
+            await entityManager.save(User, [user1]);
+
+            const content = entityManager.create(IssueContent, { content: "issue content" });
+            const issue = entityManager.create(Issue, { title: "issue title", content, author: user1 });
+            await entityManager.save(Issue, issue);
+
+            // when
+            const newIssue = await issueService.modifyIssueById(issue.id, "modified issue title");
+
+            // then
+            expect(newIssue.title).toEqual("modified issue title");
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("이슈 내용 수정", async () => {
+        const issueService = IssueService.getInstance();
+
+        await TransactionWrapper.transaction(async () => {
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            // given
+            const user1 = entityManager.create(User, { email: "youngxpepp1@gmail.com", name: "youngxpepp1", profileImage: "profile image" });
+            await entityManager.save(User, [user1]);
+
+            const content = entityManager.create(IssueContent, { content: "issue content" });
+            const issue = entityManager.create(Issue, { title: "issue title", content, author: user1 });
+            await entityManager.save(Issue, issue);
+
+            // when
+            const newIssue = await issueService.modifyIssueById(issue.id, undefined, "modified issue content");
+
+            // then
+            expect(newIssue?.content?.content).toEqual("modified issue content");
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("이슈 상태 수정", async () => {
+        const issueService = IssueService.getInstance();
+
+        await TransactionWrapper.transaction(async () => {
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            // given
+            const user1 = entityManager.create(User, { email: "youngxpepp1@gmail.com", name: "youngxpepp1", profileImage: "profile image" });
+            await entityManager.save(User, [user1]);
+
+            const content = entityManager.create(IssueContent, { content: "issue content" });
+            const issue = entityManager.create(Issue, { title: "issue title", content, author: user1 });
+            await entityManager.save(Issue, issue);
+
+            // when
+            const newIssue = await issueService.modifyIssueById(issue.id, undefined, undefined, ISSUESTATE.CLOSED);
+
+            // then
+            expect(newIssue.state).toEqual(ISSUESTATE.CLOSED);
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("이슈 삭제", async () => {
+        const issueService = IssueService.getInstance();
+
+        await TransactionWrapper.transaction(async () => {
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            // given
+            const user1 = entityManager.create(User, { email: "youngxpepp1@gmail.com", name: "youngxpepp1", profileImage: "profile image" });
+            await entityManager.save(User, [user1]);
+
+            const label1 = entityManager.create(Label, { name: "label1", color: "#000000", description: "description" });
+            await entityManager.save(Label, [label1]);
+
+            const milestone1 = entityManager.create(Milestone, { title: "milestone title1" });
+            await entityManager.save(Milestone, [milestone1]);
+
+            const issue = await issueService.addIssue({
+                userId: user1.id,
+                title: "issue title",
+                content: "issue content",
+                assigneeIds: [user1.id],
+                labelIds: [label1.id],
+                milestoneId: milestone1.id
+            });
+
+            const comment = entityManager.create(Comment, { user: user1, issue });
+            await entityManager.save(comment);
+
+            // when
+            await issueService.removeIssueById(issue.id);
+
+            // then
+            const deletedIssue = await entityManager.findOne(Issue, issue.id);
+            expect(deletedIssue).toBeUndefined();
+
+            await entityManager.query("ROLLBACK TO STARTPOINT");
+        });
+    });
+
+    test("없는 이슈 삭제했을 때 EntityNotFoundError", async () => {
+        const issueService = IssueService.getInstance();
+
+        await TransactionWrapper.transaction(async () => {
+            const entityManager = getEntityManagerOrTransactionManager();
+            await entityManager.query("SAVEPOINT STARTPOINT");
+
+            // given
+            // when
+            // then
+            try {
+                await issueService.removeIssueById(1);
+                fail();
+            } catch (e) {
+                expect(e).toBeInstanceOf(EntityNotFoundError);
+            }
 
             await entityManager.query("ROLLBACK TO STARTPOINT");
         });
