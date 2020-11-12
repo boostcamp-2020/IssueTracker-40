@@ -77,7 +77,7 @@ export {
     CreateReadCommentRequestParams,
     AddCommentRequestBody,
     UpdateDeleteCommentRequestParams,
-    IssueMilestoneRequestParams
+    IssueMilestoneRequestParams,
     GetIssuesRequestQuery,
     GetIssueByIdParams
 };
