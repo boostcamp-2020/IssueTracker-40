@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { usePromise } from "@hook";
 import { UserContext } from "@context";
-import { Header, Main } from "@components";
+import { Header, Main, LabelMilestoneHeader } from "@components";
 import { waitAuthorizationApi } from "@utils";
 
 const MilestonePage = () => {
@@ -16,6 +16,7 @@ const MilestonePage = () => {
         <UserContext.Provider value={resolved.data}>
             <Header />
             <Main>
+                <LabelMilestoneHeader value="milestone"/>
                 <p>마일스톤 페이지입니다</p>
             </Main>
         </UserContext.Provider>

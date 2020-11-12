@@ -14,4 +14,5 @@ export { default as IssueItem } from "./IssueItem/IssueItem";
 export { default as IssueFilterMenu } from "./IssueFilterMenu/IssueFilterMenuContainer/IssueFilterMenuContainer";
 export { default as Main } from "./Main/Main";
 export { default as ProgressBar } from "./ProgressBar/ProgressBar";
+export { default as LabelMilestoneHeader } from "./LabelMilestoneHeader/LabelMilestoneHeader";
 export * as Form from "./Form";
