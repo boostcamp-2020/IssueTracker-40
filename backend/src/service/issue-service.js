@@ -139,6 +139,8 @@ class IssueService {
         await this.issueRepository.save(targetIssue);
 
         return targetIssue;
+    }
+
     async getIssues({ issueState, authorName, labelNames, milestoneTitle, assigneeName, page }) {
         const promises = [];
 
