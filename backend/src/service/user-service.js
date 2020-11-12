@@ -5,10 +5,12 @@ import { crypto } from "../common/lib";
 import { EntityAlreadyExist } from "../common/error/entity-already-exist";
 import { EntityNotFoundError } from "../common/error/entity-not-found-error";
 import { BadRequestError } from "../common/error/bad-request-error";
+import { UserToIssue } from "../model/user-to-issue";
 
 class UserService {
     constructor() {
         this.userRepository = getRepository(User);
+        this.userToIssueRepository = getRepository(UserToIssue);
         this.defaultProfileImage = "https://pbs.twimg.com/profile_images/977835673511084032/xXA979th.jpg";
     }
 
@@ -39,6 +41,24 @@ class UserService {
     async isUserExistByName({ name }) {
         const user = await this.getUserByName(name);
         return user === undefined;
+    }
+
+    async getUsers() {
+        const users = await this.userRepository.find();
+        return users;
+    }
+
+    async getAuthors() {
+        const authors = await this.userRepository.createQueryBuilder("user").innerJoinAndSelect("user.issues", "a").getMany();
+        return authors;
+    }
+
+    async getAssignees() {
+        const userToIssues = await this.userToIssueRepository
+            .createQueryBuilder("user_to_issue")
+            .innerJoinAndSelect("user_to_issue.user", "a")
+            .getMany();
+        return [...userToIssues].map((userToIssue) => userToIssue.user);
     }
 
     async getUserByEmail(useremail) {
