@@ -4,6 +4,13 @@ import styled from "styled-components";
 const ListGroupSection = styled.section`
     width: 100%;
     max-width: 1280px;
+    & ul {
+        margin: 0;
+        padding: 0;
+        li {
+            list-style: none;
+        }
+    }
 `;
 
 const ListGroupArea = ({ children, ...rest }) => {
