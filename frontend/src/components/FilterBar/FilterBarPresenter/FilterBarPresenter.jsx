@@ -8,8 +8,7 @@ import FilterBarContext from "../FilterBarContext/FilterBarContext";
 
 const FilterForm = styled.form`
     display: flex;
-    width: 70%;
-    max-width: 1280px;
+    width: 65%;
 `;
 
 const FilterInputArea = styled.div`
