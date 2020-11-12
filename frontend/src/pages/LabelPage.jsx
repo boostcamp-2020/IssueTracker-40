@@ -1,19 +1,49 @@
-import React from "react";
-import { LabelMilestoneHeader } from "@components";
+import React, { useState } from "react";
+import { LabelMilestoneHeader, LabelEditor, ListGroup, LabelItem } from "@components";
+import { API } from "@utils";
+import { usePromise } from "@hook";
 
 const LabelPage = () => {
+    const [isOpenNewLabel, setOpenNewLabel] = useState(false);
     const handlingOnButtonClick = () => {
-        console.log("라벨 생성 창이 생깁니다.");
+        setOpenNewLabel(!isOpenNewLabel);
     };
+
+    const getLabels = async () => {
+        const labels = await API.getLabels();
+        return labels;
+    };
+
+    const [loading, resolved, error] = usePromise(getLabels, []);
+
+    if (loading) return <div>로딩중..!</div>;
+    if (error) window.location.href = "/";
+    if (!resolved) return null;
+
+    const labels = resolved.data.lables;
+
+    const getLabelItems = () =>
+        labels.reduce(
+            (acc, cur) =>
+                acc.concat(
+                    <ListGroup.Item key={cur.id}>
+                        <LabelItem {...cur} />
+                    </ListGroup.Item>
+                ),
+            []
+        );
 
     return (
         <>
             <LabelMilestoneHeader value="label" buttonClick={handlingOnButtonClick} />
-            <LabelEditor create />
-            <LabelEditor />
+            {isOpenNewLabel ? <LabelEditor buttonClick={handlingOnButtonClick} create /> : null}
             <ListGroup.Area>
-                <ListGroup.Header />
-                <ListGroup.ItemList />
+                <ListGroup.Header>
+                    <p>
+                        <b> {labels.length} labels </b>
+                    </p>
+                </ListGroup.Header>
+                <ListGroup.ItemList>{getLabelItems()}</ListGroup.ItemList>
             </ListGroup.Area>
         </>
     );

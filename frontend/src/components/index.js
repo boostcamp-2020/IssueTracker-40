@@ -22,5 +22,6 @@ export { default as LabelEditor } from "./LabelEditor/LabelEditor";
 export * as Form from "./Form";
 export { default as FilterBar } from "./FilterBar/FilterBarContainer/FilterBarContainer";
 export { default as PageNavButton } from "./PageNavButton/PageNavButton";
+export { default as LabelItem } from "./LabelItem/LabelItem";
 export * as IssueDetail from "./IssueDetail";
 export { default as Comment } from "./Comment/Comment";

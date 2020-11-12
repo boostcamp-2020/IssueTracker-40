@@ -33,13 +33,13 @@ const postLabel = async (data) => {
     return response;
 };
 
-const patchLabel = async (id) => {
-    const response = await axios.post(`${Config.API.LABLE}/${id}`);
+const putLabel = async (id, data) => {
+    const response = await axios.put(`${Config.API.LABLE}/${id}`, data);
     return response;
 };
 
 const deleteLabel = async (id) => {
-    const response = await axios.post(`${Config.API.LABLE}/${id}`);
+    const response = await axios.delete(`${Config.API.LABLE}/${id}`);
     return response;
 };
 
@@ -48,4 +48,4 @@ const getIssueById = async (issueId) => {
     return response?.data?.issue;
 };
 
-export { postLogin, postSignup, getLabels, postLabel, patchLabel, deleteLabel, getIssueById, getIssues };
+export { postLogin, postSignup, getLabels, postLabel, putLabel, deleteLabel, getIssueById, getIssues };
