@@ -1,3 +1,4 @@
+import { ISSUESTATE } from "../common/type";
 import { IssueService } from "../service/issue-service";
 
 const addIssue = async (req, res, next) => {
@@ -110,7 +111,9 @@ const getIssueById = async (req, res, next) => {
             labels,
             milestone: {
                 id: issue?.milestone?.id,
-                title: issue?.milestone?.title
+                title: issue?.milestone?.title,
+                openIssueCount: issue?.milestone?.issues?.filter((i) => i.state === ISSUESTATE.OPEN)?.length,
+                closedIssueCount: issue?.milestone?.issues?.filter((i) => i.state === ISSUESTATE.CLOSED)?.length
             },
             assignees,
             comments
