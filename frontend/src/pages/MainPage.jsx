@@ -1,17 +1,7 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
-import { usePromise } from "@hook";
-import { UserContext } from "@context";
-import { Header, Main, MainTemplate, ListGroup, IssueItem, IssueFilterMenu, FilterBar, PageNavButton, Button } from "@components";
-import { waitAuthorizationApi } from "@utils";
+import { MainTemplate, ListGroup, IssueItem, IssueFilterMenu, FilterBar, PageNavButton, Button } from "@components";
 
 const MainPage = () => {
-    const [loading, resolved, error] = usePromise(waitAuthorizationApi, []);
-
-    if (loading) return <div>로딩중..!</div>;
-    if (error) return <Redirect to="/login" />;
-    if (!resolved) return null;
-
     const issues = [
         {
             id: 1,
@@ -101,24 +91,21 @@ const MainPage = () => {
         );
 
     return (
-        <UserContext.Provider value={resolved.data}>
-            <Header />
-            <Main>
-                <MainTemplate.Top>
-                    <FilterBar />
-                    <PageNavButton />
-                    <Button primary>New Issue</Button>
-                </MainTemplate.Top>
-                <MainTemplate.Content>
-                    <ListGroup.Area>
-                        <ListGroup.Header>
-                            <IssueFilterMenu />
-                        </ListGroup.Header>
-                        <ListGroup.ItemList>{getIssueItems()}</ListGroup.ItemList>
-                    </ListGroup.Area>
-                </MainTemplate.Content>
-            </Main>
-        </UserContext.Provider>
+        <>
+            <MainTemplate.Top>
+                <FilterBar />
+                <PageNavButton />
+                <Button primary>New Issue</Button>
+            </MainTemplate.Top>
+            <MainTemplate.Content>
+                <ListGroup.Area>
+                    <ListGroup.Header>
+                        <IssueFilterMenu />
+                    </ListGroup.Header>
+                    <ListGroup.ItemList>{getIssueItems()}</ListGroup.ItemList>
+                </ListGroup.Area>
+            </MainTemplate.Content>
+        </>
     );
 };
 
