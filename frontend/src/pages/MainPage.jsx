@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { usePromise } from "@hook";
 import { UserContext } from "@context";
-import { Header, Main, ListGroup, IssueItem, IssueFilterMenu } from "@components";
+import { Header, Main, MainTemplate, ListGroup, IssueItem, IssueFilterMenu, FilterBar, PageNavButton, Button } from "@components";
 import { waitAuthorizationApi } from "@utils";
 
 const MainPage = () => {
@@ -104,12 +104,19 @@ const MainPage = () => {
         <UserContext.Provider value={resolved.data}>
             <Header />
             <Main>
-                <ListGroup.Area>
-                    <ListGroup.Header>
-                        <IssueFilterMenu />
-                    </ListGroup.Header>
-                    <ListGroup.ItemList>{getIssueItems()}</ListGroup.ItemList>
-                </ListGroup.Area>
+                <MainTemplate.Top>
+                    <FilterBar />
+                    <PageNavButton />
+                    <Button primary>New Issue</Button>
+                </MainTemplate.Top>
+                <MainTemplate.Content>
+                    <ListGroup.Area>
+                        <ListGroup.Header>
+                            <IssueFilterMenu />
+                        </ListGroup.Header>
+                        <ListGroup.ItemList>{getIssueItems()}</ListGroup.ItemList>
+                    </ListGroup.Area>
+                </MainTemplate.Content>
             </Main>
         </UserContext.Provider>
     );
