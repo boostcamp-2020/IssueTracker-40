@@ -3,9 +3,9 @@ import styled, { css } from "styled-components";
 import { color } from "@style/color";
 
 const WriterContainer = styled.div`
-    margin: 10px;
+    margin-top: 0.5rem;
     padding: 0px;
-    width: 500px;
+    width: 95%;
     border-radius: 10px;
     font-size: 13px;
     color: ${color.textarea_text};
@@ -24,8 +24,11 @@ const WriterContainer = styled.div`
 `;
 
 const WriterTextarea = styled.textarea`
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
     padding: 10px;
-    width: 480px;
+    width: 100%;
     height: 90px;
     min-height: 90px;
     max-height: 300px;
@@ -44,7 +47,7 @@ const WriterTextarea = styled.textarea`
 
 const WriterDropAndDropZone = styled.div`
     padding: 10px;
-    width: 460px;
+    width: auto;
     height: 20px;
     border-radius: 0px 0px 10px 10px;
     cursor: pointer;
