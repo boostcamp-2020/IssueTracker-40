@@ -33,6 +33,11 @@ class CommentService {
         return issue;
     }
 
+    async getContent(commentId) {
+        const comment = await this.commentRepository.findOne(commentId, { relations: ["content"] });
+        return comment.content.content;
+    }
+
     @Transactional()
     async addComment(userId, issueId, content) {
         const targetUser = await this.getUserById(userId);
@@ -52,7 +57,7 @@ class CommentService {
 
     @Transactional()
     async getComments(issueId) {
-        const comments = this.commentRepository.find({ issue: issueId });
+        const comments = await this.commentRepository.find({ issue: issueId, relations: ["user", "content"] });
         return comments;
     }
 

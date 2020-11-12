@@ -11,6 +11,7 @@ import {
     CreateReadCommentRequestParams,
     AddCommentRequestBody,
     UpdateDeleteCommentRequestParams,
+    IssueMilestoneRequestParams,
     GetIssuesRequestQuery,
     GetIssueByIdParams,
     ModifyIssueByIdBody,
@@ -86,6 +87,20 @@ router.delete(
     transformer([RequestType.PARAMS], [UpdateDeleteCommentRequestParams]),
     validator([RequestType.PARAMS]),
     commentController.removeComment
+);
+
+router.post(
+    "/:issueId/milestone/:milestoneId",
+    transformer([RequestType.PARAMS], [IssueMilestoneRequestParams]),
+    validator([RequestType.PARAMS]),
+    issueController.addMilestone
+);
+
+router.delete(
+    "/:issueId/milestone/:milestoneId",
+    transformer([RequestType.PARAMS], [IssueMilestoneRequestParams]),
+    validator([RequestType.PARAMS]),
+    issueController.removeMilestone
 );
 
 export default router;

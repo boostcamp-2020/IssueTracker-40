@@ -3,22 +3,22 @@ import { getEntityManagerOrTransactionManager } from "typeorm-transactional-cls-
 import { ApplicationFactory } from "../../src/application-factory";
 import { TransactionWrapper } from "../TransactionWrapper";
 import { generateJWTToken } from "../../src/common/lib/token-generator";
-import { Milestone } from "../../src/model/milestone";
 import { User } from "../../src/model/user";
-import { MilestoneService } from "../../src/service";
+import { Issue } from "../../src/model/issue";
+import { Milestone } from "../../src/model/milestone";
 
 const mockUser = { email: "Do-ho@github.com", name: "Do-ho", profileImage: "profile image" };
-const mockMilestone = { title: "title", description: "description", dueDate: new Date() };
-const mockMilestone2 = { title: "title2", description: "description", dueDate: new Date() };
+const mockIssue = { title: "issue title" };
+const mockMilestone = { title: "title", description: "description", due_date: new Date() };
 
-describe("Milestone Router Test", () => {
+describe("Comment Router Test", () => {
     let app = null;
 
     beforeAll(async () => {
         app = await ApplicationFactory.create();
     });
 
-    test("마일스톤 생성 라우팅 테스트", async () => {
+    test("이슈 마일스톤 생성 라우팅 테스트", async () => {
         await TransactionWrapper.transaction(async () => {
             const entityManager = getEntityManagerOrTransactionManager();
             await entityManager.query("SAVEPOINT STARTPOINT");
@@ -34,11 +34,17 @@ describe("Milestone Router Test", () => {
                 photos: user.profileImage
             });
 
+            const issue = entityManager.create(Issue, { ...mockIssue, author: user });
+            await entityManager.save(Issue, issue);
+
+            const milestone = entityManager.create(Milestone, mockMilestone);
+            await entityManager.save(Milestone, milestone);
+
             // when
             const response = await agent(app.httpServer)
-                .post(`/api/milestone`)
+                .post(`/api/issue/${issue.id}/milestone/${milestone.id}`)
                 .set("Cookie", [`token=${token}`])
-                .send(mockMilestone);
+                .send();
 
             // then
             expect(response.status).toEqual(201);
@@ -47,40 +53,7 @@ describe("Milestone Router Test", () => {
         });
     });
 
-    test("여러 마일스톤 조회 라우팅 테스트", async () => {
-        await TransactionWrapper.transaction(async () => {
-            const entityManager = getEntityManagerOrTransactionManager();
-            await entityManager.query("SAVEPOINT STARTPOINT");
-
-            // given
-            const user = entityManager.create(User, mockUser);
-            await entityManager.save(User, user);
-
-            const milestone = entityManager.create(Milestone, mockMilestone);
-            const milestone2 = entityManager.create(Milestone, mockMilestone2);
-            await entityManager.save(Milestone, [milestone, milestone2]);
-
-            const token = generateJWTToken({
-                userId: user.id,
-                username: user.name,
-                email: user.email,
-                photos: user.profileImage
-            });
-
-            // when
-            const response = await agent(app.httpServer)
-                .get(`/api/milestone`)
-                .set("Cookie", [`token=${token}`])
-                .send();
-
-            // then
-            expect(response.status).toEqual(200);
-
-            await entityManager.query("ROLLBACK TO STARTPOINT");
-        });
-    });
-
-    test("마일스톤 조회 라우팅 테스트", async () => {
+    test("이슈 마일스톤 삭제 라우팅 테스트", async () => {
         await TransactionWrapper.transaction(async () => {
             const entityManager = getEntityManagerOrTransactionManager();
             await entityManager.query("SAVEPOINT STARTPOINT");
@@ -95,18 +68,21 @@ describe("Milestone Router Test", () => {
                 email: user.email,
                 photos: user.profileImage
             });
+
+            const issue = entityManager.create(Issue, { ...mockIssue, author: user });
+            await entityManager.save(Issue, issue);
 
             const milestone = entityManager.create(Milestone, mockMilestone);
             await entityManager.save(Milestone, milestone);
 
             // when
             const response = await agent(app.httpServer)
-                .get(`/api/milestone/${milestone.id}`)
+                .delete(`/api/issue/${issue.id}/milestone/${milestone.id}`)
                 .set("Cookie", [`token=${token}`])
                 .send();
 
             // then
-            expect(response.status).toEqual(200);
+            expect(response.status).toEqual(204);
 
             await entityManager.query("ROLLBACK TO STARTPOINT");
         });
