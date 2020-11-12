@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const usePromise = (promiseCreator, deps) => {
+const usePromise = (promiseCreator, deps, ...args) => {
     const [resolved, setResolved] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -8,7 +8,7 @@ const usePromise = (promiseCreator, deps) => {
     const process = async () => {
         setLoading(true);
         try {
-            const result = await promiseCreator();
+            const result = await promiseCreator(...args);
             setResolved(result);
         } catch (e) {
             setError(e);

@@ -33,4 +33,9 @@ const deleteLabel = async (id) => {
     return response;
 };
 
-export { postLogin, postSignup, getLabels, postLabel, patchLabel, deleteLabel };
+const getIssueById = async (issueId) => {
+    const response = await axios.get(`${Config.API.GET_ISSUE}/${issueId}`);
+    return response?.data?.issue;
+};
+
+export { postLogin, postSignup, getLabels, postLabel, patchLabel, deleteLabel, getIssueById };

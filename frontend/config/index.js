@@ -4,6 +4,7 @@ export default {
         GET_AUTH: process.env.ISSUE_TRACKER_APP_SERVER + process.env.ISSUE_TRACKER_APP_API_GET_AUTH,
         POST_LOGIN: process.env.ISSUE_TRACKER_APP_SERVER + process.env.ISSUE_TRACKER_APP_API_POST_LOGIN,
         POST_SIGNUP: process.env.ISSUE_TRACKER_APP_SERVER + process.env.ISSUE_TRACKER_APP_API_POST_SIGNUP,
-        LABLE: process.env.ISSUE_TRACKER_APP_SERVER + process.env.ISSUE_TRACKER_APP_API_LABLE
+        LABLE: process.env.ISSUE_TRACKER_APP_SERVER + process.env.ISSUE_TRACKER_APP_API_LABLE,
+        GET_ISSUE: process.env.ISSUE_TRACKER_APP_SERVER + process.env.ISSUE_TRACKER_APP_API_GET_ISSUE
     }
 };
