@@ -53,7 +53,15 @@ const color = {
     title_input_bg: "#fafbfc",
     title_input_border: "#e1e4e8",
     title_input_focus_border: "#0366d6",
-    list_group_border: "#eaecef"
+    filterbar_menu_bg: "#f6f8fa",
+    filterbar_menu_input_text: "#444d56",
+    filterbar_menu_input_bg: "#F6F8FA",
+    filterbar_menu_btn_text: "#444d56",
+    filterbar_menu_border: "#e1e4e8",
+    filterbar_dropmenu_text: "#444d56",
+    page_nav_btn_text: "#444d56",
+    page_nav_btn_bg: "#ffffff",
+    page_nav_btn_hover_bg: "#f6f8fa"
 };
 
 export { color };
