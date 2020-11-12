@@ -2,6 +2,12 @@ import React, { useState } from "react";
 import { LabelMilestoneHeader, LabelEditor, ListGroup, LabelItem } from "@components";
 import { API } from "@utils";
 import { usePromise } from "@hook";
+import styled from "styled-components";
+
+const LabelView = styled.div`
+    width: 100%;
+    max-width: 1280px;
+`;
 
 const LabelPage = () => {
     const [isOpenNewLabel, setOpenNewLabel] = useState(false);
@@ -34,7 +40,7 @@ const LabelPage = () => {
         );
 
     return (
-        <>
+        <LabelView>
             <LabelMilestoneHeader value="label" buttonClick={handlingOnButtonClick} />
             {isOpenNewLabel ? <LabelEditor buttonClick={handlingOnButtonClick} create /> : null}
             <ListGroup.Area>
@@ -45,7 +51,7 @@ const LabelPage = () => {
                 </ListGroup.Header>
                 <ListGroup.ItemList>{getLabelItems()}</ListGroup.ItemList>
             </ListGroup.Area>
-        </>
+        </LabelView>
     );
 };
 
