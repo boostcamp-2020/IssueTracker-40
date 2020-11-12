@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { ListGroup, UserProfile } from "@components";
 import styled from "styled-components";
-import IssueFilterMenuContext from "../IssueFilterMenuContext/IssueFilterMenuContext";
+import MainContentContext from "../../MainTemplate/MainContext/MainContentContext";
 
 const FILTER_TYPE = {
     AUTHOR: "Author",
@@ -25,6 +25,9 @@ const IssueFilterDropmenuHeader = styled(ListGroup.Header)`
 
 const IssueFilterDropmenuItem = styled(ListGroup.Item)`
     padding: 13px 18px;
+    & span {
+        cursor: pointer;
+    }
 `;
 
 const ProfileItemArea = styled(FilterItemArea)`
@@ -82,11 +85,23 @@ const MilestoneItem = ({ id, title }) => {
     );
 };
 
+const MarkAsItem = ({ id, name }) => {
+    return (
+        <IssueFilterDropmenuItem>
+            <span>{name}</span>
+        </IssueFilterDropmenuItem>
+    );
+};
+
 const IssueFilterDropmenu = ({ filterType, title }) => {
-    const { issueFilterMenuState } = useContext(IssueFilterMenuContext);
+    const { contentState } = useContext(MainContentContext);
+
+    const getDropmenuHeader = () => {
+        return <span>{title === "Mark as" ? "Actions" : `Filter by ${title}`}</span>;
+    };
 
     const getDropmenuItems = () => {
-        const { authors, labels, milestones, assignees } = issueFilterMenuState;
+        const { authors, labels, milestones, assignees, markAs } = contentState.issueFilterMenuDatas;
 
         switch (filterType) {
             case FILTER_TYPE.AUTHOR:
@@ -100,6 +115,8 @@ const IssueFilterDropmenu = ({ filterType, title }) => {
                 return milestones.reduce((acc, cur) => acc.concat(<MilestoneItem key={cur.id} title={cur.title} />), []);
             case FILTER_TYPE.ASSIGNEE:
                 return assignees.reduce((acc, cur) => acc.concat(<ProfileItem key={cur.id} name={cur.name} profileImage={cur.profileImage} />), []);
+            case FILTER_TYPE.MARK_AS:
+                return markAs.reduce((acc, cur) => acc.concat(<MarkAsItem key={cur.id} name={cur.name} />), []);
             default:
                 return <></>;
         }
@@ -107,9 +124,7 @@ const IssueFilterDropmenu = ({ filterType, title }) => {
 
     return (
         <ListGroup.Area>
-            <IssueFilterDropmenuHeader>
-                <span>Filter by {title}</span>
-            </IssueFilterDropmenuHeader>
+            <IssueFilterDropmenuHeader>{getDropmenuHeader()}</IssueFilterDropmenuHeader>
             <ListGroup.ItemList>{getDropmenuItems()}</ListGroup.ItemList>
         </ListGroup.Area>
     );
