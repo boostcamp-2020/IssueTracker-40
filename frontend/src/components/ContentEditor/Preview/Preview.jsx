@@ -4,7 +4,10 @@ import { Remarkable } from "remarkable";
 import { color } from "@style/color";
 
 const PreviewContainer = styled.div`
+    width: 100%;
+    word-break: break-all;
     min-height: 150px;
+    height: auto;
     padding-top: 10px;
     padding-bottom: 10px;
     background-color: white;

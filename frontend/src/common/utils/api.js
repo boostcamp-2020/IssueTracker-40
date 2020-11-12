@@ -1,5 +1,6 @@
 import axios from "axios";
 import Config from "@config";
+import * as qs from "querystring";
 
 axios.defaults.withCredentials = true;
 
@@ -18,6 +19,15 @@ const getLabels = async () => {
     return response;
 };
 
+
+const getIssues = async ({ page }) => {
+    const query = qs.stringify({
+        page
+    });
+    const response = await axios.get(`${Config.API.GET_ISSUES}?${query}`, { withCredentials: true });
+    return response;
+};
+
 const postLabel = async (data) => {
     const response = await axios.post(Config.API.LABLE, data);
     return response;
@@ -33,4 +43,9 @@ const deleteLabel = async (id) => {
     return response;
 };
 
-export { postLogin, postSignup, getLabels, postLabel, putLabel, deleteLabel };
+const getIssueById = async (issueId) => {
+    const response = await axios.get(`${Config.API.GET_ISSUE}/${issueId}`);
+    return response?.data?.issue;
+};
+
+export { postLogin, postSignup, getLabels, postLabel, putLabel, deleteLabel, getIssueById, getIssues };

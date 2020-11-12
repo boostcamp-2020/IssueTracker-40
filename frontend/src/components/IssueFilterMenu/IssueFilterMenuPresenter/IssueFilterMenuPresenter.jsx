@@ -2,8 +2,8 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { color } from "@style/color";
 import { Checkbox, Caret } from "@components";
-import IssueFilterMenuContext from "../IssueFilterMenuContext/IssueFilterMenuContext";
 import IssueFilterDropmenu from "../IssueFilterDropmenu/IssueFilterDropmenu";
+import MainContentContext from "../../MainTemplate/MainContext/MainContentContext";
 
 const IssueFilterMenuArea = styled.div`
     display: flex;
@@ -59,18 +59,28 @@ const FilterDropmenuArea = styled.div`
     z-index: 2000;
 `;
 
+const FilterCheckboxArea = styled.div`
+    & > * {
+        margin-right: 16px;
+    }
+`;
+
 const IssueFilterMenuPresenter = () => {
-    const { issueFilterMenuState, eventListeners } = useContext(IssueFilterMenuContext);
+    const { contentState, contentEventListeners } = useContext(MainContentContext);
+    const { totalCheckBox } = contentState;
 
     const getIssueFilterMenus = () =>
-        issueFilterMenuState.issueFilterMenus.reduce(
+        contentState.issueFilterMenus.reduce(
             (acc, cur) =>
                 acc.concat(
                     <IssueFilterItem key={cur.id}>
-                        <IssueFileterDropButton data-id={cur.id} onClick={eventListeners.onFilterDromButtonClickListener}>
+                        <IssueFileterDropButton data-id={cur.id} onClick={contentEventListeners.onFilterDromButtonClickListener}>
                             {cur.title}
                         </IssueFileterDropButton>
-                        <FilterDropmenuModalBackground isHidden={cur.isHiddenDropmenu} onClick={eventListeners.onModalBackgrondClickListener} />
+                        <FilterDropmenuModalBackground
+                            isHidden={cur.isHiddenDropmenu}
+                            onClick={contentEventListeners.onModalBackgrondClickListener}
+                        />
                         <FilterDropmenuArea isHidden={cur.isHiddenDropmenu}>
                             <IssueFilterDropmenu filterType={cur.title} title={cur.title} />
                         </FilterDropmenuArea>
@@ -79,9 +89,14 @@ const IssueFilterMenuPresenter = () => {
             []
         );
 
+    const getTotalSelected = () => (totalCheckBox > 0 ? <span>{totalCheckBox} selected</span> : "");
+
     return (
         <IssueFilterMenuArea>
-            <Checkbox type="checkbox" />
+            <FilterCheckboxArea>
+                <Checkbox type="checkbox" onChange={contentEventListeners.onChangeHeaderCheckBox} />
+                {getTotalSelected()}
+            </FilterCheckboxArea>
             <IssueFileterMenuList>{getIssueFilterMenus()}</IssueFileterMenuList>
         </IssueFilterMenuArea>
     );
