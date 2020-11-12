@@ -6,4 +6,9 @@ const postLogin = async (email, password) => {
     return response;
 };
 
-export { postLogin };
+const postSignup = async (email, name, password) => {
+    const response = await axios.post(Config.API.POST_SIGNUP, { email, name, password }, { withCredentials: true });
+    return response;
+};
+
+export { postLogin, postSignup };
