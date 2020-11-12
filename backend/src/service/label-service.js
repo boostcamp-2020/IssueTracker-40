@@ -2,7 +2,7 @@ import { getRepository } from "typeorm";
 import { Transactional } from "typeorm-transactional-cls-hooked";
 import { Label } from "../model/label";
 import { EntityAlreadyExist } from "../common/error/entity-already-exist";
-import { EntityNotFound } from "../common/error/entity-not-found-error";
+import { EntityNotFoundError } from "../common/error/entity-not-found-error";
 
 class LabelService {
     constructor() {
@@ -65,11 +65,11 @@ class LabelService {
 
     @Transactional()
     async changeLabel(labelid, newLabel) {
-        const { name, color, description }= newLabel;
+        const { name, color, description } = newLabel;
         const targetLabel = await this.getLabelById(labelid);
 
-        if (targetLabel === undefined){
-            throw new EntityNotFound();
+        if (targetLabel === undefined) {
+            throw new EntityNotFoundError();
         }
 
         if (!(await this.isLabelExistByName({ name }))) {
@@ -85,8 +85,8 @@ class LabelService {
     @Transactional()
     async removeLabel(labelid) {
         const targetLabel = await this.getLabelById(labelid);
-        if (targetLabel === undefined){
-            throw new EntityNotFound();
+        if (targetLabel === undefined) {
+            throw new EntityNotFoundError();
         }
         await this.labelRepository.remove(targetLabel);
     }
