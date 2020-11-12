@@ -23,14 +23,14 @@ const postLabel = async (data) => {
     return response;
 };
 
-const patchLabel = async (id) => {
-    const response = await axios.post(`${Config.API.LABLE}/${id}`);
+const putLabel = async (id, data) => {
+    const response = await axios.put(`${Config.API.LABLE}/${id}`, data);
     return response;
 };
 
 const deleteLabel = async (id) => {
-    const response = await axios.post(`${Config.API.LABLE}/${id}`);
+    const response = await axios.delete(`${Config.API.LABLE}/${id}`);
     return response;
 };
 
-export { postLogin, postSignup, getLabels, postLabel, patchLabel, deleteLabel };
+export { postLogin, postSignup, getLabels, postLabel, putLabel, deleteLabel };
