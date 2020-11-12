@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { color } from "@style/color";
 import { Button } from "@components";
 import LabelWhiteIcon from "@imgs/label-white-icon.png";
@@ -10,8 +10,10 @@ import MilestoneBlackIcon from "@imgs/milestone-black-icon.png";
 const HeaderContainer = styled.div`
     display: flex;
     justify-content: space-between;
-    width: 70%;
-`
+    width: 100%;
+    max-width: 1280px;
+    margin-bottom: 1rem;
+`;
 
 const TabContainer = styled.div`
     display: flex;
@@ -20,7 +22,7 @@ const TabContainer = styled.div`
     border-radius: 10px;
     border: 1px solid ${color.border_primary};
     cursor: pointer;
-`
+`;
 
 const LeftTab = styled.div`
     display: flex;
@@ -28,10 +30,10 @@ const LeftTab = styled.div`
     align-items: center;
     height: 100%;
     width: 45%;
-    background-color: ${(props) => props.value=="label"? "#0366d6": "white"};
+    background-color: ${(props) => (props.value === "label" ? "#0366d6" : "white")};
     border-radius: 10px 0px 0px 10px;
-    ${(props) => props.value!="label"? `&:hover { background-color: ${color.primary_hover_bg} }` : ""};
-`
+    ${(props) => (props.value !== "label" ? `&:hover { background-color: ${color.primary_hover_bg} }` : "")};
+`;
 
 const RightTab = styled.div`
     display: flex;
@@ -39,44 +41,46 @@ const RightTab = styled.div`
     align-items: center;
     height: 100%;
     width: 55%;
-    background-color: ${(props) => props.value=="milestone"? "#0366d6": "white"};
+    background-color: ${(props) => (props.value === "milestone" ? "#0366d6" : "white")};
     border-radius: 0px 10px 10px 0px;
-    ${(props) => props.value!="milestone"? `&:hover { background-color: ${color.primary_hover_bg} }` : ""};
-`
+    ${(props) => (props.value !== "milestone" ? `&:hover { background-color: ${color.primary_hover_bg} }` : "")};
+`;
 
 const Icon = styled.img`
     width: 1rem;
     height: 1rem;
     margin-right: 0.3rem;
-`
+`;
 
 const LeftText = styled.p`
-    color: ${(props) => props.value=="label"? "white": "black"};
-`
+    color: ${(props) => (props.value === "label" ? "white" : "black")};
+`;
 
 const RightText = styled.p`
-    color: ${(props) => props.value=="milestone"? "white": "black"};
-`
+    color: ${(props) => (props.value === "milestone" ? "white" : "black")};
+`;
 
 function handlingOnclick(value) {
-    if (value=="label") location.href = "/milestones";
-    else location.href = "/labels";
+    if (value === "label") window.location.href = "/milestones";
+    else window.location.href = "/labels";
 }
 
-const LabelMilestoneHeader = ({value, buttonClick}) => {
+const LabelMilestoneHeader = ({ value, buttonClick }) => {
     return (
         <HeaderContainer>
             <TabContainer>
-                <LeftTab value={value} onClick={value=="label"? null: () => handlingOnclick(value)}>
-                    <Icon src={value=="label"? LabelWhiteIcon: LabelBlackIcon} />
+                <LeftTab value={value} onClick={value === "label" ? null : () => handlingOnclick(value)}>
+                    <Icon src={value === "label" ? LabelWhiteIcon : LabelBlackIcon} />
                     <LeftText value={value}> Labels </LeftText>
                 </LeftTab>
-                <RightTab value={value} onClick={value=="milestone"? null: () => handlingOnclick(value)}>
-                    <Icon src={value=="milestone"? MilestoneWhiteIcon: MilestoneBlackIcon} />
+                <RightTab value={value} onClick={value === "milestone" ? null : () => handlingOnclick(value)}>
+                    <Icon src={value === "milestone" ? MilestoneWhiteIcon : MilestoneBlackIcon} />
                     <RightText value={value}> Milestones </RightText>
                 </RightTab>
             </TabContainer>
-            <Button onClick={buttonClick} primary> New {value} </Button>
+            <Button onClick={buttonClick} primary>
+                New {value}
+            </Button>
         </HeaderContainer>
     );
 };

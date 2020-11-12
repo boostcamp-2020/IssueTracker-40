@@ -233,6 +233,7 @@ class IssueService {
             .leftJoinAndSelect("issue.labelToIssues", "b")
             .leftJoinAndSelect("b.label", "b_0")
             .leftJoinAndSelect("issue.milestone", "c")
+            .leftJoinAndSelect("c.issues", "c_0")
             .leftJoinAndSelect("issue.userToIssues", "d")
             .leftJoinAndSelect("d.user", "d_0")
             .leftJoinAndSelect("issue.comments", "e", "e.deleted_at IS NULL")

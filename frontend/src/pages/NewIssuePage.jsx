@@ -1,10 +1,6 @@
 import React, { useContext } from "react";
-import { Redirect } from "react-router-dom";
-import { usePromise } from "@hook";
 import { UserContext } from "@context";
-import { Header, Main, ContentEditor, SidebarMenu, Button, UserProfile } from "@components";
-import { waitAuthorizationApi } from "@utils";
-import { LoadingPage } from "@pages";
+import { ContentEditor, SidebarMenu, Button, UserProfile } from "@components";
 import styled from "styled-components";
 import { color } from "@style/color";
 
@@ -70,39 +66,25 @@ const LeftContainer = () => {
 };
 
 const NewIssuePage = () => {
-    const [loading, resolved, error] = usePromise(waitAuthorizationApi, []);
-
-    if (loading)
-        return (
-            <div>
-                <LoadingPage />
-            </div>
-        );
-    if (error) return <Redirect to="/login" />;
-    if (!resolved) return null;
-
     return (
-        <UserContext.Provider value={resolved.data}>
-            <Header />
-            <Main>
-                <StyledNewIssueContainer>
-                    <LeftContainer />
-                    <CenterContainer>
-                        <TitleInput placeholder="Title" />
-                        <ContentEditor />
-                        <CenterButtonContainer>
-                            <Button>Cancle</Button>
-                            <Button primary>Submit new issue</Button>
-                        </CenterButtonContainer>
-                    </CenterContainer>
-                    <RightContainer>
-                        <SidebarMenu title="Assignees" />
-                        <SidebarMenu title="Labels" />
-                        <SidebarMenu title="Milestone" />
-                    </RightContainer>
-                </StyledNewIssueContainer>
-            </Main>
-        </UserContext.Provider>
+        <>
+            <StyledNewIssueContainer>
+                <LeftContainer />
+                <CenterContainer>
+                    <TitleInput placeholder="Title" />
+                    <ContentEditor />
+                    <CenterButtonContainer>
+                        <Button>Cancle</Button>
+                        <Button primary>Submit new issue</Button>
+                    </CenterButtonContainer>
+                </CenterContainer>
+                <RightContainer>
+                    <SidebarMenu title="Assignees" />
+                    <SidebarMenu title="Labels" />
+                    <SidebarMenu title="Milestone" />
+                </RightContainer>
+            </StyledNewIssueContainer>
+        </>
     );
 };
 

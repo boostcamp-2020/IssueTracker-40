@@ -6,16 +6,21 @@ import Writer from "./Writer/Writer";
 import Preview from "./Preview/Preview";
 
 const TabMenuContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     padding-bottom: 5px;
-    width: 525px;
+    width: 100%;
     background-color: ${color.tab_container_gb};
 `;
 
 const TabMenuHeader = styled.div`
+    width: 95%;
     display: flex;
     height: 35px;
     padding-top: 10px;
-    padding-left: 10px;
+    padding-left: 5%;
     background-color: ${color.tab_bg};
     border-bottom: 1px solid ${color.tab_border};
 `;
