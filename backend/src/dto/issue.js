@@ -1,5 +1,6 @@
 import { Transform } from "class-transformer";
-import { IsArray, IsNumber, IsNumberString, IsOptional, IsString } from "class-validator";
+import { IsArray, IsIn, IsNumber, IsNumberString, IsOptional, IsString } from "class-validator";
+import { ISSUESTATE } from "../common/type";
 
 class AddIssueRequestBody {
     @IsString()
@@ -32,6 +33,32 @@ class GetIssuesRequestQuery {
 }
 
 class GetIssueByIdParams {
+    @Transform((value) => parseInt(value, 10))
+    @IsNumber()
+    issueId;
+}
+
+class ModifyIssueByIdBody {
+    @IsOptional()
+    @IsString()
+    title;
+
+    @IsOptional()
+    @IsString()
+    content;
+
+    @IsOptional()
+    @IsIn([ISSUESTATE.OPEN, ISSUESTATE.CLOSED])
+    state;
+}
+
+class ModifyIssueByIdParams {
+    @Transform((value) => parseInt(value, 10))
+    @IsNumber()
+    issueId;
+}
+
+class RemoveIssueByIdParams {
     @Transform((value) => parseInt(value, 10))
     @IsNumber()
     issueId;
@@ -70,5 +97,8 @@ export {
     AddCommentRequestBody,
     UpdateDeleteCommentRequestParams,
     GetIssuesRequestQuery,
-    GetIssueByIdParams
+    GetIssueByIdParams,
+    ModifyIssueByIdBody,
+    ModifyIssueByIdParams,
+    RemoveIssueByIdParams
 };

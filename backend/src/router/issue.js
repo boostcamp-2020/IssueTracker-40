@@ -12,7 +12,10 @@ import {
     AddCommentRequestBody,
     UpdateDeleteCommentRequestParams,
     GetIssuesRequestQuery,
-    GetIssueByIdParams
+    GetIssueByIdParams,
+    ModifyIssueByIdBody,
+    ModifyIssueByIdParams,
+    RemoveIssueByIdParams
 } from "../dto/issue";
 
 const router = express.Router();
@@ -28,6 +31,20 @@ router.get(
 );
 
 router.get("/:issueId", transformer([RequestType.PARAMS], [GetIssueByIdParams]), validator([RequestType.PARAMS]), issueController.getIssueById);
+
+router.patch(
+    "/:issueId",
+    transformer([RequestType.BODY, RequestType.PARAMS], [ModifyIssueByIdBody, ModifyIssueByIdParams]),
+    validator([RequestType.BODY, RequestType.PARAMS]),
+    issueController.modifyIssueById
+);
+
+router.delete(
+    "/:issueId",
+    transformer([RequestType.PARAMS], [RemoveIssueByIdParams]),
+    validator([RequestType.PARAMS]),
+    issueController.removeIssueById
+);
 
 router.post(
     "/:issueId/assignee/:assigneeId",

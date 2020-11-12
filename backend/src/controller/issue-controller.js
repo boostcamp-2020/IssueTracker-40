@@ -118,6 +118,25 @@ const getIssueById = async (req, res, next) => {
     });
 };
 
+const modifyIssueById = async (req, res, next) => {
+    const { issueId } = req.params;
+    const { title, content, state } = req.body;
+
+    const issueService = IssueService.getInstance();
+    await issueService.modifyIssueById(issueId, title, content, state);
+
+    res.status(204).end();
+};
+
+const removeIssueById = async (req, res, next) => {
+    const { issueId } = req.params;
+
+    const issueService = IssueService.getInstance();
+    await issueService.removeIssueById(issueId);
+
+    res.status(204).end();
+};
+
 const addAssignee = async (req, res, next) => {
     const { assigneeId, issueId } = req.params;
     try {
@@ -140,4 +159,4 @@ const removeAssignee = async (req, res, next) => {
     }
 };
 
-export { addIssue, addAssignee, removeAssignee, getIssues, getIssueById };
+export { addIssue, addAssignee, removeAssignee, getIssues, getIssueById, modifyIssueById, removeIssueById };
