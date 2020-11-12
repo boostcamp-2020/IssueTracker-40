@@ -58,7 +58,7 @@ const LoginForm = () => {
 
     const SubmitClick = async () => {
         try {
-            await API.getLogin(emailInput.current.value, passwordInput.current.value);
+            await API.postLogin(emailInput.current.value, passwordInput.current.value);
             history.push("/");
         } catch (e) {
             loginWarning.current.style.display = "block";
