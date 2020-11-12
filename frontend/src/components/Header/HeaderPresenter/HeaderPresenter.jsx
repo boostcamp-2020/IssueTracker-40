@@ -11,6 +11,13 @@ const HeaderArea = styled.header`
     padding: 15px 30px;
     background-color: ${color.header_bg};
     box-sizing: border-box;
+    & ul {
+        margin: 0;
+        padding: 0;
+        li {
+            list-style: none;
+        }
+    }
 `;
 
 const HeaderContent = styled.div`
