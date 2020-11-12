@@ -5,9 +5,11 @@ import { TransactionWrapper } from "../TransactionWrapper";
 import { generateJWTToken } from "../../src/common/lib/token-generator";
 import { Milestone } from "../../src/model/milestone";
 import { User } from "../../src/model/user";
+import { MilestoneService } from "../../src/service";
 
 const mockUser = { email: "Do-ho@github.com", name: "Do-ho", profileImage: "profile image" };
 const mockMilestone = { title: "title", description: "description", dueDate: new Date() };
+const mockMilestone2 = { title: "title2", description: "description", dueDate: new Date() };
 
 describe("Milestone Router Test", () => {
     let app = null;
@@ -53,6 +55,10 @@ describe("Milestone Router Test", () => {
             // given
             const user = entityManager.create(User, mockUser);
             await entityManager.save(User, user);
+
+            const milestone = entityManager.create(Milestone, mockMilestone);
+            const milestone2 = entityManager.create(Milestone, mockMilestone2);
+            await entityManager.save(Milestone, [milestone, milestone2]);
 
             const token = generateJWTToken({
                 userId: user.id,
