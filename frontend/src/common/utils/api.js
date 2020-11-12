@@ -1,5 +1,6 @@
 import axios from "axios";
 import Config from "@config";
+import * as qs from "querystring";
 
 axios.defaults.withCredentials = true;
 
@@ -15,6 +16,15 @@ const postSignup = async (email, name, password) => {
 
 const getLabels = async () => {
     const response = await axios.get(Config.API.LABLE);
+    return response;
+};
+
+
+const getIssues = async ({ page }) => {
+    const query = qs.stringify({
+        page
+    });
+    const response = await axios.get(`${Config.API.GET_ISSUES}?${query}`, { withCredentials: true });
     return response;
 };
 
@@ -38,4 +48,4 @@ const getIssueById = async (issueId) => {
     return response?.data?.issue;
 };
 
-export { postLogin, postSignup, getLabels, postLabel, patchLabel, deleteLabel, getIssueById };
+export { postLogin, postSignup, getLabels, postLabel, patchLabel, deleteLabel, getIssueById, getIssues };
