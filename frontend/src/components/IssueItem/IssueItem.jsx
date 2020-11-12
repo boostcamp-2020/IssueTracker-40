@@ -114,7 +114,7 @@ const IssueItem = ({ id, title, labels, milestone, assignees, author, createdAt 
             (acc, cur, idx, arr) =>
                 acc.concat(
                     <AssigneeListItem key={cur.id} idx={idx} totalAssignees={arr.length}>
-                        <UserProfile imageUrl={cur.profileImage} />
+                        <UserProfile imageUrl={cur.profileImage} width="20px" height="20px" />
                     </AssigneeListItem>
                 ),
             []

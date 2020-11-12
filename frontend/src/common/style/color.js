@@ -48,6 +48,11 @@ const color = {
     list_group_header_bg: "#f6f8fa",
     list_group_item_bg: "#ffffff",
     list_group_item_hover_bg: "#f6f8fa",
+    list_group_border: "#eaecef",
+    container_border: "#e1e4e8",
+    title_input_bg: "#fafbfc",
+    title_input_border: "#e1e4e8",
+    title_input_focus_border: "#0366d6",
     list_group_border: "#eaecef"
 };
 

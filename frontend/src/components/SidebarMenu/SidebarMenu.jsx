@@ -9,7 +9,6 @@ const StyledSideBarMenu = styled.div`
     border-bottom: 0.1px solid ${color.sidemenu_default};
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
-    margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     box-sizing: border-box;
     width: 15rem;
@@ -18,7 +17,6 @@ const StyledSideBarMenu = styled.div`
 const StyledSideBarMenuHeader = styled.div`
     display: flex;
     justify-content: space-between;
-    margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     line-height: 1.5;
     font-weight: bold;
@@ -35,7 +33,6 @@ const StyledSideBarMenuHeader = styled.div`
 const StyledSideBarMenuBody = styled.div`
     display: flex;
     flex-direction: column;
-    margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 `;
 
