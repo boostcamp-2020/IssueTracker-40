@@ -371,11 +371,6 @@ describe("Milestone Router Test", () => {
                 photos: user.profileImage
             });
 
-            await agent(app.httpServer)
-                .post(`/api/milestone`)
-                .set("Cookie", [`token=${token}`])
-                .send(mockMilestone);
-
             // when
             const response = await agent(app.httpServer)
                 .delete(`/api/milestone/1`)

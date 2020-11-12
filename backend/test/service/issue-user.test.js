@@ -6,7 +6,7 @@ import { User } from "../../src/model/user";
 import { EntityNotFoundError } from "../../src/common/error/entity-not-found-error";
 
 const mockUser = { email: "Do-ho@github.com", name: "Do-ho", profileImage: "profile image" };
-const mockIssue = { title: "issue title" };
+const mockIssue = { title: "issue title", content: "issue content입니다." };
 
 describe("IssueAssigneeService Test", () => {
     const app = new Application();
