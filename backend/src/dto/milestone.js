@@ -1,4 +1,5 @@
-import { IsDateString, IsNumberString, IsString } from "class-validator";
+import { IsDateString, IsString, IsNumber, IsOptional } from "class-validator";
+import { Transform } from "class-transformer";
 
 class AddMilestoneRequestBody {
     @IsString()
@@ -12,8 +13,39 @@ class AddMilestoneRequestBody {
 }
 
 class GetMilestoneRequestParams {
-    @IsNumberString()
+    @Transform((value) => parseInt(value, 10))
+    @IsNumber()
     milestoneId;
 }
 
-export { AddMilestoneRequestBody, GetMilestoneRequestParams };
+class ChangeMilestoneRequestParams {
+    @Transform((value) => parseInt(value, 10))
+    @IsNumber()
+    milestoneId;
+}
+
+class ChangeMilestoneRequestBody {
+    @IsOptional()
+    @IsString()
+    title;
+
+    @IsOptional()
+    @IsString()
+    description;
+
+    @IsOptional()
+    @IsString()
+    state;
+
+    @IsOptional()
+    @IsDateString()
+    dueDate;
+}
+
+class RemoveMilestoneRequestParams {
+    @Transform((value) => parseInt(value, 10))
+    @IsNumber()
+    milestoneId;
+}
+
+export { AddMilestoneRequestBody, GetMilestoneRequestParams, ChangeMilestoneRequestBody, ChangeMilestoneRequestParams, RemoveMilestoneRequestParams };

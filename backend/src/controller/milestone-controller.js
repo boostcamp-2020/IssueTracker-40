@@ -55,10 +55,39 @@ const getMilestone = async (req, res, next) => {
     try {
         const milestoneService = MilestoneService.getInstance();
         const milestone = await milestoneService.getMilestone(milestoneId);
-        res.status(200).send({ milestone });
+        res.status(200).json({
+            id: milestone.id,
+            title: milestone.title,
+            state: milestone.state,
+            description: milestone.description,
+            dueDate: milestone.dueDate
+        });
     } catch (error) {
         next(error);
     }
 };
 
-export { addMilestone, getMilestones, getMilestone };
+const changeMilestone = async (req, res, next) => {
+    try {
+        const { milestoneId } = req.params;
+        const { title, state, description, dueDate } = req.body;
+        const milestoneService = MilestoneService.getInstance();
+        await milestoneService.changeMilestone({ milestoneId, title, state, description, dueDate });
+        res.status(201).end();
+    } catch (error) {
+        next(error);
+    }
+};
+
+const removeMilestone = async (req, res, next) => {
+    try {
+        const { milestoneId } = req.params;
+        const milestoneService = MilestoneService.getInstance();
+        await milestoneService.removeMilestone({ milestoneId });
+        res.status(204).end();
+    } catch (error) {
+        next(error);
+    }
+};
+
+export { addMilestone, getMilestones, getMilestone, changeMilestone, removeMilestone };

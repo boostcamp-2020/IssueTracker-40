@@ -3,7 +3,13 @@ import { RequestType } from "../common/middleware/request-type";
 import { transformer } from "../common/middleware/transformer";
 import { validator } from "../common/middleware/validator";
 import { milestoneController } from "../controller";
-import { AddMilestoneRequestBody, GetMilestoneRequestParams } from "../dto/milestone";
+import {
+    AddMilestoneRequestBody,
+    GetMilestoneRequestParams,
+    ChangeMilestoneRequestBody,
+    ChangeMilestoneRequestParams,
+    RemoveMilestoneRequestParams
+} from "../dto/milestone";
 
 const router = express.Router();
 
@@ -14,6 +20,18 @@ router.get(
     transformer([RequestType.PARAMS], [GetMilestoneRequestParams]),
     validator([RequestType.PARAMS]),
     milestoneController.getMilestone
+);
+router.patch(
+    "/:milestoneId",
+    transformer([RequestType.BODY, RequestType.PARAMS], [ChangeMilestoneRequestBody, ChangeMilestoneRequestParams]),
+    validator([RequestType.BODY, RequestType.PARAMS]),
+    milestoneController.changeMilestone
+);
+router.delete(
+    "/:milestoneId",
+    transformer([RequestType.PARAMS], [RemoveMilestoneRequestParams]),
+    validator([RequestType.PARAMS]),
+    milestoneController.removeMilestone
 );
 
 export default router;
