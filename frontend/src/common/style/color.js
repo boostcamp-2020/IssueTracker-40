@@ -63,7 +63,9 @@ const color = {
     page_nav_btn_bg: "#ffffff",
     page_nav_btn_hover_bg: "#f6f8fa",
     list_group_border: "#eaecef",
-    primary_hover_bg: "#f3f4f6"
+    primary_hover_bg: "#f3f4f6",
+    tertiary_border: "#d1d5da",
+    tertiary_bg: "#f6f8fa"
 };
 
 export { color };

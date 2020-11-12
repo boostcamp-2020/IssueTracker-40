@@ -16,6 +16,7 @@ export { default as Main } from "./Main/Main";
 export * as MainTemplate from "./MainTemplate";
 export { default as ProgressBar } from "./ProgressBar/ProgressBar";
 export { default as LabelMilestoneHeader } from "./LabelMilestoneHeader/LabelMilestoneHeader";
+export { default as LabelEditor } from "./LabelEditor/LabelEditor";
 export * as Form from "./Form";
 export { default as FilterBar } from "./FilterBar/FilterBarContainer/FilterBarContainer";
 export { default as PageNavButton } from "./PageNavButton/PageNavButton";

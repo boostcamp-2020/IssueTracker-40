@@ -9,7 +9,12 @@ const LabelPage = () => {
     return (
         <>
             <LabelMilestoneHeader value="label" buttonClick={handlingOnButtonClick} />
-            <p> 레이블 페이지입니다</p>
+            <LabelEditor create />
+            <LabelEditor />
+            <ListGroup.Area>
+                <ListGroup.Header />
+                <ListGroup.ItemList />
+            </ListGroup.Area>
         </>
     );
 };
