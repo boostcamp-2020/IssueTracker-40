@@ -54,7 +54,9 @@ const color = {
     title_input_border: "#e1e4e8",
     title_input_focus_border: "#0366d6",
     list_group_border: "#eaecef",
-    primary_hover_bg: "#f3f4f6"
+    primary_hover_bg: "#f3f4f6",
+    tertiary_border: "#d1d5da",
+    tertiary_bg: "#f6f8fa"
 };
 
 export { color };

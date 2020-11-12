@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { usePromise } from "@hook";
 import { UserContext } from "@context";
-import { Header, Main, LabelMilestoneHeader } from "@components";
+import { Header, Main, LabelMilestoneHeader, ListGroup, LabelEditor } from "@components";
 import { waitAuthorizationApi } from "@utils";
 
 const LabelPage = () => {
@@ -13,15 +13,20 @@ const LabelPage = () => {
     if (!resolved) return null;
 
     const handlingOnButtonClick = () => {
-        console.log('라벨 생성 창이 생깁니다.');
-    }
+        console.log("라벨 생성 창이 생깁니다.");
+    };
 
     return (
         <UserContext.Provider value={resolved.data}>
             <Header />
             <Main>
-                <LabelMilestoneHeader value="label" buttonClick={handlingOnButtonClick}/>
-                <p> 레이블 페이지입니다</p>
+                <LabelMilestoneHeader value="label" buttonClick={handlingOnButtonClick} />
+                <LabelEditor create />
+                <LabelEditor />
+                <ListGroup.Area>
+                    <ListGroup.Header />
+                    <ListGroup.ItemList />
+                </ListGroup.Area>
             </Main>
         </UserContext.Provider>
     );
