@@ -1,9 +1,10 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useRef, useState } from "react";
+import styled, { useTheme } from "styled-components";
 import { color } from "@style/color";
 import { Label, Button } from "@components";
 import changeBlackIcon from "@imgs/change-black-icon.png";
 import changeWhiteIcon from "@imgs/change-white-icon.png";
+import { API } from "@utils";
 
 const EditorContainer = styled.div`
     display: flex;
@@ -90,7 +91,19 @@ const Icon = styled.img`
 `;
 
 const LabelEditor = ({ create }) => {
+    const nameEl = useRef();
+    const descriptionEl = useRef();
+    const [labelColor, setLabelColor] = useState("#0e8a16");
+
     const labelbg = "#0e8a16"; // useState로 수정가능하도록 구현
+
+    const createLabel = async () => {
+        await API.postLabel({ name: nameEl.current.value, description: descriptionEl.current.value, color: labelColor });
+    };
+
+    const handlingColorChange = (e) => {
+        setLabelColor(e.target.value);
+    };
 
     return (
         <EditorContainer create={create}>
@@ -101,11 +114,11 @@ const LabelEditor = ({ create }) => {
                 <BoxContainer>
                     <Box>
                         <Text> Label name </Text>
-                        <Input type="text" placeholder="Label name" width="200px" />
+                        <Input ref={nameEl} type="text" placeholder="Label name" width="200px" />
                     </Box>
                     <Box>
                         <Text> Description </Text>
-                        <Input type="text" placeholder="Description (optional)" width="600px" />
+                        <Input ref={descriptionEl} type="text" placeholder="Description (optional)" width="600px" />
                     </Box>
                     <Box>
                         <Text> Color </Text>
@@ -113,13 +126,15 @@ const LabelEditor = ({ create }) => {
                             <ColorButton>
                                 <Icon src={changeWhiteIcon} />
                             </ColorButton>
-                            <Input type="text" value={labelbg} width="70px" />
+                            <Input type="text" value={labelColor} onChange={handlingColorChange} width="70px" />
                         </InnerBox>
                     </Box>
                 </BoxContainer>
                 <ButtonContainer width={create ? "13.5rem" : "14.6rem"}>
                     <Button> Cancle </Button>
-                    <Button primary> {create ? "Create label" : "Save changes"}</Button>
+                    <Button onClick={createLabel} primary>
+                        {create ? "Create label" : "Save changes"}
+                    </Button>
                 </ButtonContainer>
             </EditorContainerContent>
         </EditorContainer>
