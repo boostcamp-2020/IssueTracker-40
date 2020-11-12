@@ -1,9 +1,11 @@
 import React, { useRef, useState } from "react";
+import { useHistory, Link } from "react-router-dom";
 import styled from "styled-components";
 import { debounce } from "lodash";
 import config from "@config";
 import { color } from "@style/color";
 import { Form } from "@components";
+import { API } from "@utils";
 
 const RegisterButtonContainer = styled.div`
     width: 70%;
@@ -26,14 +28,14 @@ const GitHubLoginClick = () => {
     window.location.href = config.API.GET_GITHUB_LOGIN;
 };
 
-const SubmitClick = () => {
-    alert("이벤트 발생");
-};
-
 const LoginForm = () => {
+    const history = useHistory();
     const idWarning = useRef();
     const passwordWarning = useRef();
+    const loginWarning = useRef();
     const submitButton = useRef();
+    const emailInput = useRef();
+    const passwordInput = useRef();
     const [idInputFilled, setIdInputFilled] = useState(false);
     const [passwordInputFilled, setPasswordInputFilled] = useState(false);
 
@@ -54,22 +56,34 @@ const LoginForm = () => {
         }
     };
 
+    const SubmitClick = async () => {
+        try {
+            await API.postLogin(emailInput.current.value, passwordInput.current.value);
+            history.push("/");
+        } catch (e) {
+            loginWarning.current.style.display = "block";
+        }
+    };
+
     const debouncedInputOnChange = debounce(inputOnChange, 500);
 
     return (
         <Form.Container>
             <Form.Label htmlFor="user-input"> 이메일 </Form.Label>
-            <Form.Input type="text" id="user-input" onChange={debouncedInputOnChange} />
+            <Form.Input ref={emailInput} type="text" id="user-input" onChange={debouncedInputOnChange} />
             <Form.WarningMessage ref={idWarning}>이메일은 6~26자 사이로 입력해주세요.</Form.WarningMessage>
             <Form.Label htmlFor="password-input"> 비밀번호 </Form.Label>
-            <Form.Input type="password" id="password-input" onChange={debouncedInputOnChange} />
+            <Form.Input ref={passwordInput} type="password" id="password-input" onChange={debouncedInputOnChange} />
             <Form.WarningMessage ref={passwordWarning}> 비밀번호는 6~12자 사이로 입력해주세요.</Form.WarningMessage>
             <RegisterButtonContainer>
                 <RegisterButton onClick={SubmitClick} disabled={!(idInputFilled && passwordInputFilled)}>
                     로그인
                 </RegisterButton>
-                <RegisterButton>회원가입</RegisterButton>
+                <RegisterButton>
+                    <Link to="/signup">회원가입</Link>
+                </RegisterButton>
             </RegisterButtonContainer>
+            <Form.WarningMessage ref={loginWarning}> 아이디 또는 비밀번호가 잘못됐습니다. 다시 확인해주세요.</Form.WarningMessage>
             <Form.Submit ref={submitButton} onClick={GitHubLoginClick}>
                 Sign in with GitHub
             </Form.Submit>

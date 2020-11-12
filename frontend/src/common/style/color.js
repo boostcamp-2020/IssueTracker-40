@@ -61,7 +61,9 @@ const color = {
     filterbar_dropmenu_text: "#444d56",
     page_nav_btn_text: "#444d56",
     page_nav_btn_bg: "#ffffff",
-    page_nav_btn_hover_bg: "#f6f8fa"
+    page_nav_btn_hover_bg: "#f6f8fa",
+    list_group_border: "#eaecef",
+    primary_hover_bg: "#f3f4f6"
 };
 
 export { color };
