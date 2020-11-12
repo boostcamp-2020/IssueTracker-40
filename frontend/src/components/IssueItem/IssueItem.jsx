@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { color } from "@style/color";
 import { Checkbox, IssueIcon, Label, UserProfile } from "@components";
 import milestoneIcon from "@imgs/milestone-gray-icon.png";
+import MainContentContext from "../MainTemplate/MainContext/MainContentContext";
 
 const IssueItemArea = styled.div`
     display: flex;
@@ -98,6 +99,8 @@ const AssigneeListItem = styled.li`
 `;
 
 const IssueItem = ({ id, title, labels, milestone, assignees, author, createdAt }) => {
+    const { contentEventListeners } = useContext(MainContentContext);
+
     const getLabels = () =>
         labels.reduce(
             (acc, cur) =>
@@ -148,7 +151,7 @@ const IssueItem = ({ id, title, labels, milestone, assignees, author, createdAt 
 
     return (
         <IssueItemArea>
-            <Checkbox />
+            <Checkbox className="issue-checkbox" onChange={contentEventListeners.onChangeIssueCheckBox} />
             <IssueItemInfoArea>
                 <div>
                     <IssueItemInfo>
