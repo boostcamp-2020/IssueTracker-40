@@ -10,7 +10,9 @@ import MilestoneBlackIcon from "@imgs/milestone-black-icon.png";
 const HeaderContainer = styled.div`
     display: flex;
     justify-content: space-between;
-    width: 70%;
+    width: 100%;
+    max-width: 1280px;
+    margin-bottom: 1rem;
 `;
 
 const TabContainer = styled.div`
