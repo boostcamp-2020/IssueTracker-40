@@ -1,6 +1,7 @@
 import { getRepository } from "typeorm";
 import { Transactional } from "typeorm-transactional-cls-hooked";
 import { EntityNotFoundError } from "../common/error/entity-not-found-error";
+import { ISSUESTATE } from "../common/type";
 import { Issue } from "../model/issue";
 import { IssueContent } from "../model/issue-content";
 import { Label } from "../model/label";
@@ -71,8 +72,7 @@ class IssueService {
         );
         const issueContent = this.issueContentRepository.create({ content });
         const labelToIssues = this.labelToIssueRepository.create(labels.map((label) => ({ label })));
-
-        const issue = this.issueRepository.create({ title, author, milestone, userToIssues, labelToIssues, issueContent });
+        const issue = this.issueRepository.create({ title, author, milestone, userToIssues, labelToIssues, content: issueContent });
         await this.issueRepository.save(issue);
 
         return issue;
@@ -139,6 +139,108 @@ class IssueService {
         await this.issueRepository.save(targetIssue);
 
         return targetIssue;
+    async getIssues({ issueState, authorName, labelNames, milestoneTitle, assigneeName, page }) {
+        const promises = [];
+
+        if (authorName !== undefined) {
+            promises.push(this.userRepository.findOne({ name: authorName }));
+        } else {
+            promises.push(undefined);
+        }
+
+        if (labelNames?.length > 0) {
+            promises.push(this.labelRepository.createQueryBuilder("label").where("label.name IN (:...labelNames)", { labelNames }).getMany());
+        } else {
+            promises.push([]);
+        }
+
+        if (milestoneTitle !== undefined) {
+            promises.push(this.milestoneRepository.findOne({ title: milestoneTitle }));
+        } else {
+            promises.push(undefined);
+        }
+
+        if (assigneeName !== undefined) {
+            promises.push(this.userRepository.findOne({ name: assigneeName }));
+        } else {
+            promises.push(undefined);
+        }
+
+        const [author, labels, milestone, assignee] = await Promise.all(promises);
+
+        const query = this.issueRepository
+            .createQueryBuilder("issue")
+            .orderBy("issue.id", "DESC")
+            .offset(page * 25)
+            .limit(25);
+
+        if (issueState === ISSUESTATE.OPEN || issueState === ISSUESTATE.CLOSED) {
+            query.andWhere("issue.state = :issueState", { issueState });
+        }
+
+        if (authorName !== undefined && author !== undefined) {
+            query.innerJoinAndSelect("issue.author", "a", "a.deleted_at IS NULL");
+            query.andWhere("issue.author_id = :authorId", { authorId: author.id });
+        } else if (authorName !== undefined && author === undefined) {
+            return [];
+        }
+
+        if (labelNames?.length > 0 && labels.length !== 0) {
+            query.innerJoinAndSelect("issue.labelToIssues", "b");
+            query.andWhere("b.label_id IN (:...labelIds)", { labelIds: labels.map((label) => label.id) });
+        } else if (labelNames?.length > 0 && labels.length === 0) {
+            return [];
+        }
+
+        if (milestoneTitle !== undefined && milestone !== undefined) {
+            query.innerJoinAndSelect("issue.milestone", "c", "c.deleted_at IS NULL");
+            query.andWhere("issue.milestone_id = :milestoneId", { milestoneId: milestone.id });
+        } else if (milestoneTitle !== undefined && milestone === undefined) {
+            return [];
+        }
+
+        if (assigneeName !== undefined && assignee !== undefined) {
+            query.innerJoinAndSelect("issue.userToIssues", "d");
+            query.andWhere("d.user_id = :assigneeId", { assigneeId: assignee.id });
+        } else if (assigneeName !== undefined && assignee === undefined) {
+            return [];
+        }
+
+        const issueIds = (await query.getMany()).map((issue) => issue.id);
+
+        const issues = await this.issueRepository
+            .createQueryBuilder("issue")
+            .leftJoinAndSelect("issue.author", "a")
+            .leftJoinAndSelect("issue.labelToIssues", "b")
+            .leftJoinAndSelect("b.label", "b_0")
+            .leftJoinAndSelect("issue.milestone", "c")
+            .leftJoinAndSelect("issue.userToIssues", "d")
+            .leftJoinAndSelect("d.user", "d_0")
+            .where("issue.id IN (:...issueIds)", { issueIds })
+            .orderBy("issue.id", "DESC")
+            .getMany();
+
+        return issues;
+    }
+
+    @Transactional()
+    async getIssueByIdWithRelation(issueId) {
+        const issue = await this.issueRepository
+            .createQueryBuilder("issue")
+            .leftJoinAndSelect("issue.author", "a")
+            .leftJoinAndSelect("issue.labelToIssues", "b")
+            .leftJoinAndSelect("b.label", "b_0")
+            .leftJoinAndSelect("issue.milestone", "c")
+            .leftJoinAndSelect("issue.userToIssues", "d")
+            .leftJoinAndSelect("d.user", "d_0")
+            .leftJoinAndSelect("issue.comments", "e", "e.deleted_at IS NULL")
+            .leftJoinAndSelect("e.user", "e_0")
+            .leftJoinAndSelect("e.content", "e_1")
+            .leftJoinAndSelect("issue.content", "f")
+            .where("issue.id = :issueId", { issueId })
+            .getOne();
+
+        return issue;
     }
 }
 

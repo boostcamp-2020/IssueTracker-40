@@ -16,7 +16,8 @@ const color = {
     tab_selected_bg: "#ffffff",
     tab_container_gb: "#ffffff",
     border_primary: "#e1e4e8",
-    register_btn: "#2e9afe",
+    register_btn: "rgb(46, 154, 254)",
+    register_btn_disabled: "rgba(46, 154, 254, 0.5)",
     loading_dots: "#d8d8d8",
     sidemenu_hover: "#2e9afe",
     sidemenu_default: "#6e6e6e",
@@ -29,6 +30,14 @@ const color = {
     header_dropmenu_boader: "#e1e4e8",
     header_dropmenu_modal_bg: "transparent",
     caret_text: "#ffffff",
+    main_bg: "#ffffff",
+    signup_box_border: "#e6e6e6",
+    signup_submit_disabled: "rgb(164, 164, 164, 0.5)",
+    signup_submit: "rgb(164, 164, 164)",
+    signup_container: "white",
+    form_warning_msg: "red",
+    signup_page_bg: "#f2f2f2",
+    signup_submit_text: "white",
     issue_drop_btn: "#6a737d",
     issue_drop_hover_btn: "#444d56",
     issue_drop_modal_bg: "transparent",
@@ -39,8 +48,12 @@ const color = {
     list_group_header_bg: "#f6f8fa",
     list_group_item_bg: "#ffffff",
     list_group_item_hover_bg: "#f6f8fa",
+    list_group_border: "#eaecef",
+    container_border: "#e1e4e8",
+    title_input_bg: "#fafbfc",
+    title_input_border: "#e1e4e8",
+    title_input_focus_border: "#0366d6",
     list_group_border: "#eaecef"
-    main_bg: "#ffffff"
 };
 
 export { color };

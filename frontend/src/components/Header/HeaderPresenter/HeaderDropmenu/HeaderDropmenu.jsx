@@ -118,7 +118,7 @@ const HeaderDropmenu = () => {
     return (
         <DropmenuContainer>
             <DropmenuButton type="button" onClick={eventListeners.onDropmenuClickListner}>
-                <UserProfile imageUrl={headerState.userProfileImage} />
+                <UserProfile imageUrl={headerState.userProfileImage} width="20px" height="20px" />
                 <Caret primary />
             </DropmenuButton>
             <DropmenuModalBackground isHidden={headerState.isHiddenDropmenu} onClick={eventListeners.onModalBackgrondClickListener} />

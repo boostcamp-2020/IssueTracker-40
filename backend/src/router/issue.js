@@ -1,4 +1,6 @@
 import express from "express";
+import { QueryParser } from "../common/lib";
+import { queryMapper } from "../common/middleware/query-mapper";
 import { RequestType } from "../common/middleware/request-type";
 import { transformer } from "../common/middleware/transformer";
 import { validator } from "../common/middleware/validator";
@@ -9,12 +11,24 @@ import {
     CreateReadCommentRequestParams,
     AddCommentRequestBody,
     UpdateDeleteCommentRequestParams,
-    IssueMilestoneRequestParams
+    IssueMilestoneRequestParams,
+    GetIssuesRequestQuery,
+    GetIssueByIdParams
 } from "../dto/issue";
 
 const router = express.Router();
 
 router.post("/", transformer([RequestType.BODY], [AddIssueRequestBody]), validator([RequestType.BODY]), issueController.addIssue);
+
+router.get(
+    "/",
+    transformer([RequestType.QUERY], [GetIssuesRequestQuery]),
+    validator([RequestType.QUERY]),
+    queryMapper(new QueryParser(" ", ":")),
+    issueController.getIssues
+);
+
+router.get("/:issueId", transformer([RequestType.PARAMS], [GetIssueByIdParams]), validator([RequestType.PARAMS]), issueController.getIssueById);
 
 router.post(
     "/:issueId/assignee/:assigneeId",

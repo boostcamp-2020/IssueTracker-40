@@ -1,4 +1,5 @@
 export { default as LoginForm } from "./LoginForm/LoginForm";
+export { default as SignupForm } from "./SignupForm/SignupForm";
 export { default as Button } from "./Button/Button";
 export { default as ContentEditor } from "./ContentEditor/ContentEditor";
 export { default as SidebarMenu } from "./SideBarMenu/SideBarMenu";
@@ -13,3 +14,4 @@ export { default as IssueItem } from "./IssueItem/IssueItem";
 export { default as IssueFilterMenu } from "./IssueFilterMenu/IssueFilterMenuContainer/IssueFilterMenuContainer";
 export { default as Main } from "./Main/Main";
 export { default as ProgressBar } from "./ProgressBar/ProgressBar";
+export * as Form from "./Form";

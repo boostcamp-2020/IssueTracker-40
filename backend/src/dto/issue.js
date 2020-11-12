@@ -1,3 +1,4 @@
+import { Transform } from "class-transformer";
 import { IsArray, IsNumber, IsNumberString, IsOptional, IsString } from "class-validator";
 
 class AddIssueRequestBody {
@@ -18,6 +19,22 @@ class AddIssueRequestBody {
     @IsOptional()
     @IsNumber()
     milestone;
+}
+
+class GetIssuesRequestQuery {
+    @IsOptional()
+    @IsString()
+    q;
+
+    @Transform((value) => parseInt(value, 10))
+    @IsNumber()
+    page;
+}
+
+class GetIssueByIdParams {
+    @Transform((value) => parseInt(value, 10))
+    @IsNumber()
+    issueId;
 }
 
 class UserToIssueRequestParams {
@@ -61,4 +78,6 @@ export {
     AddCommentRequestBody,
     UpdateDeleteCommentRequestParams,
     IssueMilestoneRequestParams
+    GetIssuesRequestQuery,
+    GetIssueByIdParams
 };

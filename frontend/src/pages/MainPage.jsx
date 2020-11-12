@@ -2,18 +2,8 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { usePromise } from "@hook";
 import { UserContext } from "@context";
-import Config from "@config";
-import { Header, Main ListGroup, IssueItem, IssueFilterMenu } from "@components";
+import { Header, Main, ListGroup, IssueItem, IssueFilterMenu } from "@components";
 import { waitAuthorizationApi } from "@utils";
-        
-const Main = styled.main`
-    height: 100%;
-`;
-
-const waitAuthorizationApi = async () => {
-    const userInfo = await axios.get(Config.API.GET_AUTH, { withCredentials: true });
-    return userInfo;
-};
 
 const MainPage = () => {
     const [loading, resolved, error] = usePromise(waitAuthorizationApi, []);
