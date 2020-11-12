@@ -13,5 +13,8 @@ export { default as IssueIcon } from "./IssueIcon/IssueIcon";
 export { default as IssueItem } from "./IssueItem/IssueItem";
 export { default as IssueFilterMenu } from "./IssueFilterMenu/IssueFilterMenuContainer/IssueFilterMenuContainer";
 export { default as Main } from "./Main/Main";
+export * as MainTemplate from "./MainTemplate";
 export { default as ProgressBar } from "./ProgressBar/ProgressBar";
 export * as Form from "./Form";
+export { default as FilterBar } from "./FilterBar/FilterBarContainer/FilterBarContainer";
+export { default as PageNavButton } from "./PageNavButton/PageNavButton";
