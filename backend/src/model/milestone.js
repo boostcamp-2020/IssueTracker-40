@@ -22,7 +22,7 @@ class Milestone {
     @IsString()
     state;
 
-    @Column({ name: "due_date", type: "datetime", nullable: true })
+    @Column({ name: "due_date", type: "date", nullable: true })
     @IsOptional()
     @IsDate()
     dueDate;
@@ -36,7 +36,7 @@ class Milestone {
     @DeleteDateColumn({ name: "deleted_at", type: "datetime" })
     deletedAt;
 
-    @OneToMany(() => Issue, (issue) => issue.id)
+    @OneToMany(() => Issue, (issue) => issue.milestone)
     issues;
 }
 

@@ -1,11 +1,23 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, OneToMany, ManyToOne, DeleteDateColumn } from "typeorm";
-import { IsString, IsUrl, IsOptional } from "class-validator";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+    OneToMany,
+    ManyToOne,
+    DeleteDateColumn,
+    JoinColumn,
+    OneToOne
+} from "typeorm";
+import { IsString, IsOptional } from "class-validator";
 import { Comment } from "./comment";
 import { User } from "./user";
 import { UserToIssue } from "./user-to-issue";
 import { Milestone } from "./milestone";
 import { LabelToIssue } from "./label-to-issue";
 import { ISSUESTATE } from "../common/type";
+import { IssueContent } from "./issue-content";
 
 @Entity({ name: "issue" })
 class Issue {
@@ -15,11 +27,6 @@ class Issue {
     @Column({ name: "title", type: "varchar", charset: "utf-8" })
     @IsString()
     title;
-
-    @Column({ name: "content", type: "varchar" })
-    @IsString()
-    @IsUrl()
-    content;
 
     @Column({ name: "state", type: "varchar", default: ISSUESTATE.OPEN })
     @IsOptional()
@@ -35,19 +42,25 @@ class Issue {
     @DeleteDateColumn({ name: "deleted_at", type: "datetime" })
     deletedAt;
 
-    @OneToMany(() => Comment, (comment) => comment.id)
+    @OneToMany(() => Comment, (comment) => comment.issue)
     comments;
 
-    @OneToMany(() => UserToIssue, (userToIssue) => userToIssue.issue)
+    @OneToMany(() => UserToIssue, (userToIssue) => userToIssue.issue, { cascade: ["insert"] })
     userToIssues;
 
-    @ManyToOne(() => User, (user) => user.id, { eager: true, cascade: true })
+    @ManyToOne(() => User, (user) => user.id)
+    @JoinColumn({ name: "author_id" })
     author;
 
-    @ManyToOne(() => Milestone, (milestone) => milestone.id, { eager: true, cascade: true })
+    @ManyToOne(() => Milestone, (milestone) => milestone.id)
+    @JoinColumn({ name: "milestone_id" })
     milestone;
 
-    @OneToMany(() => LabelToIssue, (labelToIssue) => labelToIssue.label)
+    @OneToMany(() => LabelToIssue, (labelToIssue) => labelToIssue.issue, { cascade: ["insert"] })
     labelToIssues;
+
+    @OneToOne(() => IssueContent, (content) => content.issue, { cascade: ["insert", "update"] })
+    @JoinColumn({ name: "content_id" })
+    content;
 }
 export { Issue };

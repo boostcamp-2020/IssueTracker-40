@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import { validateOrReject } from "class-validator";
 import { createConnection } from "typeorm";
+import { initializeTransactionalContext, patchTypeORMRepositoryWithBaseRepository } from "typeorm-transactional-cls-hooked";
 import { errorHandler } from "./common/middleware/error-handler";
 import { router } from "./router";
 import { EnvType } from "./common/env/env-type";
@@ -33,6 +34,7 @@ export class Application {
     async initialize() {
         try {
             await this.initEnvironment();
+            this.registerMiddleware();
             await this.initDatabase();
             authenticator.initializeAuthenticator(this.httpServer);
         } catch (error) {
@@ -53,10 +55,11 @@ export class Application {
         this.databaseEnv = new DatabaseEnv();
         await validateOrReject(this.databaseEnv);
         this.connectionOptionGenerator = new ConnectionOptionGenerator(this.databaseEnv);
-        this.registerMiddleware();
     }
 
     async initDatabase() {
+        initializeTransactionalContext();
+        patchTypeORMRepositoryWithBaseRepository();
         await createConnection(this.connectionOptionGenerator.generateConnectionOption());
     }
 

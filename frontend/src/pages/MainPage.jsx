@@ -1,34 +1,32 @@
-import React from "react";
-import { Redirect } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import { usePromise } from "@hook";
-import axios from "axios";
-import { UserContext } from "@context";
-import Config from "@config";
-
-const Main = styled.main`
-    height: 100%;
-    background-color: beige;
-`;
-
-const waitAuthorizationApi = async () => {
-    const userInfo = await axios.get(Config.API.GET_AUTH, { withCredentials: true });
-    return userInfo;
-};
+import { MainTemplate, FilterBar, PageNavButton, Button } from "@components";
+import { API } from "@utils";
+import { LoadingPage } from "@pages";
+import MainContext from "../components/MainTemplate/MainContext/MainContext";
 
 const MainPage = () => {
-    const [loading, resolved, error] = usePromise(waitAuthorizationApi, []);
+    const [loading, resolved] = usePromise(API.getIssues, [], { page: 0 });
+    const [issues, setIssues] = useState(resolved);
 
-    if (loading) return <div>로딩중..!</div>;
-    if (error) return <Redirect to="/login" />;
-    if (!resolved) return null;
+    useEffect(async () => {
+        setIssues(resolved);
+    }, [resolved]);
+
+    if (loading) return <LoadingPage />;
 
     return (
-        <UserContext.Provider value={resolved.data}>
-            <Main>
-                <h1>메인페이지입니다</h1>
-            </Main>
-        </UserContext.Provider>
+        <MainContext.Provider value={{ issues, setIssues }}>
+            <MainTemplate.Top>
+                <FilterBar />
+                <PageNavButton />
+                <Button primary>
+                    <NavLink to="/new">New Issue</NavLink>
+                </Button>
+            </MainTemplate.Top>
+            <MainTemplate.Content />
+        </MainContext.Provider>
     );
 };
 

@@ -1,11 +1,11 @@
-import { Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from "typeorm";
+import { Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, JoinColumn } from "typeorm";
 import { Issue } from "./issue";
 import { Label } from "./label";
 
 @Entity()
 class LabelToIssue {
     @PrimaryGeneratedColumn("increment", { type: "int" })
-    labelToIssueId;
+    id;
 
     @CreateDateColumn({ name: "created_at", type: "datetime" })
     createdAt;
@@ -16,10 +16,12 @@ class LabelToIssue {
     @DeleteDateColumn({ name: "deleted_at", type: "datetime" })
     deletedAt;
 
-    @ManyToOne(() => Label, (label) => label.labelToIssues, { eager: true, cascade: true, onDelete: "CASCADE" })
+    @ManyToOne(() => Label, (label) => label.labelToIssues)
+    @JoinColumn({ name: "label_id" })
     label;
 
-    @ManyToOne(() => Issue, (issue) => issue.labelToIssues, { eager: true, cascade: true, onDelete: "CASCADE" })
+    @ManyToOne(() => Issue, (issue) => issue.labelToIssues)
+    @JoinColumn({ name: "issue_id" })
     issue;
 }
 

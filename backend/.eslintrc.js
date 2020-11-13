@@ -30,6 +30,7 @@ module.exports = {
         "no-useless-constructor": "off",
         "no-plusplus": "off",
         "no-unused-vars": "warn",
-        "import/no-cycle": "off"
+        "import/no-cycle": "off",
+        "max-classes-per-file": "off"
     }
 };

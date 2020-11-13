@@ -66,6 +66,17 @@ module.exports = (env) => {
                 {
                     test: /\.scss$/,
                     use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+                },
+                {
+                    test: /\.(png|jpe?g|gif)$/i,
+                    use: {
+                        loader: "url-loader",
+                        options: {
+                            publicPath: "/",
+                            name: "[name].[ext]?[hash]",
+                            limit: 10000
+                        }
+                    }
                 }
             ]
         },
@@ -84,6 +95,7 @@ module.exports = (env) => {
         ],
         output: {
             path: path.join(__dirname, "dist"),
+            publicPath: "/",
             filename: "[name].js"
         }
     };
