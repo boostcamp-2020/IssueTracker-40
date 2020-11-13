@@ -19,12 +19,11 @@ const getLabels = async () => {
     return response;
 };
 
-
 const getIssues = async ({ page }) => {
     const query = qs.stringify({
         page
     });
-    const response = await axios.get(`${Config.API.GET_ISSUES}?${query}`, { withCredentials: true });
+    const response = await axios.get(`${Config.API.GET_ISSUES}?${query}`);
     return response;
 };
 
@@ -48,4 +47,43 @@ const getIssueById = async (issueId) => {
     return response?.data?.issue;
 };
 
-export { postLogin, postSignup, getLabels, postLabel, putLabel, deleteLabel, getIssueById, getIssues };
+const getMilestone = async (milestoneId) => {
+    const response = await axios.get(`${Config.API.MILESTONE}/${milestoneId}`);
+    return response;
+};
+
+const getMilestones = async () => {
+    const response = await axios.get(`${Config.API.MILESTONE}`);
+    return response;
+};
+
+const postMilestone = async (data) => {
+    const response = await axios.post(Config.API.MILESTONE, data);
+    return response;
+};
+
+const patchMilestone = async (milestoneId, data) => {
+    const response = await axios.patch(`${Config.API.MILESTONE}/${milestoneId}`, data);
+    return response;
+};
+
+const deleteMilestone = async (milestoneId) => {
+    const response = await axios.delete(`${Config.API.MILESTONE}/${milestoneId}`);
+    return response;
+};
+
+export {
+    postLogin,
+    postSignup,
+    getLabels,
+    postLabel,
+    putLabel,
+    deleteLabel,
+    getIssueById,
+    getIssues,
+    getMilestone,
+    getMilestones,
+    postMilestone,
+    patchMilestone,
+    deleteMilestone
+};
