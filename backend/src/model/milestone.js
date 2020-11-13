@@ -22,7 +22,7 @@ class Milestone {
     @IsString()
     state;
 
-    @Column({ name: "due_date", type: "datetime", nullable: true })
+    @Column({ name: "due_date", type: "date", nullable: true })
     @IsOptional()
     @IsDate()
     dueDate;

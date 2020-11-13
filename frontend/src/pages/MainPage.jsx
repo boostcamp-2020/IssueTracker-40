@@ -1,15 +1,15 @@
 import React from "react";
-
 import { Redirect, NavLink } from "react-router-dom";
 import { usePromise } from "@hook";
 import { UserContext } from "@context";
 import { Header, Main, MainTemplate, FilterBar, PageNavButton, Button } from "@components";
 import { API } from "@utils";
+import { LoadingPage } from "@pages";
 
 const MainPage = () => {
     const [issueLoading, issueResolved, issueError] = usePromise(API.getIssues, [], { page: 0 });
-  
-    if (issueLoading) return <div>로딩중..!</div>;
+
+    if (issueLoading) return <LoadingPage />;
     if (issueError) return <Redirect to="/" />;
     if (!issueResolved) return null;
 

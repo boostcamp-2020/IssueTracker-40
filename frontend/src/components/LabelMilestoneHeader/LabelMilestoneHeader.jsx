@@ -61,11 +61,6 @@ const RightText = styled.p`
     color: ${(props) => (props.value === "milestone" ? "white" : "black")};
 `;
 
-function handlingOnClick(value) {
-    if (value === "label") window.location.href = "/milestones";
-    else window.location.href = "/labels";
-}
-
 const LabelMilestoneHeader = ({ value, buttonClick }) => {
     return (
         <HeaderContainer>

@@ -6,6 +6,7 @@ import { IssueDetail, Button, ContentEditor, SidebarMenu, UserProfile, Comment, 
 import { waitAuthorizationApi, API } from "@utils";
 import styled from "styled-components";
 import { color } from "@style/color";
+import { LoadingPage } from "@pages";
 
 const StyledTitleContainer = styled.div`
     display: flex;
@@ -112,11 +113,11 @@ const IssueDetailPage = ({ match }) => {
     const [loading, resolved, error] = usePromise(waitAuthorizationApi, []);
     const [issueLoading, issueResolved, issueError] = usePromise(API.getIssueById, [], issueId);
 
-    if (loading) return <div>로딩중..!</div>;
+    if (loading) return <LoadingPage />;
     if (error) return <Redirect to="/login" />;
     if (!resolved) return null;
 
-    if (issueLoading) return <div>로딩중..!</div>;
+    if (issueLoading) return <LoadingPage />;
     if (issueError) return <Redirect to="/" />;
     if (!issueResolved) return null;
 

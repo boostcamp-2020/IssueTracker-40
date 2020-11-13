@@ -7,3 +7,4 @@ export { default as LabelPage } from "./LabelPage";
 export { default as MilestonePage } from "./MilestonePage";
 export { default as NewIssuePage } from "./NewIssuePage";
 export { default as NewMilestonePage } from "./NewMilestonePage";
+export { default as EditMilestonePage } from "./EditMilstonePage";

@@ -1,4 +1,4 @@
-import { IsDateString, IsString, IsNumber, IsOptional } from "class-validator";
+import { IsDate, IsString, IsNumber, IsOptional } from "class-validator";
 import { Transform } from "class-transformer";
 
 class AddMilestoneRequestBody {
@@ -8,7 +8,7 @@ class AddMilestoneRequestBody {
     @IsString()
     description;
 
-    @IsDateString()
+    @IsString()
     dueDate;
 }
 
@@ -38,7 +38,7 @@ class ChangeMilestoneRequestBody {
     state;
 
     @IsOptional()
-    @IsDateString()
+    @IsString()
     dueDate;
 }
 

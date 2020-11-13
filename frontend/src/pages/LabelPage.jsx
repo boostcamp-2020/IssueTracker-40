@@ -2,6 +2,13 @@ import React, { useState } from "react";
 import { LabelMilestoneHeader, LabelEditor, ListGroup, LabelItem } from "@components";
 import { API } from "@utils";
 import { usePromise } from "@hook";
+import styled from "styled-components";
+import { LoadingPage } from "@pages";
+
+const LabelView = styled.div`
+    width: 100%;
+    max-width: 1280px;
+`;
 
 const LabelPage = () => {
     const [isOpenNewLabel, setOpenNewLabel] = useState(false);
@@ -16,7 +23,7 @@ const LabelPage = () => {
 
     const [loading, resolved, error] = usePromise(getLabels, []);
 
-    if (loading) return <div>로딩중..!</div>;
+    if (loading) return <LoadingPage />;
     if (error) window.location.href = "/";
     if (!resolved) return null;
 
@@ -34,7 +41,7 @@ const LabelPage = () => {
         );
 
     return (
-        <>
+        <LabelView>
             <LabelMilestoneHeader value="label" buttonClick={handlingOnButtonClick} />
             {isOpenNewLabel ? <LabelEditor buttonClick={handlingOnButtonClick} create /> : null}
             <ListGroup.Area>
@@ -45,7 +52,7 @@ const LabelPage = () => {
                 </ListGroup.Header>
                 <ListGroup.ItemList>{getLabelItems()}</ListGroup.ItemList>
             </ListGroup.Area>
-        </>
+        </LabelView>
     );
 };
 

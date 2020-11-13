@@ -8,8 +8,8 @@ import { User } from "../../src/model/user";
 import { MilestoneService } from "../../src/service";
 
 const mockUser = { email: "Do-ho@github.com", name: "Do-ho", profileImage: "profile image" };
-const mockMilestone = { title: "title", description: "description", dueDate: new Date() };
-const mockMilestone2 = { title: "title2", description: "description", dueDate: new Date() };
+const mockMilestone = { title: "title", description: "description", dueDate: "2019-01-01" };
+const mockMilestone2 = { title: "title2", description: "description", dueDate: "2019-01-02" };
 
 describe("Milestone Router Test", () => {
     let app = null;
