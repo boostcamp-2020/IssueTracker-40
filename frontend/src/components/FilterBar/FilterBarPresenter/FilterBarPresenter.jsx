@@ -3,8 +3,10 @@ import styled from "styled-components";
 import SearchIcon from "@imgs/search-icon.png";
 import { Caret } from "@components";
 import { color } from "@style/color";
+import { API } from "@utils";
 import FilterDropmenu from "../FilterDropmenu/FilterDropmenu";
 import FilterBarContext from "../FilterBarContext/FilterBarContext";
+import MainContext from "../../MainTemplate/MainContext/MainContext";
 
 const FilterForm = styled.form`
     display: flex;
@@ -67,9 +69,17 @@ const SearchIconImg = styled.img.attrs({ src: SearchIcon })`
 
 const FilterBarPresenter = () => {
     const { eventListeners } = useContext(FilterBarContext);
+    const { setIssues } = useContext(MainContext);
+    const onFilterSubmitListener = async (e) => {
+        e.preventDefault();
+        const formNode = e.target;
+        const { query } = formNode;
+        const issues = await API.getIssues({ page: 0, q: query.value });
+        setIssues(issues);
+    };
 
     return (
-        <FilterForm>
+        <FilterForm onSubmit={onFilterSubmitListener}>
             <FilterBarMenuButtonArea>
                 <FilterBarMenuButton type="button" onClick={eventListeners.onFilterDropmenuClickListener}>
                     <FilterBarMenuTitle>Filter</FilterBarMenuTitle>
@@ -78,7 +88,7 @@ const FilterBarPresenter = () => {
                 <FilterDropmenu />
             </FilterBarMenuButtonArea>
             <FilterInputArea>
-                <FilterInput type="text" />
+                <FilterInput name="query" type="text" />
                 <SearchIconImg />
             </FilterInputArea>
         </FilterForm>

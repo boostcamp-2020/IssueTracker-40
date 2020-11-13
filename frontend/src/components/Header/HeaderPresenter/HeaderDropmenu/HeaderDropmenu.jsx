@@ -89,8 +89,8 @@ const DropmenuSubArea = styled.ul`
 
 const DropmenuSubItem = ({ children, ...rest }) => {
     return (
-        <li>
-            <span>{children}</span>
+        <li {...rest}>
+            <span {...rest}>{children}</span>
         </li>
     );
 };
@@ -99,7 +99,16 @@ const HeaderDropmenu = () => {
     const { headerState, eventListeners } = useContext(HeaderContext);
 
     const getTotalMenus = () => {
-        const getMenuItems = (menus) => menus.reduce((acc, cur) => acc.concat(<DropmenuSubItem key={cur.id}>{cur.title}</DropmenuSubItem>), []);
+        const getMenuItems = (menus) =>
+            menus.reduce(
+                (acc, cur) =>
+                    acc.concat(
+                        <DropmenuSubItem key={cur.id} onClick={eventListeners.onHeaderDropmenuClickListner} data-event={cur.eventType}>
+                            {cur.title}
+                        </DropmenuSubItem>
+                    ),
+                []
+            );
 
         const getMenuItemAreas = ({ userStatusMenus, navigationMenus, serviceMenus }) =>
             [userStatusMenus, navigationMenus, serviceMenus].reduce(

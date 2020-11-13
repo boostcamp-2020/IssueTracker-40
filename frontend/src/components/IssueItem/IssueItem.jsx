@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { color } from "@style/color";
 import { Checkbox, IssueIcon, Label, UserProfile } from "@components";
@@ -98,7 +99,8 @@ const AssigneeListItem = styled.li`
     cursor: pointer;
 `;
 
-const IssueItem = ({ id, title, labels, milestone, assignees, author, createdAt }) => {
+const IssueItem = ({ id, title, labels, milestone, assignees, author, state, createdAt }) => {
+    const history = useHistory();
     const { contentEventListeners } = useContext(MainContentContext);
 
     const getLabels = () =>
@@ -146,17 +148,21 @@ const IssueItem = ({ id, title, labels, milestone, assignees, author, createdAt 
             const removePattern = /\s[0-9:]+ [GMT+0-9]+ [ㄱ-ㅎ가-힣(\s)]+/;
             return `${createDate.toString().replace(removePattern, "")}`;
         };
-        return `#${id} opened ${getCreationTime()} by ${author.name}`;
+        return `#${id} ${state === "open" ? `${state}ed` : state} ${getCreationTime()} by ${author.name}`;
+    };
+
+    const onClickIssueTitle = (e) => {
+        history.push({ pathname: `/issue/${id}` });
     };
 
     return (
         <IssueItemArea>
-            <Checkbox className="issue-checkbox" onChange={contentEventListeners.onChangeIssueCheckBox} />
+            <Checkbox className="issue-checkbox" data-id={id} onChange={contentEventListeners.onChangeIssueCheckBox} />
             <IssueItemInfoArea>
                 <div>
                     <IssueItemInfo>
                         <IssueIcon open />
-                        <IssueTitle>{title}</IssueTitle>
+                        <IssueTitle onClick={onClickIssueTitle}>{title}</IssueTitle>
                         <IssueLabelList>{getLabels()}</IssueLabelList>
                     </IssueItemInfo>
                     <IssueItemInfo>

@@ -1,11 +1,17 @@
 import React, { useReducer, useContext } from "react";
 import { UserContext } from "@context";
+import { API } from "@utils";
+import { useHistory } from "react-router-dom";
 import HeaderPresenter from "../HeaderPresenter/HeaderPresenter";
 import HeaderContext from "../HeaderContext/HeaderContext";
 
 const HEADER_ACTION_TYPE = {
     SHOW_DROPMENU: "showDropmenu",
     HIDE_DROPMENU: "hideDropmenu"
+};
+
+const HEADER_DROP_MENU_EVENT_TYPE = {
+    SIGN_OUT: "signout"
 };
 
 const reducer = (headerState, action) => {
@@ -44,12 +50,13 @@ const HeaderContainer = () => {
             id: 3,
             menus: [
                 { id: 1, title: "Help" },
-                { id: 2, title: "Sign out" }
+                { id: 2, title: "Sign out", eventType: HEADER_DROP_MENU_EVENT_TYPE.SIGN_OUT }
             ]
         },
         isHiddenDropmenu: true
     };
     const [headerState, dispatch] = useReducer(reducer, initialState);
+    const history = useHistory();
 
     const eventListeners = {
         onDropmenuClickListner: (e) => {
@@ -65,6 +72,21 @@ const HeaderContainer = () => {
         onModalBackgrondClickListener: (e) => {
             e.preventDefault();
             if (!headerState.isHiddenDropmenu) dispatch({ type: HEADER_ACTION_TYPE.HIDE_DROPMENU });
+        },
+
+        onHeaderDropmenuClickListner: async (e) => {
+            e.stopPropagation();
+            const targetNode = e.target;
+            if (!targetNode.dataset.event) return;
+
+            switch (targetNode.dataset.event) {
+                case HEADER_DROP_MENU_EVENT_TYPE.SIGN_OUT:
+                    await API.getLogout();
+                    history.push({ pathname: "/login" });
+                    break;
+                default:
+                    break;
+            }
         }
     };
 

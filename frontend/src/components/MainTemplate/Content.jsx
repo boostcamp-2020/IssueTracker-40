@@ -1,89 +1,16 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext } from "react";
 import styled from "styled-components";
 import { ListGroup, IssueItem, IssueFilterMenu } from "@components";
+import { API } from "@utils";
+import { usePromise } from "@hook";
+import { useHistory } from "react-router-dom";
 import MainContentContext from "./MainContext/MainContentContext";
+import MainContext from "./MainContext/MainContext";
 
 const ContentSection = styled.section`
     width: 100%;
     max-width: 1024px;
 `;
-
-const issues = [
-    {
-        id: 1,
-        title: "로그인 기능 구현",
-        labels: [
-            {
-                id: 1,
-                name: "back-end",
-                color: "#85f97a"
-            },
-            {
-                id: 2,
-                name: "modify",
-                color: "#4f8ec1"
-            }
-        ],
-        milestone: {
-            id: 1,
-            title: "Back-end"
-        },
-        assignees: [
-            {
-                id: 1,
-                name: "crong",
-                profileImage: "https://pbs.twimg.com/profile_images/977835673511084032/xXA979th.jpg"
-            }
-        ],
-        author: {
-            id: 1,
-            name: "jinhyukoo"
-        },
-        createdAt: "2020-10-09T08:11:57.136Z"
-    },
-    {
-        id: 2,
-        title: "로그인 폼 컴포넌트 제작",
-        labels: [
-            {
-                id: 3,
-                name: "front-end",
-                color: "#ed6d71"
-            }
-        ],
-        milestone: {
-            id: 2,
-            title: "Front-end"
-        },
-        assignees: [
-            {
-                id: 1,
-                name: "crong",
-                profileImage: "https://pbs.twimg.com/profile_images/977835673511084032/xXA979th.jpg"
-            },
-            {
-                id: 2,
-                name: "crong2",
-                profileImage: "https://pbs.twimg.com/profile_images/977835673511084032/xXA979th.jpg"
-            },
-            {
-                id: 3,
-                name: "crong2",
-                profileImage: "https://pbs.twimg.com/profile_images/977835673511084032/xXA979th.jpg"
-            },
-            {
-                id: 4,
-                name: "crong2",
-                profileImage: "https://pbs.twimg.com/profile_images/977835673511084032/xXA979th.jpg"
-            }
-        ],
-        author: {
-            id: 2,
-            name: "wooojini"
-        },
-        createdAt: "2020-11-09T18:01:34.136Z"
-    }
-];
 
 const CONTENT_ACTION_TYPE = {
     CHANGE_TOTAL_CHECKBOX: "changeTotalCheckbox",
@@ -233,9 +160,11 @@ const initialState = {
 
 const Content = () => {
     const [contentState, dispatch] = useReducer(reducer, initialState);
+    const { issues, setIssues } = useContext(MainContext);
 
-    const getIssueItems = () =>
-        issues.reduce(
+    const getIssueItems = () => {
+        if (!issues || issues?.length === 0) return null;
+        return issues.reduce(
             (acc, cur) =>
                 acc.concat(
                     <ListGroup.Item key={cur.id}>
@@ -244,6 +173,7 @@ const Content = () => {
                 ),
             []
         );
+    };
 
     const getCheckedboxNodes = (issueCheckboxNodes) => {
         return [...issueCheckboxNodes].filter((issueCheckboxNode) => {
@@ -287,6 +217,32 @@ const Content = () => {
                 return;
             }
             dispatch({ type: CONTENT_ACTION_TYPE.DECREASE_TOTAL_CHECKBOX, totalChecked: checkedNodes.length });
+        },
+        onMarkAsClickListener: async (e) => {
+            e.stopPropagation();
+
+            let liNode;
+            switch (e.target.tagName) {
+                case "LI":
+                    liNode = e.target;
+                    break;
+                case "SPAN":
+                    liNode = e.target.parentElement;
+                    break;
+                default:
+                    break;
+            }
+
+            const issueCheckboxNodes = document.querySelectorAll(".issue-checkbox");
+            const checkedboxNodes = getCheckedboxNodes(issueCheckboxNodes);
+
+            const promises = checkedboxNodes.map((checkedboxNode) =>
+                API.patchIssue({ issueId: checkedboxNode.dataset.id, state: liNode.dataset.name })
+            );
+            await Promise.all(promises);
+            const newIssues = await API.getIssues({ page: 0 });
+
+            setIssues(newIssues);
         }
     };
 

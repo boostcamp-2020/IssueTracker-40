@@ -79,7 +79,7 @@ const Writer = ({ setText, selected }) => {
 
     return (
         <WriterContainer ref={WriterContainerEl} selected={selected}>
-            <WriterTextarea onChange={setText} onFocus={onFocus} onBlur={onBlur} placeholder="Leave a comment" />
+            <WriterTextarea name="content" onChange={setText} onFocus={onFocus} onBlur={onBlur} placeholder="Leave a comment" />
             <WriterDropAndDropZone onClick={handlingClickDropZone}>
                 <p> Attach files by dragging & dropping, selecting or pasting them. </p>
             </WriterDropAndDropZone>
