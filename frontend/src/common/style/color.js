@@ -65,7 +65,8 @@ const color = {
     list_group_border: "#eaecef",
     primary_hover_bg: "#f3f4f6",
     tertiary_border: "#d1d5da",
-    tertiary_bg: "#f6f8fa"
+    tertiary_bg: "#f6f8fa",
+    text_link: "#0366d6"
 };
 
 export { color };

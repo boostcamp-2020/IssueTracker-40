@@ -6,6 +6,7 @@ import LabelWhiteIcon from "@imgs/label-white-icon.png";
 import LabelBlackIcon from "@imgs/label-black-icon.png";
 import MilestoneWhiteIcon from "@imgs/milestone-white-icon.png";
 import MilestoneBlackIcon from "@imgs/milestone-black-icon.png";
+import { Link } from "react-router-dom";
 
 const HeaderContainer = styled.div`
     display: flex;
@@ -29,7 +30,7 @@ const LeftTab = styled.div`
     justify-content: center;
     align-items: center;
     height: 100%;
-    width: 45%;
+    width: 6rem;
     background-color: ${(props) => (props.value === "label" ? "#0366d6" : "white")};
     border-radius: 10px 0px 0px 10px;
     ${(props) => (props.value !== "label" ? `&:hover { background-color: ${color.primary_hover_bg} }` : "")};
@@ -40,7 +41,7 @@ const RightTab = styled.div`
     justify-content: center;
     align-items: center;
     height: 100%;
-    width: 55%;
+    width: 8rem;
     background-color: ${(props) => (props.value === "milestone" ? "#0366d6" : "white")};
     border-radius: 0px 10px 10px 0px;
     ${(props) => (props.value !== "milestone" ? `&:hover { background-color: ${color.primary_hover_bg} }` : "")};
@@ -60,23 +61,22 @@ const RightText = styled.p`
     color: ${(props) => (props.value === "milestone" ? "white" : "black")};
 `;
 
-function handlingOnclick(value) {
-    if (value === "label") window.location.href = "/milestones";
-    else window.location.href = "/labels";
-}
-
 const LabelMilestoneHeader = ({ value, buttonClick }) => {
     return (
         <HeaderContainer>
             <TabContainer>
-                <LeftTab value={value} onClick={value === "label" ? null : () => handlingOnclick(value)}>
-                    <Icon src={value === "label" ? LabelWhiteIcon : LabelBlackIcon} />
-                    <LeftText value={value}> Labels </LeftText>
-                </LeftTab>
-                <RightTab value={value} onClick={value === "milestone" ? null : () => handlingOnclick(value)}>
-                    <Icon src={value === "milestone" ? MilestoneWhiteIcon : MilestoneBlackIcon} />
-                    <RightText value={value}> Milestones </RightText>
-                </RightTab>
+                <Link to="/labels">
+                    <LeftTab value={value}>
+                        <Icon src={value === "label" ? LabelWhiteIcon : LabelBlackIcon} />
+                        <LeftText value={value}> Labels </LeftText>
+                    </LeftTab>
+                </Link>
+                <Link to="/milestones">
+                    <RightTab value={value}>
+                        <Icon src={value === "milestone" ? MilestoneWhiteIcon : MilestoneBlackIcon} />
+                        <RightText value={value}> Milestones </RightText>
+                    </RightTab>
+                </Link>
             </TabContainer>
             <Button onClick={buttonClick} primary>
                 New {value}

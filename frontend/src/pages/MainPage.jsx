@@ -4,6 +4,7 @@ import { usePromise } from "@hook";
 import { MainTemplate, FilterBar, PageNavButton, Button } from "@components";
 import { API } from "@utils";
 import MainContext from "../components/MainTemplate/MainContext/MainContext";
+import { LoadingPage } from "@pages";
 
 const MainPage = () => {
     const [loading, resolved, error] = usePromise(API.getIssues, [], { page: 0 });
@@ -13,7 +14,7 @@ const MainPage = () => {
         setIssues(resolved);
     }, [resolved]);
 
-    if (loading) return <div>로딩중..!</div>;
+    if (loading) return <LoadingPage />;
     if (error) window.location.href = "/login";
 
     return (

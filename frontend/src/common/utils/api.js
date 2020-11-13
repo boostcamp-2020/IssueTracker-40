@@ -24,23 +24,22 @@ const getLabels = async () => {
     return response;
 };
 
-const getIssues = async ({ page, q }) => {
+const getIssues = async ({ page }) => {
     const query = qs.stringify({
         page,
         q
     });
-    // const response = await axios.get(`https://api.mocki.io/v1/d1aa3d04`);
-    const response = await axios.get(`${Config.API.GET_ISSUES}?${query}`, { withCredentials: true });
+    const response = await axios.get(`${Config.API.GET_ISSUES}?${query}`);
     return response?.data?.issues;
 };
 
 const postIssue = async ({ title, content }) => {
-    const response = await axios.post(Config.API.POST_ISSUE, { title, content }, { withCredentials: true });
+    const response = await axios.post(Config.API.POST_ISSUE, { title, content });
     return response;
 };
 
 const patchIssue = async ({ issueId, title, content, state }) => {
-    const response = await axios.patch(`${Config.API.POST_ISSUE}/${issueId}`, { title, content, state }, { withCredentials: true });
+    const response = await axios.patch(`${Config.API.POST_ISSUE}/${issueId}`, { title, content, state });
     return response;
 };
 
@@ -49,13 +48,13 @@ const postLabel = async (data) => {
     return response;
 };
 
-const patchLabel = async (id) => {
-    const response = await axios.post(`${Config.API.LABLE}/${id}`);
+const putLabel = async (id, data) => {
+    const response = await axios.put(`${Config.API.LABLE}/${id}`, data);
     return response;
 };
 
 const deleteLabel = async (id) => {
-    const response = await axios.post(`${Config.API.LABLE}/${id}`);
+    const response = await axios.delete(`${Config.API.LABLE}/${id}`);
     return response;
 };
 
@@ -64,4 +63,47 @@ const getIssueById = async (issueId) => {
     return response?.data?.issue;
 };
 
-export { postLogin, getLogout, postSignup, getLabels, postLabel, patchLabel, deleteLabel, getIssueById, getIssues, postIssue, patchIssue };
+
+const getMilestone = async (milestoneId) => {
+    const response = await axios.get(`${Config.API.MILESTONE}/${milestoneId}`);
+    return response;
+};
+
+const getMilestones = async () => {
+    const response = await axios.get(`${Config.API.MILESTONE}`);
+    return response;
+};
+
+const postMilestone = async (data) => {
+    const response = await axios.post(Config.API.MILESTONE, data);
+    return response;
+};
+
+const patchMilestone = async (milestoneId, data) => {
+    const response = await axios.patch(`${Config.API.MILESTONE}/${milestoneId}`, data);
+    return response;
+};
+
+const deleteMilestone = async (milestoneId) => {
+    const response = await axios.delete(`${Config.API.MILESTONE}/${milestoneId}`);
+    return response;
+};
+
+export {
+    postLogin,
+    postSignup,
+    getLabels,
+    getLogout,
+    postLabel,
+    putLabel,
+    deleteLabel,
+    getIssueById,
+    getIssues,
+    getMilestone,
+    getMilestones,
+    postMilestone,
+    patchMilestone,
+    deleteMilestone,
+    postIssue,
+    patchIssue
+};

@@ -72,10 +72,6 @@ class LabelService {
             throw new EntityNotFoundError();
         }
 
-        if (!(await this.isLabelExistByName({ name }))) {
-            throw new EntityAlreadyExist();
-        }
-
         targetLabel.name = name;
         targetLabel.color = color;
         targetLabel.description = description;
