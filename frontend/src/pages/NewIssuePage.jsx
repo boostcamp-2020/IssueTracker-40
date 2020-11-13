@@ -4,7 +4,6 @@ import { ContentEditor, SidebarMenu, Button, UserProfile } from "@components";
 import styled from "styled-components";
 import { color } from "@style/color";
 import { API } from "@utils";
-import { usePromise } from "@hook";
 import { useHistory } from "react-router-dom";
 
 const StyledNewIssueContainer = styled.form`

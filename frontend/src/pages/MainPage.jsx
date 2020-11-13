@@ -3,11 +3,11 @@ import { NavLink } from "react-router-dom";
 import { usePromise } from "@hook";
 import { MainTemplate, FilterBar, PageNavButton, Button } from "@components";
 import { API } from "@utils";
-import MainContext from "../components/MainTemplate/MainContext/MainContext";
 import { LoadingPage } from "@pages";
+import MainContext from "../components/MainTemplate/MainContext/MainContext";
 
 const MainPage = () => {
-    const [loading, resolved, error] = usePromise(API.getIssues, [], { page: 0 });
+    const [loading, resolved] = usePromise(API.getIssues, [], { page: 0 });
     const [issues, setIssues] = useState(resolved);
 
     useEffect(async () => {
@@ -15,7 +15,6 @@ const MainPage = () => {
     }, [resolved]);
 
     if (loading) return <LoadingPage />;
-    if (error) window.location.href = "/login";
 
     return (
         <MainContext.Provider value={{ issues, setIssues }}>

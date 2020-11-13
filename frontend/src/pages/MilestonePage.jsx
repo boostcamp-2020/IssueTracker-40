@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { LabelMilestoneHeader, ListGroup, OpenClosedTab, MilestoneItem, MilestoneForm } from "@components";
+import { LabelMilestoneHeader, ListGroup, OpenClosedTab, MilestoneItem } from "@components";
 import styled from "styled-components";
 import { API } from "@utils";
 import { usePromise } from "@hook";

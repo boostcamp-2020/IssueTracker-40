@@ -113,7 +113,7 @@ const MilestoneForm = ({ isNew, ...rest }) => {
         window.location.href = "/milestones";
     };
 
-    const handlingCancleClick = (e) => {
+    const handlingCancleClick = () => {
         history.push("/milestones");
     };
 

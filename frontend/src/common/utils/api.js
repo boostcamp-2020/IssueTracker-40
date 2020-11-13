@@ -20,11 +20,11 @@ const postSignup = async (email, name, password) => {
 };
 
 const getLabels = async () => {
-    const response = await axios.get(Config.API.POST_ISSUE);
+    const response = await axios.get(Config.API.LABLE);
     return response;
 };
 
-const getIssues = async ({ page }) => {
+const getIssues = async ({ page, q }) => {
     const query = qs.stringify({
         page,
         q
@@ -62,7 +62,6 @@ const getIssueById = async (issueId) => {
     const response = await axios.get(`${Config.API.GET_ISSUE}/${issueId}`);
     return response?.data?.issue;
 };
-
 
 const getMilestone = async (milestoneId) => {
     const response = await axios.get(`${Config.API.MILESTONE}/${milestoneId}`);
