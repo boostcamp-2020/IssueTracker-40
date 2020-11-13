@@ -6,8 +6,8 @@ import { User } from "../../src/model/user";
 import { EntityAlreadyExist } from "../../src/common/error/entity-already-exist";
 
 const mockUser = { email: "Do-ho@github.com", name: "Do-ho", profileImage: "profile image" };
-const mockMilestone = { title: "title", description: "description", due_date: new Date() };
-const mockMilestone2 = { title: "title2", description: "description", due_date: new Date() };
+const mockMilestone = { title: "title", description: "description", dueDate: "2019-01-01" };
+const mockMilestone2 = { title: "title2", description: "description", dueDate: "2019-01-02" };
 
 describe("MilestoneService Test", () => {
     const app = new Application();
