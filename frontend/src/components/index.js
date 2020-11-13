@@ -4,7 +4,7 @@ export { default as Button } from "./Button/Button";
 export { default as ContentEditor } from "./ContentEditor/ContentEditor";
 export { default as Preview } from "./ContentEditor/Preview/Preview";
 export { default as Writer } from "./ContentEditor/Writer/Writer";
-export { default as SidebarMenu } from "./SideBarMenu/SideBarMenu";
+export { default as SidebarMenu } from "./SidebarMenu/SidebarMenu";
 export { default as Label } from "./Label/Label";
 export { default as Header } from "./Header/HeaderContainer/HeaderContainer";
 export { default as UserProfile } from "./UserProfile/UserProfile";
