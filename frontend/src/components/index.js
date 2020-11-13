@@ -25,3 +25,6 @@ export { default as PageNavButton } from "./PageNavButton/PageNavButton";
 export { default as LabelItem } from "./LabelItem/LabelItem";
 export * as IssueDetail from "./IssueDetail";
 export { default as Comment } from "./Comment/Comment";
+export { default as MilestoneForm } from "./MilestoneForm/MilestoneForm";
+export { default as OpenClosedTab } from "./OpenClosedTab/OpenClosedTab";
+export { default as MilestoneItem } from "./MilestoneItem/MilestoneItem";
