@@ -17,7 +17,7 @@ const App = () => {
     const [loading, resolved, error] = waitAuthorization();
 
     if (window.location.pathname !== "/login") {
-        if (loading) return <div>로딩중..!</div>;
+        if (loading) return <LoadingPage />;
         if (error) window.location.href = "/login";
         if (!resolved) return null;
     }

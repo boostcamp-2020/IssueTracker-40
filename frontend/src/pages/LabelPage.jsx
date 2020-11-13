@@ -3,6 +3,7 @@ import { LabelMilestoneHeader, LabelEditor, ListGroup, LabelItem } from "@compon
 import { API } from "@utils";
 import { usePromise } from "@hook";
 import styled from "styled-components";
+import { LoadingPage } from "@pages";
 
 const LabelView = styled.div`
     width: 100%;
@@ -22,7 +23,7 @@ const LabelPage = () => {
 
     const [loading, resolved, error] = usePromise(getLabels, []);
 
-    if (loading) return <div>로딩중..!</div>;
+    if (loading) return <LoadingPage />;
     if (error) window.location.href = "/";
     if (!resolved) return null;
 
