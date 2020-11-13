@@ -37,11 +37,11 @@ const App = () => {
         <>
             <UserContext.Provider value={resolved !== null ? resolved.data : {}}>
                 <Route exact path="/login" component={LoginPage} />
+                <Route exact path="/signup" component={SignupPage} />
                 <Header />
                 <Main>
                     <Route exact path="/" component={MainPage} />
                     <Switch>
-                        <Route exact path="/signup" component={SignupPage} />
                         <Route exact path="/new" component={NewIssuePage} />
                         <Route exact path="/issue/:issueId" component={IssueDetailPage} />
                         <Route exact path="/milestones" component={MilestonePage} />

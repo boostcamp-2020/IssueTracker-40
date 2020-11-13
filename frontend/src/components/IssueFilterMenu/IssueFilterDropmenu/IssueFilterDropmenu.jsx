@@ -85,16 +85,16 @@ const MilestoneItem = ({ id, title }) => {
     );
 };
 
-const MarkAsItem = ({ id, name }) => {
+const MarkAsItem = ({ id, name, onClick }) => {
     return (
-        <IssueFilterDropmenuItem>
+        <IssueFilterDropmenuItem onClick={onClick} data-name={name}>
             <span>{name}</span>
         </IssueFilterDropmenuItem>
     );
 };
 
 const IssueFilterDropmenu = ({ filterType, title }) => {
-    const { contentState } = useContext(MainContentContext);
+    const { contentState, contentEventListeners } = useContext(MainContentContext);
 
     const getDropmenuHeader = () => {
         return <span>{title === "Mark as" ? "Actions" : `Filter by ${title}`}</span>;
@@ -116,7 +116,10 @@ const IssueFilterDropmenu = ({ filterType, title }) => {
             case FILTER_TYPE.ASSIGNEE:
                 return assignees.reduce((acc, cur) => acc.concat(<ProfileItem key={cur.id} name={cur.name} profileImage={cur.profileImage} />), []);
             case FILTER_TYPE.MARK_AS:
-                return markAs.reduce((acc, cur) => acc.concat(<MarkAsItem key={cur.id} name={cur.name} />), []);
+                return markAs.reduce(
+                    (acc, cur) => acc.concat(<MarkAsItem key={cur.id} name={cur.name} onClick={contentEventListeners.onMarkAsClickListener} />),
+                    []
+                );
             default:
                 return <></>;
         }

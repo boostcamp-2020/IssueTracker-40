@@ -75,21 +75,6 @@ const ContentViewerContainer = ({ comments }) => {
     ));
 };
 
-// const ContentViewerContainer = () => {
-//     const { photoImage } = useContext(UserContext);
-//     return (
-//         <StyledContentContainer>
-//             <UserProfile imageUrl={photoImage} width="40px" height="40px" />
-//             <CommentWrapper>
-//                 <Comment
-//                     author="Gun-Hong"
-//                     text="TestsdfafdsfdsfsfasdfTestsdfafdsfdsfsfasdfTestsdfafdsfdsfsfasdfTestsdfafdsfdsfsfasdfTestsdfafdsfdsfsfasdfTestsdfafdsfdsfsfasdfTestsdfafdsfdsfsfasdfTestsdfafdsfdsfsfasdfTestsdfafdsfdsfsfasdfTestsdfafdsfdsfsfasdfTestsdfafdsfdsfsfasdf"
-//                 />
-//             </CommentWrapper>
-//         </StyledContentContainer>
-//     );
-// };
-
 const ContentEditorContainer = () => {
     const { photoImage } = useContext(UserContext);
     return (
@@ -110,12 +95,7 @@ const ContentEditorContainer = () => {
 
 const IssueDetailPage = ({ match }) => {
     const { issueId } = match.params;
-    const [loading, resolved, error] = usePromise(waitAuthorizationApi, []);
     const [issueLoading, issueResolved, issueError] = usePromise(API.getIssueById, [], issueId);
-
-    if (loading) return <LoadingPage />;
-    if (error) return <Redirect to="/login" />;
-    if (!resolved) return null;
 
     if (issueLoading) return <LoadingPage />;
     if (issueError) return <Redirect to="/" />;
@@ -153,7 +133,7 @@ const IssueDetailPage = ({ match }) => {
     const comments = issueResolved?.comments;
 
     return (
-        <UserContext.Provider value={resolved.data}>
+        <>
             <IssueDetail.Top>
                 <StyledTitleContainer>
                     <StyledTitleBox>
@@ -174,7 +154,7 @@ const IssueDetailPage = ({ match }) => {
                     <SidebarMenu title="Milestone">{milestoneItem}</SidebarMenu>
                 </IssueDetail.MiddleRight>
             </IssueDetail.Middle>
-        </UserContext.Provider>
+        </>
     );
 };
 

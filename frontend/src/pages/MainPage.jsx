@@ -1,32 +1,33 @@
-import React from "react";
-import { Redirect, NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import { usePromise } from "@hook";
-import { UserContext } from "@context";
-import { Header, Main, MainTemplate, FilterBar, PageNavButton, Button } from "@components";
+import { MainTemplate, FilterBar, PageNavButton, Button } from "@components";
 import { API } from "@utils";
+import MainContext from "../components/MainTemplate/MainContext/MainContext";
 import { LoadingPage } from "@pages";
 
 const MainPage = () => {
-    const [issueLoading, issueResolved, issueError] = usePromise(API.getIssues, [], { page: 0 });
+    const [loading, resolved, error] = usePromise(API.getIssues, [], { page: 0 });
+    const [issues, setIssues] = useState(resolved);
 
-    if (issueLoading) return <LoadingPage />;
-    if (issueError) return <Redirect to="/" />;
-    if (!issueResolved) return null;
+    useEffect(async () => {
+        setIssues(resolved);
+    }, [resolved]);
+
+    if (loading) return <LoadingPage />;
+    if (error) window.location.href = "/login";
 
     return (
-        <UserContext.Provider value={resolved.data}>
-            <Header />
-            <Main>
-                <MainTemplate.Top>
-                    <FilterBar />
-                    <PageNavButton />
-                    <Button primary>
-                        <NavLink to="/new">New Issue</NavLink>
-                    </Button>
-                </MainTemplate.Top>
-                <MainTemplate.Content />
-            </Main>
-        </UserContext.Provider>
+        <MainContext.Provider value={{ issues, setIssues }}>
+            <MainTemplate.Top>
+                <FilterBar />
+                <PageNavButton />
+                <Button primary>
+                    <NavLink to="/new">New Issue</NavLink>
+                </Button>
+            </MainTemplate.Top>
+            <MainTemplate.Content />
+        </MainContext.Provider>
     );
 };
 

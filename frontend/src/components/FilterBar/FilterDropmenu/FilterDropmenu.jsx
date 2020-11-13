@@ -52,7 +52,9 @@ const FilterDropmenu = () => {
             (acc, cur) =>
                 acc.concat(
                     <FilterDropmenuItem key={cur.id}>
-                        <span>{cur.title}</span>
+                        <span onClick={eventListeners.onFilterQueryMenuClickListener} data-id={cur.id}>
+                            {cur.title}
+                        </span>
                     </FilterDropmenuItem>
                 ),
             []

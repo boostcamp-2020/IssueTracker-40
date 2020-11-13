@@ -3,8 +3,11 @@ import { UserContext } from "@context";
 import { ContentEditor, SidebarMenu, Button, UserProfile } from "@components";
 import styled from "styled-components";
 import { color } from "@style/color";
+import { API } from "@utils";
+import { usePromise } from "@hook";
+import { useHistory } from "react-router-dom";
 
-const StyledNewIssueContainer = styled.div`
+const StyledNewIssueContainer = styled.form`
     display: flex;
     justify-content: center;
     align-items: space-between;
@@ -66,12 +69,27 @@ const LeftContainer = () => {
 };
 
 const NewIssuePage = () => {
+    const history = useHistory();
+
+    const onSubmitListener = async (e) => {
+        e.preventDefault();
+        const formNode = e.target;
+        const { title, content } = formNode;
+
+        try {
+            await API.postIssue({ title: title.value, content: content.value });
+            history.push({ pathname: "/" });
+        } catch (err) {
+            alert("이슈를 생성하는데 문제가 발생했습니다!");
+        }
+    };
+
     return (
         <>
-            <StyledNewIssueContainer>
+            <StyledNewIssueContainer onSubmit={onSubmitListener}>
                 <LeftContainer />
                 <CenterContainer>
-                    <TitleInput placeholder="Title" />
+                    <TitleInput name="title" placeholder="Title" />
                     <ContentEditor />
                     <CenterButtonContainer>
                         <Button>Cancle</Button>

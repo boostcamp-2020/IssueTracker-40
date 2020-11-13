@@ -9,21 +9,37 @@ const postLogin = async (email, password) => {
     return response;
 };
 
+const getLogout = async () => {
+    const response = await axios.get(Config.API.GET_LOGOUT);
+    return response;
+};
+
 const postSignup = async (email, name, password) => {
     const response = await axios.post(Config.API.POST_SIGNUP, { email, name, password });
     return response;
 };
 
 const getLabels = async () => {
-    const response = await axios.get(Config.API.LABLE);
+    const response = await axios.get(Config.API.POST_ISSUE);
     return response;
 };
 
 const getIssues = async ({ page }) => {
     const query = qs.stringify({
-        page
+        page,
+        q
     });
     const response = await axios.get(`${Config.API.GET_ISSUES}?${query}`);
+    return response?.data?.issues;
+};
+
+const postIssue = async ({ title, content }) => {
+    const response = await axios.post(Config.API.POST_ISSUE, { title, content });
+    return response;
+};
+
+const patchIssue = async ({ issueId, title, content, state }) => {
+    const response = await axios.patch(`${Config.API.POST_ISSUE}/${issueId}`, { title, content, state });
     return response;
 };
 
@@ -46,6 +62,7 @@ const getIssueById = async (issueId) => {
     const response = await axios.get(`${Config.API.GET_ISSUE}/${issueId}`);
     return response?.data?.issue;
 };
+
 
 const getMilestone = async (milestoneId) => {
     const response = await axios.get(`${Config.API.MILESTONE}/${milestoneId}`);
@@ -76,6 +93,7 @@ export {
     postLogin,
     postSignup,
     getLabels,
+    getLogout,
     postLabel,
     putLabel,
     deleteLabel,
@@ -85,5 +103,7 @@ export {
     getMilestones,
     postMilestone,
     patchMilestone,
-    deleteMilestone
+    deleteMilestone,
+    postIssue,
+    patchIssue
 };
